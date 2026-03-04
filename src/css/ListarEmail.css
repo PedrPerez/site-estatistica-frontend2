@@ -1,0 +1,286 @@
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  background-color: #d1d1d1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  border: 2px solid #000;
+  background-color: #f0f0f0;
+  height: 90px;
+  align-items: center;
+  max-width: 1200px;
+  width: 95%;
+  margin: 10px auto 0;
+}
+
+.logo-section {
+  width: 150px;
+  height: 100%;
+  border-right: 2px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: #d9d9d9;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.title-section {
+  flex-grow: 1;
+  padding-left: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.user-section {
+  padding-right: 20px;
+  text-align: right;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+
+/* Navegação */
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 95%;
+  margin: 10px auto;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.divider {
+  border: 1px solid #000;
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* Conteúdo */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Boxes */
+.section-box {
+  border: 2px solid #000;
+  margin-bottom: 25px;
+  background-color: #e0e0e0;
+}
+
+.section-box.no-padding {
+  padding: 0;
+}
+
+.section-title {
+  padding: 12px 20px;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #000;
+}
+
+.gray-bg {
+  background-color: #cccccc;
+}
+
+/* Inputs */
+.row {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.grow {
+  flex: 1;
+  min-width: 300px;
+}
+
+input, select, textarea {
+  border: 2px solid #000;
+  padding: 8px;
+  font-size: 1.1rem;
+}
+
+textarea {
+  width: 100%;
+  height: 220px;
+  resize: none;
+}
+
+.textarea-container {
+  padding: 20px;
+}
+
+/* Erro */
+.error-message {
+  color: #b00020;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Botões */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.btn-submit,
+.btn-cancel {
+  padding: 12px 50px;
+  font-size: 1.4rem;
+  border: 2px solid #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-submit {
+  background-color: #99c794;
+}
+
+.btn-cancel {
+  background-color: #e6a0a0;
+}
+
+.btn-submit:hover,
+.btn-cancel:hover {
+  filter: brightness(0.9);
+}
+
+.list-page {
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.container-1200 {
+  width: 95%;
+  max-width: 1200px;
+}
+
+/* Filtros */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 5px;
+}
+
+.filter-title {
+  font-size: 1.8rem;
+}
+
+.clean-filters {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.filter-box {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-select {
+  width: 250px;
+}
+
+/* Ajuste específico para inputs de filtro na listagem */
+.filter-input {
+  width: 200px;
+  border: 2px solid #000;
+  padding: 8px;
+  font-size: 1.1rem;
+  background-color: #fff;
+}
+
+/* Resultados */
+.results-text {
+  font-size: 1.6rem;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-row {
+  cursor: pointer;
+  margin-bottom: 0 !important;
+  background-color: #e0e0e0;
+  transition: background-color 0.2s;
+}
+
+.list-row:hover {
+  background-color: #d5d5d5;
+}
+
+.row-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
+
+.row-text {
+  font-size: 1.6rem;
+}
+
+.row-icon {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+/* Detalhes Expandidos */
+.expanded-details {
+  border: 2px solid #000;
+  border-top: none;
+  background-color: #fff;
+  padding: 20px;
+  margin-top: -2px; /* Une a caixa à de cima */
+  font-size: 1.2rem;
+}

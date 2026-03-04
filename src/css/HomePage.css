@@ -1,0 +1,133 @@
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  background-color: #d1d1d1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  border: 2px solid #000;
+  background-color: #f0f0f0;
+  height: 90px;
+  align-items: center;
+  max-width: 1200px;
+  width: 95%;
+  margin: 10px auto 0;
+}
+
+.logo-section {
+  width: 150px;
+  height: 100%;
+  border-right: 2px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: #d9d9d9;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.title-section {
+  flex-grow: 1;
+  padding-left: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.user-section {
+  padding-right: 20px;
+  text-align: right;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+
+/* Navegação */
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 95%;
+  margin: 10px auto;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.divider {
+  border: 1px solid #000;
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.menu-container {
+  display: flex;
+  gap: 20px;
+  padding: 40px;
+}
+
+.menu-box {
+  width: 200px;
+  border: 1px solid #999;
+  background: #eaeaea;
+  /* Transição suave para quando o menu abrir */
+  height: fit-content;
+}
+
+.menu-title {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #ddd;
+  border: none;
+  text-align: left;
+  display: block;
+}
+
+.menu-title:hover {
+  background: #d0d0d0;
+}
+
+.menu-content {
+  padding: 10px;
+  background: #f5f5f5;
+  border-top: 1px solid #ccc;
+}
+
+.option {
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.option:hover {
+  background: #ddd;
+}
+
+/* Estilo opcional para quando o menu estiver aberto */
+.menu-box.open {
+  border-color: #666;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

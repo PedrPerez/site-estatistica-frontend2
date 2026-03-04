@@ -1,0 +1,235 @@
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  background-color: #d1d1d1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  border: 2px solid #000;
+  background-color: #f0f0f0;
+  height: 90px;
+  align-items: center;
+  max-width: 1200px;
+  width: 95%;
+  margin: 10px auto 0;
+}
+
+.logo-section {
+  width: 150px;
+  height: 100%;
+  border-right: 2px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: #d9d9d9;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.title-section {
+  flex-grow: 1;
+  padding-left: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.user-section {
+  padding-right: 20px;
+  text-align: right;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+
+/* Navegação */
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 95%;
+  margin: 10px auto;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.divider {
+  border: 1px solid #000;
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* Conteúdo */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Boxes */
+.section-box {
+  border: 2px solid #000;
+  margin-bottom: 25px;
+  background-color: #e0e0e0;
+}
+
+.section-box.no-padding {
+  padding: 0;
+}
+
+.section-title {
+  padding: 12px 20px;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #000;
+}
+
+.gray-bg {
+  background-color: #cccccc;
+}
+
+/* Inputs */
+.row {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.grow {
+  flex: 1;
+  min-width: 300px;
+}
+
+input, select, textarea {
+  border: 2px solid #000;
+  padding: 8px;
+  font-size: 1.1rem;
+}
+
+textarea {
+  width: 100%;
+  height: 220px;
+  resize: none;
+}
+
+.textarea-container {
+  padding: 20px;
+}
+
+/* Espaçamento interno do conteúdo da pergunta */
+.question-content {
+  padding: 15px 20px;
+  background-color: #e0e0e0;
+}
+
+/* Reset de tabela para alinhamento limpo */
+.rating-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: bold;
+}
+
+/* Alinhamento dos cabeçalhos das colunas (Muito Bom, Bom, etc) */
+.rating-table th {
+  font-size: 1.1rem;
+  padding-bottom: 10px;
+  font-weight: normal;
+  text-align: center;
+}
+
+/* Alinhamento das linhas de perguntas */
+.rating-table td {
+  padding: 8px 0;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* A primeira coluna (Texto da pergunta) alinha à esquerda */
+.rating-table td:first-child {
+  text-align: left;
+  width: 40%;
+}
+
+/* Estilo dos Radio Buttons para parecerem maiores */
+.rating-table input[type="radio"] {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  accent-color: #000; /* Cor do ponto interno quando selecionado */
+}
+
+/* Utilitário para o cabeçalho com a seta */
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Erro */
+.error-message {
+  color: #b00020;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Botões */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.btn-submit,
+.btn-cancel {
+  padding: 12px 50px;
+  font-size: 1.4rem;
+  border: 2px solid #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-submit {
+  background-color: #99c794;
+}
+
+.btn-cancel {
+  background-color: #e6a0a0;
+}
+
+.btn-submit:hover,
+.btn-cancel:hover {
+  filter: brightness(0.9);
+}

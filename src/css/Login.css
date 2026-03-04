@@ -1,0 +1,75 @@
+/* Centraliza o card na tela */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #d1d1d1;
+  font-family: Arial, sans-serif;
+}
+
+/* Estiliza o card branco */
+form {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #000;
+}
+
+/* ESTILIZAÇÃO DO ERRO */
+.error {
+  color: red;
+  font-size: 16px;
+  height: 20px; /* Altura fixa para reservar o espaço */
+  margin-bottom: 15px;
+  transition: opacity 0.3s ease;
+}
+
+.error.hidden {
+  opacity: 0;
+  visibility: hidden; /* Ocupa espaço, mas não é visto nem lido por leitores de tela se vazio */
+}
+
+.error.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 18px;
+  outline: none;
+  margin-bottom: 15px; /* Margem movida para o input para consistência */
+}
+
+input:focus {
+  border-color: #000;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  align-self: flex-start;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
