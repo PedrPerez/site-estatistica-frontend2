@@ -80,37 +80,72 @@
   margin: 0 auto;
 }
 
-/* Conteúdo */
+/* Conteúdo Principal */
 .main-content {
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Ajustado para não centralizar verticalmente e facilitar scroll */
   padding: 40px 20px;
 }
 
-/* Boxes */
+.full-width-form {
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Boxes de Secção */
 .section-box {
   border: 2px solid #000;
   margin-bottom: 25px;
   background-color: #e0e0e0;
 }
 
-.section-box.no-padding {
-  padding: 0;
-}
-
 .section-title {
   padding: 12px 20px;
   font-size: 1.5rem;
   border-bottom: 2px solid #000;
+  font-weight: bold;
 }
 
 .gray-bg {
   background-color: #cccccc;
 }
 
-/* Inputs */
+/* EFEITO RECOLHER (ACCORDION) */
+.clickable-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.clickable-header:hover {
+  background-color: #bbbbbb;
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Controlo de Visibilidade via React */
+.question-content.hide {
+  display: none;
+}
+
+.question-content.show {
+  display: block;
+}
+
+.question-content {
+  padding: 20px;
+  background-color: #e0e0e0;
+}
+
+/* Identificação e Linhas Gerais */
 .row {
   display: flex;
   gap: 30px;
@@ -139,7 +174,7 @@ input, select, textarea {
 
 textarea {
   width: 100%;
-  height: 220px;
+  height: 150px;
   resize: none;
 }
 
@@ -147,56 +182,50 @@ textarea {
   padding: 20px;
 }
 
-/* Espaçamento interno do conteúdo da pergunta */
-.question-content {
-  padding: 15px 20px;
-  background-color: #e0e0e0;
-}
-
-/* Reset de tabela para alinhamento limpo */
+/* TABELA DE AVALIAÇÃO */
 .rating-table {
   width: 100%;
   border-collapse: collapse;
   font-weight: bold;
 }
 
-/* Alinhamento dos cabeçalhos das colunas (Muito Bom, Bom, etc) */
 .rating-table th {
   font-size: 1.1rem;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   font-weight: normal;
   text-align: center;
 }
 
-/* Alinhamento das linhas de perguntas */
 .rating-table td {
-  padding: 8px 0;
+  padding: 12px 0;
   text-align: center;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1); /* Linha subtil entre indicadores */
+}
+
+/* Primeira coluna (Médicos, Enfermeiros, etc) */
+.rating-table td:first-child {
+  text-align: left;
+  width: 45%;
+  padding-left: 10px;
+}
+
+/* Radio Buttons Estilizados */
+.rating-table input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #000;
+}
+
+/* Status e Erros */
+.status-msg {
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
   font-size: 1.2rem;
 }
 
-/* A primeira coluna (Texto da pergunta) alinha à esquerda */
-.rating-table td:first-child {
-  text-align: left;
-  width: 40%;
-}
-
-/* Estilo dos Radio Buttons para parecerem maiores */
-.rating-table input[type="radio"] {
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-  accent-color: #000; /* Cor do ponto interno quando selecionado */
-}
-
-/* Utilitário para o cabeçalho com a seta */
-.flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Erro */
 .error-message {
   color: #b00020;
   font-weight: bold;
@@ -205,20 +234,23 @@ textarea {
   margin-bottom: 15px;
 }
 
-/* Botões */
+/* Botões de Acção */
 .button-group {
   display: flex;
   justify-content: center;
   gap: 40px;
+  margin-top: 20px;
+  padding-bottom: 50px;
 }
 
 .btn-submit,
 .btn-cancel {
-  padding: 12px 50px;
+  padding: 15px 60px;
   font-size: 1.4rem;
   border: 2px solid #000;
   cursor: pointer;
   font-weight: bold;
+  transition: transform 0.1s;
 }
 
 .btn-submit {
@@ -229,7 +261,7 @@ textarea {
   background-color: #e6a0a0;
 }
 
-.btn-submit:hover,
-.btn-cancel:hover {
-  filter: brightness(0.9);
+.btn-submit:active,
+.btn-cancel:active {
+  transform: scale(0.98);
 }
