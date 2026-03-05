@@ -7,6 +7,7 @@ import InserirQuestionario from './pages/InserirQuestionario';
 import ListarEmail from './pages/ListarEmail';
 import ListarImpresso from './pages/ListarImpresso';
 import ListarQuestionario from './pages/ListarQuestionario';
+import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         
         {/* Rotas das páginas principais */}
         <Route path="/principal" element={<HomePage />} />
-        
+
         {/* Emails */}
         <Route path="/inserir-email" element={<InserirEmail />} />
         <Route path="/listar-email" element={<ListarEmail />} />
@@ -29,6 +30,9 @@ function App() {
         {/* Questionários */}
         <Route path="/inserir-questionario" element={<InserirQuestionario />} />
         <Route path="/listar-questionario" element={<ListarQuestionario />} />
+        
+        {/* Rotas de estatísticas */}
+        <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
 
         {/* Redirecionar rotas inexistentes para o login */}
         <Route path="*" element={<Navigate to="/" />} />
