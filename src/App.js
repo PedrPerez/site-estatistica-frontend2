@@ -8,6 +8,8 @@ import ListarEmail from './pages/ListarEmail';
 import ListarImpresso from './pages/ListarImpresso';
 import ListarQuestionario from './pages/ListarQuestionario';
 import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
+import EditarQuestionario from './pages/EditarQuestionario';
+import EditarImpresso from './pages/EditarImpresso';
 
 function App() {
   return (
@@ -26,11 +28,13 @@ function App() {
         {/* Impressos */}
         <Route path="/inserir-impresso" element={<InserirImpresso />} />
         <Route path="/listar-impresso" element={<ListarImpresso />} />
-        
+        <Route path="/editar-impresso/:id" element={<EditarImpresso />} />
+
         {/* Questionários */}
         <Route path="/inserir-questionario" element={<InserirQuestionario />} />
         <Route path="/listar-questionario" element={<ListarQuestionario />} />
-        
+        <Route path="/editar-questionario/:id" element={<EditarQuestionario />} />
+
         {/* Rotas de estatísticas */}
         <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
 
