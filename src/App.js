@@ -10,6 +10,7 @@ import ListarQuestionario from './pages/ListarQuestionario';
 import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 import EditarQuestionario from './pages/EditarQuestionario';
 import EditarImpresso from './pages/EditarImpresso';
+import EditarEmail from './pages/EditarEmail';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         {/* Emails */}
         <Route path="/inserir-email" element={<InserirEmail />} />
         <Route path="/listar-email" element={<ListarEmail />} />
+        <Route path="/editar-email/:id" element={<EditarEmail />} />
         
         {/* Impressos */}
         <Route path="/inserir-impresso" element={<InserirImpresso />} />

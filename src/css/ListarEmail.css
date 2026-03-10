@@ -284,3 +284,57 @@ textarea {
   margin-top: -2px; /* Une a caixa à de cima */
   font-size: 1.2rem;
 }
+
+/* Estilo para o botão de Editar na Listagem */
+.btn-edit-small {
+    background-color: #2196F3; /* Azul padrão */
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito ao passar o rato */
+.btn-edit-small:hover {
+    background-color: #1976D2; /* Um azul um pouco mais escuro */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Efeito de clique */
+.btn-edit-small:active {
+    transform: scale(0.95);
+}
+
+/* Ajuste do container dos ícones/botões na linha */
+.row-content .row-icon {
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 10px;
+}
+
+/* Garantir que o conteúdo expandido tenha um bom contraste */
+.expanded-details {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo para as caixas de detalhe dentro do expandido */
+.detail-box-email {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
