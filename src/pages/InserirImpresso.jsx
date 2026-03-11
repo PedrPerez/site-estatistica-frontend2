@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/InserirImpresso.css';
 
 export default function InserirImpresso() {
   const [unidades, setUnidades] = useState([]);
   const [tipos, setTipos] = useState([]);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nome: '',
     data: new Date().toISOString().split('T')[0], // Data de hoje por defeito
@@ -89,20 +91,18 @@ export default function InserirImpresso() {
 
   return (
     <div className="page-wrapper">
-      {/* Cabeçalho */}
       <header className="main-header">
         <div className="logo-section">Logo</div>
         <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
         <div className="user-section">
-          <span>*Utilizador*</span>
+          <span>*Utilizador*</span><br/>
           <button className="logout-btn">Terminar Sessão</button>
         </div>
       </header>
 
-      {/* Navegação */}
       <nav className="nav-links">
-        <a href="/" className="nav-link">← Pagina Principal</a>
-        <a href="/listar" className="nav-link">Listar Impressos →</a>
+        <button onClick={() => navigate('/')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/listar-impresso')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Impresso →</button>
       </nav>
 
       <hr className="divider" />

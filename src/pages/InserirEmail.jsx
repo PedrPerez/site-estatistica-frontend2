@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/InserirEmail.css';
 
 export default function InserirEmail() {
+  const navigate = useNavigate();
   const [unidades, setUnidades] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [formData, setFormData] = useState({
@@ -59,14 +61,14 @@ export default function InserirEmail() {
         <div className="logo-section">Logo</div>
         <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
         <div className="user-section">
-          <span>*Utilizador*</span>
+          <span>*Utilizador*</span><br/>
           <button className="logout-btn">Terminar Sessão</button>
         </div>
       </header>
 
       <nav className="nav-links">
-        <a href="/" className="nav-link">← Pagina Principal</a>
-        <a href="/listar-email" className="nav-link">Listar Email →</a>
+        <button onClick={() => navigate('/')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/listar-email')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Email →</button>
       </nav>
 
       <hr className="divider" />

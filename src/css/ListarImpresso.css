@@ -21,8 +21,9 @@
   height: 90px;
   align-items: center;
   max-width: 1200px;
-  width: 95%;
+  width: 95%; /* Continua flexível, mas vamos fixar o interior */
   margin: 10px auto 0;
+  box-sizing: border-box; /* Garante que a borda não aumente o tamanho */
 }
 
 .logo-section {
@@ -41,13 +42,18 @@
 .title-section {
   flex-grow: 1;
   padding-left: 20px;
-  font-size: 1.8rem;
+  font-size: 1.5rem; /* Reduzi ligeiramente para evitar quebras em ecrãs menores */
   font-weight: bold;
+  white-space: nowrap; /* Impede que o título salte para a linha de baixo */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-section {
+  width: 200px; /* Valor fixo em vez de variável */
   padding-right: 20px;
   text-align: right;
+  flex-shrink: 0; /* Impede que a secção encolha */
 }
 
 .logout-btn {
@@ -62,9 +68,12 @@
 .nav-links {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   max-width: 1200px;
   width: 95%;
+  height: 40px; /* Altura fixa para a barra de navegação */
   margin: 10px auto;
+  box-sizing: border-box;
 }
 
 .nav-link {

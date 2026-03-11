@@ -65,12 +65,8 @@ export default function ListarEmail() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/')} className="nav-link">
-          ← Página Principal
-        </button>
-        <button onClick={() => navigate('/inserir-email')} className="nav-link">
-          Inserir Email →
-        </button>
+        <button onClick={() => navigate('/')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/inserir-email')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Email →</button>
       </nav>
 
       <hr className="divider" />

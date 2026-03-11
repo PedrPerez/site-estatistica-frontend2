@@ -8,6 +8,7 @@ import ListarEmail from './pages/ListarEmail';
 import ListarImpresso from './pages/ListarImpresso';
 import ListarQuestionario from './pages/ListarQuestionario';
 import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
+import EstatisticaImpresso from './pages/EstatisticaImpresso';
 import EditarQuestionario from './pages/EditarQuestionario';
 import EditarImpresso from './pages/EditarImpresso';
 import EditarEmail from './pages/EditarEmail';
@@ -17,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Rota inicial é o Login */}
-        <Route path="/" element={<LogIn />} />
+        <Route path="/login" element={<LogIn />} />
         
         {/* Rotas das páginas principais */}
         <Route path="/principal" element={<HomePage />} />
@@ -39,8 +40,8 @@ function App() {
 
         {/* Rotas de estatísticas */}
         <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
+        <Route path="/" element={<EstatisticaImpresso />} />
 
-        {/* Redirecionar rotas inexistentes para o login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

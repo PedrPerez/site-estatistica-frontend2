@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/InserirQuestionario.css';
 
 export default function InserirQuestionario() {
+  const navigate = useNavigate();
   const [questoes, setQuestoes] = useState([]);
   const [seccoesAbertas, setSeccoesAbertas] = useState({});
   const [formData, setFormData] = useState({
@@ -92,25 +94,21 @@ export default function InserirQuestionario() {
 
   return (
     <div className="page-wrapper">
-      <div className="container-align">
-        
-        {/* Cabeçalho da Página */}
-        <header className="main-header">
-          <div className="logo-section">Logo</div>
-          <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
-          <div className="user-section">
-            <span>*Utilizador*</span><br/>
-            <button className="logout-btn">Terminar Sessão</button>
-          </div>
-        </header>
+      <header className="main-header">
+        <div className="logo-section">Logo</div>
+        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+        <div className="user-section">
+          <span>*Utilizador*</span><br/>
+          <button className="logout-btn">Terminar Sessão</button>
+        </div>
+      </header>
 
-        {/* Links de Navegação */}
-        <nav className="nav-links">
-          <a href="/" className="nav-link">← Pagina Principal</a>
-          <a href="/listar-questionario" className="nav-link">Listar Questionário →</a>
-        </nav>
+      <nav className="nav-links">
+        <button onClick={() => navigate('/estatisticas')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Pagina Principal</button>
+        <button onClick={() => navigate('/listar-questionario')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Questionário →</button>
+      </nav>
 
-        <hr className="divider" />
+      <hr className="divider" />
 
         <main className="main-content">
           <form onSubmit={handleSubmit} className="full-width-form">
@@ -209,7 +207,6 @@ export default function InserirQuestionario() {
 
           </form>
         </main>
-      </div>
     </div>
   );
 }

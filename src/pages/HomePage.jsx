@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "../css/HomePage.css";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(null);
 
   const handleClick = (menu) => {
