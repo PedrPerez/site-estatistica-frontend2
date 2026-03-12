@@ -62,12 +62,14 @@ export default function InserirEmail() {
         <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
         <div className="user-section">
           <span>*Utilizador*</span><br/>
-          <button className="logout-btn">Terminar Sessão</button>
+          <button className="logout-btn" onClick={() => navigate("/login")}>
+            Terminar Sessão
+          </button>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
         <button onClick={() => navigate('/listar-email')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Email →</button>
       </nav>
 

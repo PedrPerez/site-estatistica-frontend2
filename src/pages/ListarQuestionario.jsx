@@ -84,13 +84,15 @@ export default function ListarQuestionarios() {
         <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
         <div className="user-section">
           <span>*Utilizador*</span><br/>
-          <button className="logout-btn">Terminar Sessão</button>
+          <button className="logout-btn" onClick={() => navigate("/login")}>
+            Terminar Sessão
+          </button>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/estatisticas')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Estatísticas</button>
-        <button onClick={() => navigate('/inserir')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Questionário →</button>
+        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Pagina Principal</button>
+        <button onClick={() => navigate('/inserir-questionario')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Questionário →</button>
       </nav>
 
       <hr className="divider" />

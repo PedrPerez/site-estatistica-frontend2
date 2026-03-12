@@ -18,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Rota inicial é o Login */}
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/" element={<LogIn />} />
         
         {/* Rotas das páginas principais */}
         <Route path="/principal" element={<HomePage />} />
@@ -40,7 +40,7 @@ function App() {
 
         {/* Rotas de estatísticas */}
         <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
-        <Route path="/" element={<EstatisticaImpresso />} />
+        <Route path="/estatistica-impresso" element={<EstatisticaImpresso />} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

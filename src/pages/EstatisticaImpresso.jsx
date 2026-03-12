@@ -30,15 +30,15 @@ export default function EstatisticaImpresso() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Principal</button>
+        <button onClick={() => navigate('/principal')} className="nav-back-button">← Principal</button>
       </nav>
 
-      <main className="main-content" style={{ padding: '20px' }}>
+      <main className="main-content dashboard-padding">
         <div className="container-1200">
           
-          {/* Filtros Estilizados como no teu código base */}
-          <div className="section-box filter-box" style={{ marginBottom: '20px', padding: '15px', border: '1px solid #000' }}>
-            <div className="row" style={{ display: 'flex', gap: '15px' }}>
+          {/* Filtros */}
+          <div className="section-box filter-box border-black">
+            <div className="row flex-gap">
               <div className="input-group grow">
                 <label>Unidade:</label>
                 <select value={filtros.unidade} onChange={e => setFiltros({...filtros, unidade: e.target.value})}>
@@ -54,44 +54,44 @@ export default function EstatisticaImpresso() {
                 <label>Até:</label>
                 <input type="date" value={filtros.fim} onChange={e => setFiltros({...filtros, fim: e.target.value})} />
               </div>
-              <button onClick={carregarDados} className="logout-btn" style={{marginTop: '25px', height: '40px'}}>Filtrar</button>
+              <button onClick={carregarDados} className="btn-filter">Filtrar</button>
             </div>
           </div>
 
-          <div className="section-box" style={{ border: '1px solid #000', padding: '20px', background: '#fff' }}>
-            <div className="section-title gray-bg" style={{ marginBottom: '20px', padding: '10px' }}>
+          <div className="section-box white-bg border-black padding-20">
+            <div className="section-title gray-bg mb-20">
                 Resumo por Tipo de Mensagem e Unidade
             </div>
 
             {/* Tabela Dinâmica */}
-            <table className="rating-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table className="rating-table full-width">
               <thead>
-                <tr style={{ background: '#f2f2f2' }}>
-                  <th style={{ border: '1px solid #000', textAlign: 'left', padding: '8px' }}>Unidade</th>
+                <tr className="light-gray-bg">
+                  <th className="table-cell text-left">Unidade</th>
                   {dados.categorias.map(cat => (
-                    <th key={cat.id} style={{ border: '1px solid #000', padding: '8px' }}>{cat.descricao}</th>
+                    <th key={cat.id} className="table-cell">{cat.descricao}</th>
                   ))}
-                  <th style={{ border: '1px solid #000', padding: '8px' }}>Total</th>
+                  <th className="table-cell">Total</th>
                 </tr>
               </thead>
               <tbody>
                 {dados.lista.map((item, i) => (
                   <tr key={i}>
-                    <td style={{ border: '1px solid #000', padding: '8px' }}>{item.unidade_nome}</td>
+                    <td className="table-cell">{item.unidade_nome}</td>
                     {dados.categorias.map(cat => (
-                      <td key={cat.id} style={{ border: '1px solid #000', textAlign: 'center' }}>
+                      <td key={cat.id} className="table-cell text-center">
                         {item[`total_cat_${cat.id}`] || 0}
                       </td>
                     ))}
-                    <td style={{ border: '1px solid #000', textAlign: 'center', fontWeight: 'bold' }}>{item.total_geral}</td>
+                    <td className="table-cell text-center bold">{item.total_geral}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
             {/* Gráficos em Dashboard */}
-            <div style={{ display: 'flex', gap: '20px', marginTop: '40px', height: '400px' }}>
-              <div style={{ flex: 2 }}>
+            <div className="charts-container">
+              <div className="bar-chart-wrapper">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dados.lista}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -112,7 +112,7 @@ export default function EstatisticaImpresso() {
                 </ResponsiveContainer>
               </div>
 
-              <div style={{ flex: 1, borderLeft: '1px solid #eee' }}>
+              <div className="pie-chart-wrapper">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={dados.totais_pizza} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>

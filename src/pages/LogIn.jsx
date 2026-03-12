@@ -29,7 +29,7 @@ export default function LogIn() {
                 setError('');
                 // Guarda o nome do utilizador da tabela tbl_users
                 localStorage.setItem('userName', data.user.nome);
-                navigate('/estatistica-impresso'); 
+                navigate('/principal'); 
             } else {
                 setError(data.mensagem);
             }
