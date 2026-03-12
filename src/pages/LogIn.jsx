@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Login.css';
+import logo from '../assets/logohospital_cores.png';
 
 export default function LogIn() {
     const [utilizador, setUtilizador] = useState('');
@@ -27,7 +28,6 @@ export default function LogIn() {
 
             if (data.status === 'sucesso') {
                 setError('');
-                // Guarda o nome do utilizador da tabela tbl_users
                 localStorage.setItem('userName', data.user.nome);
                 navigate('/principal'); 
             } else {
@@ -40,32 +40,40 @@ export default function LogIn() {
     };
 
     return (
-        <div className="login-container">
-            <form onSubmit={handleSubmit}>
-                <h1>Login</h1>
-                
-                <p className={`error ${error ? 'visible' : 'hidden'}`}>
-                    {error || "Espaço reservado"}
-                </p>
-                
-                <input
-                    type="text"
-                    placeholder="Utilizador"
-                    value={utilizador}
-                    onChange={(e) => setUtilizador(e.target.value)}
-                    required
-                />
-                
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                
-                <button type="submit">Log In</button>
-            </form>
+        <div className="login-page">
+            <header className="login-header">
+                <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+            </header>
+
+            <div className="login-container">
+                <form onSubmit={handleSubmit}>
+                    <h1>Acesso ao Sistema</h1>
+                    
+                    <p className={`error ${error ? 'visible' : 'hidden'}`}>
+                        {error || "Espaço reservado"}
+                    </p>
+                    
+                    <label>Utilizador</label>
+                    <input
+                        type="text"
+                        placeholder="Introduza o seu utilizador"
+                        value={utilizador}
+                        onChange={(e) => setUtilizador(e.target.value)}
+                        required
+                    />
+                    
+                    <label>Palavra-passe</label>
+                    <input
+                        type="password"
+                        placeholder="Introduza a sua password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    
+                    <button type="submit" className="btn-login">Entrar</button>
+                </form>
+            </div>
         </div>
     );
 }
