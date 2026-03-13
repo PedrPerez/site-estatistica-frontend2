@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import '../css/ListarQuestionario.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png'; 
 
 export default function EstatisticaQuestionario() {
   const navigate = useNavigate();
   const [estatisticas, setEstatisticas] = useState([]);
+  const [userName, setUserName] = useState("Utilizador");
   const [unidades, setUnidades] = useState([]);
   const [filtros, setFiltros] = useState({ unidade: '', inicio: '', fim: '' });
   const [seccoesAbertas, setSeccoesAbertas] = useState({});
 
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     fetch("http://localhost/API/obterUnidade.php").then(res => res.json()).then(data => setUnidades(data));
     carregarDados();
   }, []);
@@ -28,20 +33,35 @@ export default function EstatisticaQuestionario() {
       });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   const toggleSeccao = (idx) => {
     setSeccoesAbertas(prev => ({ ...prev, [idx]: !prev[idx] }));
   };
 
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="title-section">ESTATÍSTICAS GERAIS DE SATISFAÇÃO</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <div className="user-section">
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
+        </div>
       </header>
 
       <nav className="nav-links">
         <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Principal</button>
         <button onClick={() => navigate('/listar-questionario')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Lista de Registos →</button>
       </nav>
+
+      <hr className="divider" />
 
       <main className="main-content">
         <div className="container-1200">

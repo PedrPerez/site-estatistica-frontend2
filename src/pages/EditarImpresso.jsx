@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/InserirImpresso.css';
+import '../css/Header.css'
+import logo from '../assets/logohospital_cores.png';
 
 export default function EditarImpresso() {
   const { id } = useParams();
+  const [userName, setUserName] = useState("Utilizador");
   const navigate = useNavigate();
   const [unidades, setUnidades] = useState([]);
   const [tipos, setTipos] = useState([]);
@@ -12,6 +15,8 @@ export default function EditarImpresso() {
   });
 
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     // Carregar opções e dados do registo
     Promise.all([
       fetch('http://localhost/API/obterUnidade.php').then(res => res.json()),
@@ -52,11 +57,26 @@ export default function EditarImpresso() {
     } catch (err) { alert("Erro ao conectar ao servidor"); }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="title-section">EDITAR IMPRESSO #{id}</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <div className="user-section">
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
+        </div>
       </header>
+      
+      
       <main className="main-content">
         <form onSubmit={handleSubmit} className="form-card">
           <section className="section-box">

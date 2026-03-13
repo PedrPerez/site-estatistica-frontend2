@@ -8,61 +8,6 @@
   margin: 0;
 }
 
-/* Cabeçalho */
-.login-header {
-  background-color: #ffffff;
-  padding: 15px 50px; /* Reduzi um pouco o padding vertical para o logo respirar melhor */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.hospital-logo {
-  height: 60px; 
-  width: auto;
-  display: block;
-}
-
-/* Secção do Utilizador - O "Segredo" está aqui */
-.user-section {
-  margin-left: auto; /* Empurra tudo o que está dentro desta div para o extremo direito */
-  display: flex;
-  align-items: center;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Alinha o texto à direita */
-  text-align: right;
-}
-
-.user-name {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 2px;
-  line-height: 1.2;
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: #d93025;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: bold;
-  padding: 0;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.logout-btn:hover {
-  text-decoration: underline;
-  color: #a51d12;
-}
-
 /* Content & Menus */
 .content-container {
   padding: 50px;

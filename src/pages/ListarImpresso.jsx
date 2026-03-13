@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/ListarImpresso.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png';
 
 export default function ListarImpresso() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [registos, setRegistos] = useState([]);
   const [unidades, setUnidades] = useState([]);
   const [tipos, setTipos] = useState([]);
@@ -19,6 +22,8 @@ export default function ListarImpresso() {
 
   // 1. Carregar dados da API ao iniciar
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     Promise.all([
       fetch('http://localhost/API/obterImpresso.php').then(res => res.json()),
       fetch('http://localhost/API/obterUnidade.php').then(res => res.json()),
@@ -58,16 +63,22 @@ export default function ListarImpresso() {
 
   if (loading) return <div className="page-wrapper" style={{textAlign:'center', padding:'50px'}}><h3>A carregar registos...</h3></div>;
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
-          <span>*Utilizador*</span><br/>
-          <button className="logout-btn" onClick={() => navigate("/login")}>
-            Terminar Sessão
-          </button>
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
         </div>
       </header>
 

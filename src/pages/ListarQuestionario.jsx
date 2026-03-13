@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/ListarQuestionario.css'; 
+import '../css/ListarQuestionario.css';
+import logo from '../assets/logohospital_cores.png'; 
 
 export default function ListarQuestionarios() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [questionarios, setQuestionarios] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
   const [detalhes, setDetalhes] = useState({});
@@ -14,6 +16,8 @@ export default function ListarQuestionarios() {
 
   // 1. Carregar lista inicial e unidades para filtros
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     fetch("http://localhost/API/obterUnidade.php")
       .then(res => res.json())
       .then(data => setUnidades(data))
@@ -66,6 +70,11 @@ export default function ListarQuestionarios() {
     }));
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   // 3. Filtros em tempo real
   const questionariosFiltrados = questionarios.filter(item => {
     const correspondeUnidade = formData.unidade === '' || 
@@ -79,14 +88,15 @@ export default function ListarQuestionarios() {
 
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
-          <span>*Utilizador*</span><br/>
-          <button className="logout-btn" onClick={() => navigate("/login")}>
-            Terminar Sessão
-          </button>
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
         </div>
       </header>
 

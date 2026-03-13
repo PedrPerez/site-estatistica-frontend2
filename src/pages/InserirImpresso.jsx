@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/InserirImpresso.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png';
 
 export default function InserirImpresso() {
   const [unidades, setUnidades] = useState([]);
+  const [userName, setUserName] = useState("Utilizador");
   const [tipos, setTipos] = useState([]);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -23,6 +26,8 @@ export default function InserirImpresso() {
 
   // 1. Carregar Unidades e Tipos ao iniciar a página
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     // Carregar Unidades
     fetch('http://localhost/API/obterUnidade.php')
       .then(res => res.json())
@@ -89,16 +94,22 @@ export default function InserirImpresso() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
-          <span>*Utilizador*</span><br/>
-          <button className="logout-btn" onClick={() => navigate("/login")}>
-            Terminar Sessão
-          </button>
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
         </div>
       </header>
 

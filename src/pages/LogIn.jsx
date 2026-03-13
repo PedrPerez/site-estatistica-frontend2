@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Login.css';
+import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function LogIn() {

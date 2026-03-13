@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/InserirQuestionario.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png'; 
 
 export default function InserirQuestionario() {
   const navigate = useNavigate();
+  const [unidades, setUnidades] = useState([]);
+  const [userName, setUserName] = useState("Utilizador");
   const [questoes, setQuestoes] = useState([]);
   const [seccoesAbertas, setSeccoesAbertas] = useState({});
   const [formData, setFormData] = useState({
     unidade: '',
     data: '',
     sugestoes: '',
-    respostas: {} // Armazena { id_indicador: valor }
+    respostas: {}
   });
 
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  // 1. Carregar as questões e indicadores do PHP (listarQuestoes.php)
+  //Carregar as questões e indicadores do PHP (listarQuestoes.php)
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
+    // Carregar Unidades
+    fetch('http://localhost/API/obterUnidade.php')
+      .then(res => res.json())
+      .then(data => setUnidades(data))
+      .catch(err => console.error("Erro ao carregar unidades:", err));
     fetch("http://localhost/API/listarQuestoes.php")
       .then(res => res.json())
       .then(data => {
@@ -31,7 +42,7 @@ export default function InserirQuestionario() {
       .catch(() => setStatus({ type: 'error', message: 'Erro ao carregar indicadores.' }));
   }, []);
 
-  // 2. Alternar visibilidade da secção (Toggle/Accordion)
+  //Alternar visibilidade da secção (Toggle/Accordion)
   const toggleSeccao = (id) => {
     setSeccoesAbertas(prev => ({
       ...prev,
@@ -39,13 +50,13 @@ export default function InserirQuestionario() {
     }));
   };
 
-  // 3. Lidar com mudanças nos inputs de texto/select
+  //Lidar com mudanças nos inputs de texto/select
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // 4. Lidar com a seleção dos Radio Buttons
+  //Lidar com a seleção dos Radio Buttons
   const handleRadioChange = (indicadorId, valor) => {
     setFormData(prev => ({
       ...prev,
@@ -53,12 +64,12 @@ export default function InserirQuestionario() {
     }));
   };
 
-  // 5. Submeter os dados para o servidor (salvarQuestionario.php)
+  //Submeter os dados para o servidor (salvarQuestionario.php)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: 'info', message: 'A gravar...' });
 
-    // Formata as respostas para o formato esperado pela tbl_questionarios_registos
+    //Formata as respostas para o formato esperado pela tbl_questionarios_registos
     const listaRespostas = Object.keys(formData.respostas).map(id => ({
       id_indicador: parseInt(id),
       valor: formData.respostas[id]
@@ -68,7 +79,6 @@ export default function InserirQuestionario() {
       unidade: formData.unidade,
       data: formData.data,
       conteudo: formData.sugestoes,
-      utilizador: "Admin_HVR", // Poderia vir de um contexto de login
       respostas: listaRespostas
     };
 
@@ -92,16 +102,22 @@ export default function InserirQuestionario() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
-          <span>*Utilizador*</span><br/>
-          <button className="logout-btn" onClick={() => navigate("/login")}>
-            Terminar Sessão
-          </button>
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
         </div>
       </header>
 
@@ -119,13 +135,13 @@ export default function InserirQuestionario() {
             <div className="section-box">
               <div className="section-title gray-bg">Identificação</div>
               <div className="row">
-                <div className="input-group grow">
+                <div className="input-group">
                   <label>Unidade:</label>
-                  <select name="unidade" value={formData.unidade} onChange={handleChange} required>
-                    <option value="">-</option>
-                    <option value="1">Convalescença</option>
-                    <option value="2">Média Duração e Reabilitação</option>
-                    <option value="3">Cirurgia</option>
+                  <select name="unidade" value={formData.unidade} onChange={handleChange}>
+                    <option value="">Seleccione a Unidade</option>
+                    {unidades.map(u => (
+                      <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="input-group grow">
@@ -206,7 +222,6 @@ export default function InserirQuestionario() {
               <button type="button" className="btn-cancel" onClick={() => window.history.back()}>Cancelar</button>
               <button type="submit" className="btn-submit">Submeter</button>
             </div>
-
           </form>
         </main>
     </div>

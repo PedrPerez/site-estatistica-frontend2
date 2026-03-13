@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/InserirQuestionario.css';
+import '../css/Header.css'
+import logo from '../assets/logohospital_cores.png';
 
 export default function EditarQuestionario() {
   const { id } = useParams();
+  const [userName, setUserName] = useState("Utilizador");
   const navigate = useNavigate();
   const [questoes, setQuestoes] = useState([]);
   const [seccoesAbertas, setSeccoesAbertas] = useState({});
@@ -18,6 +21,8 @@ export default function EditarQuestionario() {
 
   // 1. Carregar dados atuais para edição
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     const fetchData = async () => {
       try {
         const [resQ, resD] = await Promise.all([
@@ -93,12 +98,23 @@ export default function EditarQuestionario() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">EDITAR QUESTIONÁRIO #{id}</div>
-        <div className="user-section"><span>Admin</span></div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <div className="user-section">
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
+        </div>
       </header>
       
       <main className="main-content">

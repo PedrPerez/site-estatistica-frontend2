@@ -2,16 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import '../css/ListarQuestionario.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png'; 
 
 const COLORS = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58', '#AB47BC', '#00ACC1', '#FF7043'];
 
 export default function EstatisticaImpresso() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [dados, setDados] = useState({ categorias: [], lista: [], totais_pizza: [] });
   const [unidades, setUnidades] = useState([]);
   const [filtros, setFiltros] = useState({ unidade: '', inicio: '', fim: '' });
 
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     fetch("http://localhost/API/obterUnidade.php").then(res => res.json()).then(data => setUnidades(data));
     carregarDados();
   }, []);
@@ -23,15 +28,31 @@ export default function EstatisticaImpresso() {
       .then(data => setDados(data));
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="title-section">ESTATÍSTICAS DE IMPRESSOS (DINÂMICO)</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <div className="user-section">
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
+        </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-back-button">← Principal</button>
+        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Principal</button>
+        <button onClick={() => navigate('/listar-impresso')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Lista de Registos →</button>
       </nav>
+
+      <hr className="divider" />
 
       <main className="main-content dashboard-padding">
         <div className="container-1200">

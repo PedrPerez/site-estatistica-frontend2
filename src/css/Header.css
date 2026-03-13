@@ -1,0 +1,104 @@
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  background-color: #d1d1d1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+/* Cabeçalho */
+.login-header {
+  background-color: #ffffff;
+  padding: 15px 50px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hospital-logo {
+  height: 60px; 
+  width: auto;
+  display: block;
+}
+
+.user-section {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.user-name {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #d93025;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.logout-btn:hover {
+  text-decoration: underline;
+  color: #a51d12;
+}
+
+/* Barra de Navegação - Foco no Texto */
+.nav-links {
+  display: flex;
+  justify-content: flex-start; /* Alinhados à esquerda */
+  gap: 45px;                   /* Aumentado o espaço entre links para não sobrecarregar visualmente */
+  max-width: 1200px;
+  width: 95%;
+  margin: 25px auto;           /* Mais espaço vertical em volta da barra */
+  padding: 0 10px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;                 /* Cor mais forte para melhor contraste */
+  font-weight: 600;            /* Texto mais "grosso"/bold */
+  font-size: 1.3rem;           /* Tamanho de destaque (aprox. 21px) */
+  font-family: inherit;
+  transition: all 0.2s ease-in-out;
+  letter-spacing: 0.5px;       /* Ligeiro espaçamento entre letras para um look moderno */
+}
+
+/* Feedback visual ao passar o rato */
+.nav-link:hover {
+  color: #4A72B2;              /* Azul corporativo */
+  transform: translateY(-2px); /* Pequeno efeito de elevação */
+}
+
+/* Divisória para acompanhar o texto maior */
+.divider {
+  border: 0;
+  border-top: 2px solid #cfd8dc; 
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+}

@@ -5,81 +5,6 @@
   box-sizing: border-box;
 }
 
-.page-wrapper {
-  background-color: #d1d1d1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-}
-
-/* Header */
-.main-header {
-  display: flex;
-  border: 2px solid #000;
-  background-color: #f0f0f0;
-  height: 90px;
-  align-items: center;
-  max-width: 1200px;
-  width: 95%;
-  margin: 10px auto 0;
-}
-
-.logo-section {
-  width: 150px;
-  height: 100%;
-  border-right: 2px solid #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  background-color: #d9d9d9;
-  color: #fff;
-  font-size: 1.5rem;
-}
-
-.title-section {
-  flex-grow: 1;
-  padding-left: 20px;
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-.user-section {
-  padding-right: 20px;
-  text-align: right;
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 0.85rem;
-}
-
-/* Navegação */
-.nav-links {
-  display: flex;
-  justify-content: space-between;
-  max-width: 1200px;
-  width: 95%;
-  margin: 10px auto;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #000;
-  font-weight: bold;
-}
-
-.divider {
-  border: 1px solid #000;
-  max-width: 1200px;
-  width: 95%;
-  margin: 0 auto;
-}
-
 /* Conteúdo */
 .main-content {
   flex-grow: 1;
@@ -285,10 +210,6 @@ textarea {
   font-size: 1.2rem;
 }
 
-/* ============================= */
-/* QUESTIONÁRIO - DETALHE */
-/* ============================= */
-
 .questionario-title {
   margin-top: 20px;
   font-size: 1.4rem;
@@ -318,7 +239,6 @@ textarea {
   padding: 15px 20px;
 }
 
-/* Grelha da escala */
 .scale-header {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
@@ -342,7 +262,6 @@ textarea {
   text-align: center;
 }
 
-/* Bolinhas */
 .radio-circle {
   width: 16px;
   height: 16px;
