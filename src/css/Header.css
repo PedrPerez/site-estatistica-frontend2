@@ -70,28 +70,32 @@
 /* Barra de Navegação - Foco no Texto */
 .nav-links {
   display: flex;
-  justify-content: flex-start; /* Alinhados à esquerda */
-  gap: 45px;                   /* Aumentado o espaço entre links para não sobrecarregar visualmente */
+  justify-content: space-between;
+  gap: 45px;                   
   max-width: 1200px;
   width: 95%;
-  margin: 25px auto;           /* Mais espaço vertical em volta da barra */
+  margin: 25px auto;
   padding: 0 10px;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #333;                 /* Cor mais forte para melhor contraste */
-  font-weight: 600;            /* Texto mais "grosso"/bold */
-  font-size: 1.3rem;           /* Tamanho de destaque (aprox. 21px) */
+  color: #333;
+  font-weight: 600;
+  font-size: 1.3rem;
   font-family: inherit;
   transition: all 0.2s ease-in-out;
-  letter-spacing: 0.5px;       /* Ligeiro espaçamento entre letras para um look moderno */
+  letter-spacing: 0.5px;
+}
+
+.nav-link-right {
+  margin-left: auto;
 }
 
 /* Feedback visual ao passar o rato */
 .nav-link:hover {
-  color: #4A72B2;              /* Azul corporativo */
-  transform: translateY(-2px); /* Pequeno efeito de elevação */
+  color: #4A72B2;
+  transform: translateY(-2px);
 }
 
 /* Divisória para acompanhar o texto maior */

@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/InserirEmail.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png';
 
 export default function EditarEmail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [tipos, setTipos] = useState([]);
   const [formData, setFormData] = useState({
     tipo: '', email: '', data: '', conteudo: '', nome: '', assunto: ''
   });
 
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     // Carregar tipos e dados do email atual
     Promise.all([
       fetch('http://localhost/API/obterTipoMensagem.php').then(res => res.json()),
@@ -47,11 +52,25 @@ export default function EditarEmail() {
     } catch (err) { alert("Erro ao atualizar"); }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="title-section">EDITAR EMAIL #{id}</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <div className="user-section">
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
+        </div>
       </header>
+      
       <div className="main-content">
         <div className="form-card">
           <form onSubmit={handleSubmit}>

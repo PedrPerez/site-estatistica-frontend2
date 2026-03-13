@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/InserirEmail.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png'; 
 
 export default function InserirEmail() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [unidades, setUnidades] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [formData, setFormData] = useState({
@@ -20,6 +23,8 @@ export default function InserirEmail() {
 
   // Carregar opções dinâmicas
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     fetch('http://localhost/API/obterUnidade.php').then(res => res.json()).then(setUnidades);
     fetch('http://localhost/API/obterTipoMensagem.php').then(res => res.json()).then(setTipos);
   }, []);
@@ -27,6 +32,11 @@ export default function InserirEmail() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
   };
 
   const handleSubmit = async (e) => {
@@ -57,14 +67,15 @@ export default function InserirEmail() {
 
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
-          <span>*Utilizador*</span><br/>
-          <button className="logout-btn" onClick={() => navigate("/login")}>
-            Terminar Sessão
-          </button>
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
         </div>
       </header>
 

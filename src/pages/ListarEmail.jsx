@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/ListarEmail.css';
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png';
 
 export default function ListarEmail() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [emails, setEmails] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +15,8 @@ export default function ListarEmail() {
 
   // 1. Carregar dados da API (Emails e Tipos de Mensagem)
   useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName)
     Promise.all([
       fetch('http://localhost/API/obterEmail.php').then(res => res.json()),
       fetch('http://localhost/API/obterTipoMensagem.php').then(res => res.json())
@@ -32,6 +37,11 @@ export default function ListarEmail() {
 
   const limparFiltros = () => {
     setFilters({ tipo: '', data: '', busca: '' });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
   };
 
   // 2. Lógica de Filtragem Dinâmica
@@ -55,14 +65,15 @@ export default function ListarEmail() {
 
   return (
     <div className="page-wrapper">
-      <header className="main-header">
-        <div className="logo-section">Logo</div>
-        <div className="title-section">SANTA CASA DA MISERICÓRDIA DE ESPOSENDE</div>
+      <header className="login-header">
+        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
-          <span>*Utilizador*</span><br/>
-          <button className="logout-btn" onClick={() => navigate("/login")}>
-            Terminar Sessão
-          </button>
+          <div className="user-info">
+            <span className="user-name"><strong>{userName}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Terminar Sessão
+            </button>
+          </div>
         </div>
       </header>
 

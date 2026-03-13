@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/ListarQuestionario.css';
-import logo from '../assets/logohospital_cores.png'; 
+import '../css/Header.css';
+import logo from '../assets/logohospital_cores.png';
 
 export default function ListarQuestionarios() {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ export default function ListarQuestionarios() {
 
       <nav className="nav-links">
         <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Pagina Principal</button>
-        <button onClick={() => navigate('/inserir-questionario')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Questionário →</button>
+        <button onClick={() => navigate('/inserir-questionario')} className="nav-link nav-link-right" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Questionário →</button>
       </nav>
 
       <hr className="divider" />
