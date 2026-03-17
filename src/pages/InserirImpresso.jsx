@@ -11,7 +11,7 @@ export default function InserirImpresso() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nome: '',
-    data: new Date().toISOString().split('T')[0], // Data de hoje por defeito
+    data: new Date().toISOString().split('T')[0], 
     morada: '',
     tipo: '',
     unidade: '',
@@ -24,17 +24,13 @@ export default function InserirImpresso() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // 1. Carregar Unidades e Tipos ao iniciar a página
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName)
-    // Carregar Unidades
     fetch('http://localhost/API/obterUnidade.php')
       .then(res => res.json())
       .then(data => setUnidades(data))
       .catch(err => console.error("Erro ao carregar unidades:", err));
-
-    // Carregar Tipos (Substituir pelo teu ficheiro de tipos)
     fetch('http://localhost/API/obterTipoMensagem.php')
       .then(res => res.json())
       .then(data => setTipos(data))
@@ -51,7 +47,6 @@ export default function InserirImpresso() {
     setError('');
     setSuccess('');
 
-    // Validação simples
     const { nome, morada, unidade, email, data, tipo, tel, descritivo, resolucao } = formData;
     if (!tipo || !unidade || !nome || !descritivo) {
       setError('Por favor, preencha os campos obrigatórios (Nome, Unidade, Tipo e Descritivo).');
@@ -66,7 +61,7 @@ export default function InserirImpresso() {
         },
         body: new URLSearchParams({
           ...formData,
-          utilizador_registo: 'Admin' // Poderia vir de um contexto de login
+          utilizador_registo: 'Admin'
         })
       });
 
@@ -74,7 +69,6 @@ export default function InserirImpresso() {
 
       if (result.status === 'sucesso') {
         setSuccess('Registo inserido com sucesso!');
-        // Limpar formulário após sucesso
         setFormData({
           nome: '',
           data: new Date().toISOString().split('T')[0],
@@ -120,7 +114,6 @@ export default function InserirImpresso() {
 
       <hr className="divider" />
 
-      {/* Conteúdo */}
       <div className="main-content">
         <div className="form-card">
           <form onSubmit={handleSubmit}>
@@ -151,10 +144,7 @@ export default function InserirImpresso() {
                   <input type="text" name="morada" value={formData.morada} onChange={handleChange} />
                 </div>
               </div>
-            </section>
 
-            {/* Secção Tipo e Unidade */}
-            <section className="section-box">
               <div className="row">
                 <div className="input-group">
                   <label>Tipo:</label>
@@ -176,10 +166,7 @@ export default function InserirImpresso() {
                   </select>
                 </div>
               </div>
-            </section>
 
-            {/* Secção Email e Tel */}
-            <section className="section-box">
               <div className="row">
                 <div className="input-group grow">
                   <label>Email :</label>

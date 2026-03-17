@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/InserirQuestionario.css';
-import '../css/Header.css'
+import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function EditarQuestionario() {
   const { id } = useParams();
-  const [userName, setUserName] = useState("Utilizador");
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
   const [questoes, setQuestoes] = useState([]);
-  const [seccoesAbertas, setSeccoesAbertas] = useState({});
   const [formData, setFormData] = useState({
     unidade: '',
     data: '',
     sugestoes: '',
     respostas: {} 
   });
-
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  // 1. Carregar dados atuais para edição
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
-    if (storedName) setUserName(storedName)
+    if (storedName) setUserName(storedName);
+
     const fetchData = async () => {
       try {
+        // Carrega a estrutura das questões e os dados preenchidos em paralelo
         const [resQ, resD] = await Promise.all([
           fetch("http://localhost/API/listarQuestoes.php"),
           fetch(`http://localhost/API/obterDetalhe.php?id=${id}`)
@@ -33,41 +32,46 @@ export default function EditarQuestionario() {
         const qData = await resQ.json();
         const dData = await resD.json();
 
+        if (dData.erro) {
+          setStatus({ type: 'error', message: dData.erro });
+          return;
+        }
+
+        // Mapeia as respostas vindas do DB para o estado do formulário
         const respMap = {};
-        dData.respostas_agrupadas.forEach(p => {
-          p.indicadores.forEach(i => {
-            if (i.muito_bom == 1) respMap[i.id_indicador] = 'muito_bom';
-            else if (i.bom == 1) respMap[i.id_indicador] = 'bom';
-            else if (i.aceitavel == 1) respMap[i.id_indicador] = 'aceitavel';
-            else if (i.mau == 1) respMap[i.id_indicador] = 'mau';
+        if (dData.respostas_agrupadas) {
+          dData.respostas_agrupadas.forEach(seccao => {
+            seccao.indicadores.forEach(i => {
+              const idInd = i.id_indicador;
+              if (i.muito_bom === 1) respMap[idInd] = 'muito_bom';
+              else if (i.bom === 1) respMap[idInd] = 'bom';
+              else if (i.aceitavel === 1) respMap[idInd] = 'aceitavel';
+              else if (i.mau === 1) respMap[idInd] = 'mau';
+            });
           });
-        });
+        }
 
         setQuestoes(qData);
         setFormData({
-          unidade: dData.cod_unidade,
-          data: dData.data.split(' ')[0],
+          unidade: dData.cod_unidade || '',
+          data: dData.data ? dData.data.split(' ')[0] : '',
           sugestoes: dData.sugestoes || '',
           respostas: respMap
         });
         
-        const open = {};
-        qData.forEach(q => open[q.id] = true);
-        setSeccoesAbertas(open);
       } catch (err) {
-        setStatus({ type: 'error', message: 'Erro ao carregar dados.' });
+        console.error(err);
+        setStatus({ type: 'error', message: 'Erro ao carregar dados do servidor.' });
       }
     };
+
     fetchData();
   }, [id]);
 
-  // 2. Submissão com Alerta de Confirmação
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const confirmar = window.confirm("Deseja guardar as alterações?");
-    if (!confirmar) return;
+    if (!window.confirm("Deseja guardar as alterações?")) return;
 
-    // Garantir que os nomes das chaves batem com o PHP
     const payload = {
       id_questionario: id,
       unidade: formData.unidade,
@@ -78,6 +82,7 @@ export default function EditarQuestionario() {
         valor: formData.respostas[idInd]
       }))
     };
+
     try {
       const response = await fetch("http://localhost/API/editarQuestionario.php", {
         method: "POST",
@@ -86,9 +91,7 @@ export default function EditarQuestionario() {
       });
 
       const res = await response.json();
-
       if (res.status === "sucesso") {
-        // Redireciona para a listagem após o sucesso
         navigate('/listar-questionario'); 
       } else {
         setStatus({ type: 'error', message: res.mensagem });
@@ -98,19 +101,14 @@ export default function EditarQuestionario() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('userName');
-    navigate("/login");
-  };
-
   return (
     <div className="page-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <img src={logo} alt="Logo" className="hospital-logo" />
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
+            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>
               Terminar Sessão
             </button>
           </div>
@@ -119,13 +117,17 @@ export default function EditarQuestionario() {
       
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
-          
           <div className="section-box">
              <div className="section-title gray-bg">Identificação</div>
              <div className="row">
                 <div className="input-group grow">
                   <label>Unidade:</label>
-                  <select name="unidade" value={formData.unidade} onChange={e => setFormData({...formData, unidade: e.target.value})} required>
+                  <select 
+                    value={formData.unidade} 
+                    onChange={e => setFormData({...formData, unidade: e.target.value})} 
+                    required
+                  >
+                    <option value="">Selecione...</option>
                     <option value="1">Convalescença</option>
                     <option value="2">Média Duração e Reabilitação</option>
                     <option value="3">Cirurgia</option>
@@ -133,7 +135,12 @@ export default function EditarQuestionario() {
                 </div>
                 <div className="input-group grow">
                   <label>Data:</label>
-                  <input type="date" name="data" value={formData.data} onChange={e => setFormData({...formData, data: e.target.value})} required />
+                  <input 
+                    type="date" 
+                    value={formData.data} 
+                    onChange={e => setFormData({...formData, data: e.target.value})} 
+                    required 
+                  />
                 </div>
              </div>
           </div>

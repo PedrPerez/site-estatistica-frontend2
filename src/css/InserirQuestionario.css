@@ -10,7 +10,7 @@
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Ajustado para não centralizar verticalmente e facilitar scroll */
+  align-items: flex-start;
   padding: 40px 20px;
 }
 

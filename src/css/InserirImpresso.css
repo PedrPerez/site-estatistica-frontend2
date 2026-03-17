@@ -10,8 +10,13 @@
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 40px 20px;
+}
+
+.full-width-form {
+  width: 100%;
+  max-width: 1200px;
 }
 
 /* Boxes */
