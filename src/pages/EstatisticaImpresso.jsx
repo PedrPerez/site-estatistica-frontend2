@@ -48,7 +48,7 @@ export default function EstatisticaImpresso() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Principal</button>
+        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
         <button onClick={() => navigate('/listar-impresso')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Lista de Registos →</button>
       </nav>
 

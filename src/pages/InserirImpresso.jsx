@@ -114,11 +114,10 @@ export default function InserirImpresso() {
 
       <hr className="divider" />
 
-      <div className="main-content">
-        <div className="form-card">
-          <form onSubmit={handleSubmit}>
+      <main className="main-content">
+        <form onSubmit={handleSubmit} className="full-width-form">
             
-            {/* Mensagens de Feedback */}
+          {/* Mensagens de Feedback */}
             {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
             {success && <div className="success-message" style={{color: 'green', marginBottom: '10px'}}>{success}</div>}
 
@@ -144,6 +143,10 @@ export default function InserirImpresso() {
                   <input type="text" name="morada" value={formData.morada} onChange={handleChange} />
                 </div>
               </div>
+            </section>
+
+            {/* Secção Tipo e Unidade */}
+            <section className="section-box">
 
               <div className="row">
                 <div className="input-group">
@@ -166,6 +169,12 @@ export default function InserirImpresso() {
                   </select>
                 </div>
               </div>
+            </section>
+
+            {/* Secção Email e Tel */}
+            <section className="section-box">
+                            
+              <h2 className="section-title">Contacto</h2>
 
               <div className="row">
                 <div className="input-group grow">
@@ -200,10 +209,8 @@ export default function InserirImpresso() {
               <button type="submit" className="btn-submit">Submeter</button>
               <button type="button" className="btn-cancel" onClick={() => setFormData({})}>Cancelar</button>
             </div>
-
-          </form>
-        </div>
-      </div>
+        </form>
+      </main>
     </div>
   );
 }

@@ -86,9 +86,9 @@ export default function InserirEmail() {
 
       <hr className="divider" />
 
-      <div className="main-content">
-        <div className="form-card">
-          <form onSubmit={handleSubmit}>
+      <main className="main-content">
+        <form onSubmit={handleSubmit} className="full-width-form">
+            
             <section className="section-box">
               <h2 className="section-title">Identificação</h2>
               
@@ -152,9 +152,8 @@ export default function InserirEmail() {
               <button type="submit" className="btn-submit">Submeter</button>
               <button type="button" className="btn-cancel" onClick={() => window.location.reload()}>Cancelar</button>
             </div>
-          </form>
-        </div>
-      </div>
+        </form>
+      </main>
     </div>
   );
 }
