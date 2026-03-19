@@ -114,6 +114,12 @@ export default function EditarQuestionario() {
           </div>
         </div>
       </header>
+
+      <nav className="nav-links">
+        <button onClick={() => navigate('/listar-questionario')} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>← Voltar à Lista</button>
+      </nav>
+
+      <hr className="divider" />
       
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
@@ -195,8 +201,8 @@ export default function EditarQuestionario() {
           {status.message && <div className={`status-msg ${status.type}`}>{status.message}</div>}
 
           <div className="button-group" style={{marginTop: '20px', display: 'flex', gap: '10px'}}>
-            <button type="button" className="btn-cancel" onClick={() => navigate('/listar-questionario')}>Cancelar</button>
             <button type="submit" className="btn-submit">Guardar Alterações</button>
+            <button type="button" className="btn-cancel" onClick={() => navigate('/listar-questionario')}>Cancelar</button>
           </div>
         </form>
       </main>

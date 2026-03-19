@@ -219,8 +219,8 @@ export default function InserirQuestionario() {
 
             {/* Botões de Ação */}
             <div className="button-group">
-              <button type="button" className="btn-cancel" onClick={() => window.history.back()}>Cancelar</button>
               <button type="submit" className="btn-submit">Submeter</button>
+              <button type="button" className="btn-cancel" onClick={() => window.history.back()}>Cancelar</button>
             </div>
           </form>
         </main>
