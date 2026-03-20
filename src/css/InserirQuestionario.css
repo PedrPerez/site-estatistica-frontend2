@@ -14,6 +14,30 @@
   padding: 40px 20px;
 }
 
+.row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.input-group select, 
+.input-group input {
+  height: 35px;
+  box-sizing: border-box; 
+  padding: 5px;
+}
+
+.input-group label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .full-width-form {
   width: 100%;
   max-width: 1200px;

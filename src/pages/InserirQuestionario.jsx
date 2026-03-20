@@ -138,13 +138,15 @@ export default function InserirQuestionario() {
                 <div className="input-group">
                   <label>Unidade:</label>
                   <select name="unidade" value={formData.unidade} onChange={handleChange}>
-                    <option value="">Seleccione a Unidade</option>
+                    <option value="">-Seleccione a Unidade</option>
                     {unidades.map(u => (
                       <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
                     ))}
                   </select>
                 </div>
-                <div className="input-group grow">
+              </div>
+              <div className="row">
+                <div className="input-group">
                   <label>Data:</label>
                   <input type="date" name="data" value={formData.data} onChange={handleChange} required />
                 </div>
