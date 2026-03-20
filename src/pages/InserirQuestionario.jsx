@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/InserirQuestionario.css';
 import '../css/Header.css';
-import logo from '../assets/logohospital_cores.png'; 
+import logo from '../assets/logohospital_cores.png';
 
 export default function InserirQuestionario() {
   const navigate = useNavigate();
@@ -19,20 +19,21 @@ export default function InserirQuestionario() {
 
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  //Carregar as questões e indicadores do PHP (listarQuestoes.php)
+  // Carregar as questões e indicadores
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
-    if (storedName) setUserName(storedName)
+    if (storedName) setUserName(storedName);
+
     // Carregar Unidades
     fetch('http://localhost/API/obterUnidade.php')
       .then(res => res.json())
       .then(data => setUnidades(data))
       .catch(err => console.error("Erro ao carregar unidades:", err));
+
     fetch("http://localhost/API/listarQuestoes.php")
       .then(res => res.json())
       .then(data => {
         setQuestoes(data);
-        // Inicializa todas as secções como abertas por padrão
         const estadoInicial = {};
         data.forEach(q => {
           estadoInicial[q.id] = true;
@@ -42,7 +43,6 @@ export default function InserirQuestionario() {
       .catch(() => setStatus({ type: 'error', message: 'Erro ao carregar indicadores.' }));
   }, []);
 
-  //Alternar visibilidade da secção (Toggle/Accordion)
   const toggleSeccao = (id) => {
     setSeccoesAbertas(prev => ({
       ...prev,
@@ -50,13 +50,11 @@ export default function InserirQuestionario() {
     }));
   };
 
-  //Lidar com mudanças nos inputs de texto/select
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  //Lidar com a seleção dos Radio Buttons
   const handleRadioChange = (indicadorId, valor) => {
     setFormData(prev => ({
       ...prev,
@@ -64,12 +62,10 @@ export default function InserirQuestionario() {
     }));
   };
 
-  //Submeter os dados para o servidor (salvarQuestionario.php)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: 'info', message: 'A gravar...' });
 
-    //Formata as respostas para o formato esperado pela tbl_questionarios_registos
     const listaRespostas = Object.keys(formData.respostas).map(id => ({
       id_indicador: parseInt(id),
       valor: formData.respostas[id]
@@ -92,7 +88,6 @@ export default function InserirQuestionario() {
       const res = await response.json();
       if (res.status === "sucesso") {
         setStatus({ type: 'success', message: 'Gravado com sucesso!' });
-        // Limpa o formulário após sucesso
         setFormData({ unidade: '', data: '', sugestoes: '', respostas: {} });
       } else {
         setStatus({ type: 'error', message: res.mensagem });
@@ -122,54 +117,55 @@ export default function InserirQuestionario() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Pagina Principal</button>
-        <button onClick={() => navigate('/listar-questionario')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Questionário →</button>
+        <button onClick={() => navigate('/principal')} className="nav-link">← Página Principal</button>
+        <button onClick={() => navigate('/listar-questionario')} className="nav-link">Listar Questionário →</button>
       </nav>
 
       <hr className="divider" />
 
-        <main className="main-content">
-          <form onSubmit={handleSubmit} className="full-width-form">
-            
-            {/* Secção de Identificação */}
-            <div className="section-box">
-              <div className="section-title gray-bg">Identificação</div>
-              <div className="row">
-                <div className="input-group">
-                  <label>Unidade:</label>
-                  <select name="unidade" value={formData.unidade} onChange={handleChange}>
-                    <option value="">-Seleccione a Unidade</option>
-                    {unidades.map(u => (
-                      <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="row">
-                <div className="input-group">
-                  <label>Data:</label>
-                  <input type="date" name="data" value={formData.data} onChange={handleChange} required />
-                </div>
+      <main className="main-content">
+        <form onSubmit={handleSubmit} className="full-width-form">
+          
+          {/* Secção de Identificação */}
+          <div className="section-box">
+            <div className="section-title">Identificação</div>
+            <div className="row">
+              <div className="input-group">
+                <label>Unidade:</label>
+                <select name="unidade" value={formData.unidade} onChange={handleChange} required>
+                  <option value="">- Seleccione a Unidade</option>
+                  {unidades.map(u => (
+                    <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
+                  ))}
+                </select>
               </div>
             </div>
+            <div className="row">
+              <div className="input-group">
+                <label>Data:</label>
+                <input type="date" name="data" value={formData.data} onChange={handleChange} required />
+              </div>
+            </div>
+          </div>
 
-            {/* Renderização Dinâmica das Questões e Indicadores */}
-            {questoes.map((q) => (
-              <div className="section-box" key={q.id}>
-                <div 
-                  className="section-title gray-bg clickable-header" 
-                  onClick={() => toggleSeccao(q.id)}
-                >
-                  <span>{q.titulo}</span>
-                  <span className="toggle-icon">{seccoesAbertas[q.id] ? '▲' : '▼'}</span>
-                </div>
-                
-                {/* Conteúdo da Tabela que recolhe/expande */}
-                <div className={`question-content ${seccoesAbertas[q.id] ? 'show' : 'hide'}`}>
+          {/* Renderização Dinâmica das Questões */}
+          {questoes.map((q) => (
+            <div className="section-box" key={q.id}>
+              <div 
+                className="section-title clickable-header" 
+                onClick={() => toggleSeccao(q.id)}
+              >
+                <span>{q.titulo}</span>
+                <span className="toggle-icon">{seccoesAbertas[q.id] ? '▲' : '▼'}</span>
+              </div>
+              
+              <div className={`question-content ${seccoesAbertas[q.id] ? 'show' : 'hide'}`}>
+                {/* Wrapper para permitir scroll horizontal no mobile */}
+                <div className="table-responsive">
                   <table className="rating-table">
                     <thead>
                       <tr>
-                        <th className="text-left">Indicador</th>
+                        <th className="text-left"></th>
                         <th>Muito Bom</th>
                         <th>Bom</th>
                         <th>Aceitável</th>
@@ -197,35 +193,36 @@ export default function InserirQuestionario() {
                   </table>
                 </div>
               </div>
-            ))}
-
-            {/* Secção de Sugestões */}
-            <div className="section-box">
-              <div className="section-title gray-bg">Sugestões e outros comentários</div>
-              <div className="textarea-container">
-                <textarea 
-                  name="sugestoes" 
-                  value={formData.sugestoes} 
-                  onChange={handleChange} 
-                  placeholder="Escreva aqui as suas sugestões..."
-                />
-              </div>
             </div>
+          ))}
 
-            {/* Mensagens de Feedback */}
-            {status.message && (
-              <div className={status.type === 'error' ? 'error-message' : 'status-msg'}>
-                {status.message}
-              </div>
-            )}
-
-            {/* Botões de Ação */}
-            <div className="button-group">
-              <button type="submit" className="btn-submit">Submeter</button>
-              <button type="button" className="btn-cancel" onClick={() => window.history.back()}>Cancelar</button>
+          {/* Secção de Sugestões */}
+          <div className="section-box">
+            <div className="section-title">Sugestões e outros comentários</div>
+            <div className="textarea-container">
+              <textarea 
+                name="sugestoes" 
+                value={formData.sugestoes} 
+                onChange={handleChange} 
+                placeholder="Escreva aqui as suas sugestões..."
+              />
             </div>
-          </form>
-        </main>
+          </div>
+
+          {/* Mensagens de Feedback */}
+          {status.message && (
+            <div className={status.type === 'error' ? 'error-message' : 'status-msg'}>
+              {status.message}
+            </div>
+          )}
+
+          {/* Botões de Ação */}
+          <div className="button-group">
+            <button type="submit" className="btn-submit">Submeter</button>
+            <button type="button" className="btn-cancel" onClick={() => window.history.back()}>Cancelar</button>
+          </div>
+        </form>
+      </main>
     </div>
   );
 }

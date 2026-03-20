@@ -16,12 +16,11 @@
 /* Cabeçalho */
 .login-header {
   background-color: #ffffff;
-  padding: 15px 50px;
+  padding: 15px 50px; /* Será reduzido no mobile via media query */
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   display: flex;
   align-items: center;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .hospital-logo {
@@ -67,11 +66,11 @@
   color: #a51d12;
 }
 
-/* Barra de Navegação - Foco no Texto */
+/* Barra de Navegação */
 .nav-links {
   display: flex;
   justify-content: space-between;
-  gap: 45px;                   
+  gap: 20px; 
   max-width: 1200px;
   width: 95%;
   margin: 25px auto;
@@ -86,23 +85,56 @@
   font-family: inherit;
   transition: all 0.2s ease-in-out;
   letter-spacing: 0.5px;
+  background: none; /* Garante que os botões pareçam links */
+  border: none;
+  cursor: pointer;
 }
 
-.nav-link-right {
-  margin-left: auto;
-}
-
-/* Feedback visual ao passar o rato */
 .nav-link:hover {
   color: #4A72B2;
   transform: translateY(-2px);
 }
 
-/* Divisória para acompanhar o texto maior */
 .divider {
   border: 0;
   border-top: 2px solid #cfd8dc; 
   max-width: 1200px;
   width: 95%;
   margin: 0 auto;
+}
+
+/* ==========================================================================
+   REGRAS MOBILE (Media Query)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .login-header {
+    padding: 10px 20px; /* Reduz espaço lateral no telemóvel */
+    flex-wrap: wrap;    /* Permite que o conteúdo desça se necessário */
+    justify-content: space-between;
+  }
+
+  .hospital-logo {
+    height: 45px; /* Logótipo ligeiramente menor em mobile */
+  }
+
+  .user-name {
+    font-size: 0.9rem;
+  }
+
+  .nav-links {
+    flex-direction: column; /* Links um por cima do outro no mobile */
+    align-items: center;
+    gap: 15px;
+    margin: 15px auto;
+  }
+
+  .nav-link {
+    font-size: 1.1rem; /* Diminui um pouco o tamanho da letra no mobile */
+    text-align: center;
+  }
+
+  /* Ajuste específico para os botões de navegação não ficarem colados às bordas */
+  .nav-link-right {
+    margin-left: 0; 
+  }
 }

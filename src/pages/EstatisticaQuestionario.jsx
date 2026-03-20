@@ -49,16 +49,14 @@ export default function EstatisticaQuestionario() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Terminar Sessão
-            </button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
-        <button onClick={() => navigate('/listar-questionario')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Lista de Registos →</button>
+        <button onClick={() => navigate('/principal')} className="nav-link">← Página Principal</button>
+        <button onClick={() => navigate('/listar-questionario')} className="nav-link">Lista de Registos →</button>
       </nav>
 
       <hr className="divider" />
@@ -66,9 +64,9 @@ export default function EstatisticaQuestionario() {
       <main className="main-content">
         <div className="container-1200">
           
-          {/* Filtros Estilizados */}
+          {/* Filtros Otimizados */}
           <div className="section-box filter-box">
-            <div className="row">
+            <div className="row stats-filter-row">
               <div className="input-group grow">
                 <label>Unidade:</label>
                 <select value={filtros.unidade} onChange={e => setFiltros({...filtros, unidade: e.target.value})}>
@@ -84,54 +82,62 @@ export default function EstatisticaQuestionario() {
                 <label>Até:</label>
                 <input type="date" value={filtros.fim} onChange={e => setFiltros({...filtros, fim: e.target.value})} />
               </div>
-              <button onClick={carregarDados} className="logout-btn" style={{marginTop: '25px', height: '40px'}}>Filtrar</button>
+              <div className="btn-container">
+                 <button onClick={carregarDados} className="btn-submit stats-btn">Filtrar</button>
+              </div>
             </div>
           </div>
 
-          {/* Listagem por Categorias (Estilo Questionário) */}
+          {/* Listagem por Categorias */}
           {estatisticas.map((seccao, idx) => (
-            <div key={idx} className="section-box" style={{ marginBottom: '20px' }}>
+            <div key={idx} className="section-box">
               <div className="section-title gray-bg clickable-header" onClick={() => toggleSeccao(idx)}>
                 <span>{seccao.titulo}</span>
                 <span>{seccoesAbertas[idx] ? '▲' : '▼'}</span>
               </div>
 
               {seccoesAbertas[idx] && (
-                <div style={{ padding: '20px' }}>
-                  {/* Tabela de Percentagens */}
-                  <table className="rating-table" style={{ marginBottom: '30px' }}>
-                    <thead>
-                      <tr>
-                        <th className="text-left">Indicador</th>
-                        <th>Muito Bom</th><th>Bom</th><th>Aceitável</th><th>Mau</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {seccao.indicadores.map((ind, i) => (
-                        <tr key={i}>
-                          <td className="question-text">{ind.texto}</td>
-                          <td>{ind.mb} <small>({ind.mb_p}%)</small></td>
-                          <td>{ind.b} <small>({ind.b_p}%)</small></td>
-                          <td>{ind.a} <small>({ind.a_p}%)</small></td>
-                          <td>{ind.m} <small>({ind.m_p}%)</small></td>
+                <div className="stats-content" style={{ padding: '15px' }}>
+                  
+                  {/* Tabela de Percentagens com Scroll Horizontal */}
+                  <div className="table-responsive">
+                    <table className="rating-table">
+                      <thead>
+                        <tr>
+                          <th className="text-left"></th>
+                          <th>Muito Bom (%)</th><th>Bom (%)</th><th>Aceitável (%)</th><th>Mau (%)</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {seccao.indicadores.map((ind, i) => (
+                          <tr key={i}>
+                            <td className="question-text">{ind.texto}</td>
+                            <td>{ind.mb} <br/><small>({ind.mb_p}%)</small></td>
+                            <td>{ind.b} <br/><small>({ind.b_p}%)</small></td>
+                            <td>{ind.a} <br/><small>({ind.a_p}%)</small></td>
+                            <td>{ind.m} <br/><small>({ind.m_p}%)</small></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-                  {/* Gráfico de Barras para a Secção */}
-                  <div style={{ height: '300px', marginTop: '20px' }}>
+                  {/* Gráfico de Barras Responsivo */}
+                  <div className="chart-wrapper" style={{ height: '350px', marginTop: '20px', width: '100%' }}>
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={seccao.indicadores}>
+                      <BarChart 
+                        data={seccao.indicadores}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                      >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                         <XAxis dataKey="texto" hide />
-                        <YAxis tickFormatter={(val) => `${val}%`} />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="mb_p" name="% Muito Bom" fill="#2d6a4f" />
-                        <Bar dataKey="b_p" name="% Bom" fill="#52b788" />
-                        <Bar dataKey="a_p" name="% Aceitável" fill="#ffcd38" />
-                        <Bar dataKey="m_p" name="% Mau" fill="#e63946" />
+                        <YAxis tick={{fontSize: 12}} tickFormatter={(val) => `${val}%`} />
+                        <Tooltip contentStyle={{ fontSize: '12px' }} />
+                        <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                        <Bar dataKey="mb_p" name="M. Bom" fill="#2d6a4f" />
+                        <Bar dataKey="b_p" name="Bom" fill="#52b788" />
+                        <Bar dataKey="a_p" name="Aceit." fill="#ffcd38" />
+                        <Bar dataKey="m_p" name="Mau" fill="#e63946" />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>

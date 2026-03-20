@@ -1,41 +1,20 @@
-/* Reset Básico */
+/* Reset e Base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+.page-wrapper {
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
 /* Conteúdo Principal */
 .main-content {
-  flex-grow: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 40px 20px;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.input-group select, 
-.input-group input {
-  height: 35px;
-  box-sizing: border-box; 
-  padding: 5px;
-}
-
-.input-group label {
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  padding: 20px;
 }
 
 .full-width-form {
@@ -43,72 +22,108 @@
   max-width: 1200px;
 }
 
+/* Estrutura de Linhas e Inputs */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.input-group label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.input-group select, 
+.input-group input[type="date"] {
+  height: 35px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
 /* Boxes de Secção */
 .section-box {
   border: 2px solid #000;
   margin-bottom: 25px;
   background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .section-title {
   padding: 12px 20px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border-bottom: 2px solid #000;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* EFEITO RECOLHER */
+.clickable-header { cursor: pointer; }
+
+/* Efeito Recolher */
+.question-content { padding: 0; transition: all 0.3s ease; }
 .question-content.hide { display: none; }
 .question-content.show { display: block; }
 
-.question-content {
-  padding: 20px;
-  background-color: #e0e0e0;
+/* TABELA RESPONSIVA - CRUCIAL */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* Scroll lateral no mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
-/* TABELA DE AVALIAÇÃO - CORRIGIDA */
 .rating-table {
   width: 100%;
   border-collapse: collapse;
+  background: #fff;
+}
+
+.rating-table th, .rating-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.rating-table th { background-color: #f2f2f2; font-size: 0.9rem; }
+
+.rating-table td.question-text {
+  text-align: left;
+  width: 40%;
   font-weight: bold;
 }
 
-.rating-table th {
-  font-size: 1.1rem;
-  padding-bottom: 15px;
-  font-weight: normal;
-  text-align: center;
-}
-
-.rating-table td {
-  padding: 15px 0;
-  text-align: center;
-  font-size: 1.2rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  /* ALINHAMENTO VERTICAL AQUI */
-  vertical-align: middle; 
-}
-
-/* Primeira coluna (Médicos, Enfermeiros) */
-.rating-table td:first-child {
-  text-align: left;
-  width: 45%;
-  padding-left: 10px;
-  line-height: 1.2; /* Garante que o texto não empurre a linha */
-}
-
-/* Radio Buttons Estilizados e Alinhados */
 .rating-table input[type="radio"] {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
+  accent-color: #4A72B2;
   cursor: pointer;
-  accent-color: #000;
-  /* ALINHAMENTO DO INPUT COM O TEXTO */
-  vertical-align: middle;
-  margin: 0;
-  display: inline-block;
 }
 
+/* Textarea de Sugestões */
+.textarea-container { padding: 20px; }
+.textarea-container textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+/* Botões */
 /* Botões de Acção */
 .button-group {
   display: flex;
@@ -132,3 +147,52 @@
 
 .btn-submit:hover { background-color: #4A72B2 !important; color: #fff !important; }
 .btn-cancel:hover { background-color: #ff2727 !important; color: #fff !important; }
+
+/* Mensagens */
+.status-msg, .error-message {
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.status-msg { background: #d4edda; color: #155724; }
+.error-message { background: #f8d7da; color: #721c24; }
+
+/* ==========================================================================
+   MEDIA QUERIES (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px;
+  }
+
+  .input-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .input-group select, 
+  .input-group input[type="date"] {
+    height: 45px; /* Melhor para o toque */
+    font-size: 16px; /* Evita zoom no iPhone */
+  }
+
+  .section-title { font-size: 1.1rem; }
+
+  .button-group {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+
+  .btn-submit, .btn-cancel {
+    width: 100%;
+  }
+
+  /* Forçar a tabela a ter uma largura mínima para não esmagar o texto */
+  .rating-table {
+    min-width: 600px;
+  }
+}

@@ -89,27 +89,27 @@ export default function ListarQuestionarios() {
 
   return (
     <div className="page-wrapper">
+      {/* Header e Nav permanecem iguais ao que já tens */}
       <header className="login-header">
         <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Terminar Sessão
-            </button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Pagina Principal</button>
-        <button onClick={() => navigate('/inserir-questionario')} className="nav-link nav-link-right" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Questionário →</button>
+        <button onClick={() => navigate('/principal')} className="nav-link">← Página Principal</button>
+        <button onClick={() => navigate('/inserir-questionario')} className="nav-link nav-link-right">Registar Questionário →</button>
       </nav>
 
       <hr className="divider" />
 
       <main className="main-content list-page">
         <div className="container-1200">
+          
           {/* Bloco de Filtros */}
           <div className="filter-header">
             <span className="filter-title">Filtros:</span>
@@ -118,14 +118,14 @@ export default function ListarQuestionarios() {
 
           <div className="section-box filter-box">
             <div className="row">
-              <div className="input-group grow">
+              <div className="input-group">
                 <label>Unidade:</label>
                 <select value={formData.unidade} onChange={(e) => setFormData({...formData, unidade: e.target.value})}>
                   <option value="">Todas as Unidades</option>
                   {unidades.map(u => <option key={u.cod_unidade} value={u.descricao}>{u.descricao}</option>)}
                 </select>
               </div>
-              <div className="input-group grow">
+              <div className="input-group">
                 <label>Data:</label>
                 <input type="date" value={formData.data} onChange={(e) => setFormData({...formData, data: e.target.value})} />
               </div>
@@ -140,26 +140,20 @@ export default function ListarQuestionarios() {
               questionariosFiltrados.map((q) => (
                 <div key={q.id_questionario} className="section-box">
                   <div className="section-title gray-bg clickable-header" onClick={() => toggleExpandQuestionario(q.id_questionario)}>
-                    <div className="row-content" style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                      <span>ID: {q.id_questionario} | {q.nome_unidade} | {new Date(q.data).toLocaleDateString()}</span>
+                    <div className="row-content">
+                      <div className="row-info-text">
+                        <strong>ID: {q.id_questionario}</strong><br/>
+                        <span>{q.nome_unidade}</span><br/>
+                        <small>{new Date(q.data).toLocaleDateString()}</small>
+                      </div>
                       
-                      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                        {/* BOTÃO EDITAR: Navega para a página de edição */}
+                      <div style={{ display: 'flex', gap: '10px', alignItems: 'center', width: '100%', justifyContent: 'flex-end' }}>
                         <button 
                           onClick={(e) => { 
-                            e.stopPropagation(); // Impede que o acordeão feche ao clicar no botão
+                            e.stopPropagation(); 
                             navigate(`/editar-questionario/${q.id_questionario}`); 
                           }}
                           className="btn-edit-list"
-                          style={{ 
-                            backgroundColor: '#2196F3', 
-                            color: 'white', 
-                            border: 'none', 
-                            padding: '5px 15px', 
-                            borderRadius: '4px', 
-                            cursor: 'pointer',
-                            fontWeight: 'bold'
-                          }}
                         >
                           EDITAR
                         </button>
@@ -168,42 +162,44 @@ export default function ListarQuestionarios() {
                     </div>
                   </div>
 
-                  {/* Conteúdo Detalhado (Acordeão Principal) */}
+                  {/* Conteúdo Detalhado */}
                   {expandedId === q.id_questionario && (
-                    <div className="question-content">
+                    <div className="question-content" style={{padding: '10px'}}>
                       {detalhes[q.id_questionario]?.respostas_agrupadas?.map((pergunta) => (
-                        <div key={pergunta.id} className="question-box" style={{ marginBottom: '10px' }}>
-                          <div className="question-header gray-bg" onClick={() => togglePergunta(q.id_questionario, pergunta.id)}>
-                            <span>{pergunta.titulo}</span>
+                        <div key={pergunta.id} className="question-box" style={{ marginBottom: '15px', border: '1px solid #000' }}>
+                          <div className="question-header gray-bg" onClick={() => togglePergunta(q.id_questionario, pergunta.id)} style={{padding: '10px', display: 'flex', justifyContent: 'space-between', cursor: 'pointer'}}>
+                            <span style={{fontSize: '0.9rem'}}>{pergunta.titulo}</span>
                             <span>{seccoesAbertas[q.id_questionario]?.[pergunta.id] ? '▲' : '▼'}</span>
                           </div>
                           
-                          <div style={{ display: seccoesAbertas[q.id_questionario]?.[pergunta.id] ? 'block' : 'none', padding: '15px' }}>
-                            <table className="rating-table">
-                              <thead>
-                                <tr>
-                                  <th className="text-left">Indicador</th>
-                                  <th>Muito Bom</th><th>Bom</th><th>Aceitável</th><th>Mau</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {pergunta.indicadores.map((ind, i) => (
-                                  <tr key={i}>
-                                    <td className="question-text">{ind.texto}</td>
-                                    <td><span className={`radio-circle ${ind.muito_bom == 1 ? 'active' : ''}`}></span></td>
-                                    <td><span className={`radio-circle ${ind.bom == 1 ? 'active' : ''}`}></span></td>
-                                    <td><span className={`radio-circle ${ind.aceitavel == 1 ? 'active' : ''}`}></span></td>
-                                    <td><span className={`radio-circle ${ind.mau == 1 ? 'active' : ''}`}></span></td>
+                          {seccoesAbertas[q.id_questionario]?.[pergunta.id] && (
+                            <div className="table-responsive">
+                              <table className="rating-table">
+                                <thead>
+                                  <tr>
+                                    <th className="text-left"></th>
+                                    <th>Muito Bom</th><th>Bom</th><th>Aceitável</th><th>Mau</th>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
+                                </thead>
+                                <tbody>
+                                  {pergunta.indicadores.map((ind, i) => (
+                                    <tr key={i}>
+                                      <td className="question-text">{ind.texto}</td>
+                                      <td><span className={`radio-circle ${ind.muito_bom == 1 ? 'active' : ''}`}></span></td>
+                                      <td><span className={`radio-circle ${ind.bom == 1 ? 'active' : ''}`}></span></td>
+                                      <td><span className={`radio-circle ${ind.aceitavel == 1 ? 'active' : ''}`}></span></td>
+                                      <td><span className={`radio-circle ${ind.mau == 1 ? 'active' : ''}`}></span></td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
                         </div>
                       ))}
                       
-                      <div className="questionario-title" style={{marginTop: '20px', fontWeight: 'bold'}}>Comentários:</div>
-                      <div className="comment-box" style={{padding: '10px', border: '1px solid #ddd', borderRadius: '4px', marginTop: '5px'}}>
+                      <div className="questionario-title" style={{marginTop: '15px', fontWeight: 'bold'}}>Comentários:</div>
+                      <div className="comment-box">
                         {detalhes[q.id_questionario]?.sugestoes || "Sem comentários."}
                       </div>
                     </div>

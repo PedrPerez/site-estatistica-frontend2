@@ -56,8 +56,8 @@ export default function HomePage() {
             isOpen={openMenu === "impressos"}
             onClick={() => handleClick("impressos")}
           >
-            <Option onClick={() => navigate("/inserir-impresso")}>Registar</Option>
-            <Option onClick={() => navigate("/listar-impresso")}>ConsultarLista</Option>
+            <Option onClick={() => navigate("/inserir-impresso")}>Registar Novo</Option>
+            <Option onClick={() => navigate("/listar-impresso")}>Consultar Lista</Option>
             <Option onClick={() => navigate("/estatistica-impresso")}>Estatísticas</Option> 
           </MenuBox>
 
