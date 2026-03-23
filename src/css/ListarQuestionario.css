@@ -67,7 +67,10 @@
   min-width: 200px;
 }
 
-.input-group label { font-weight: bold; font-size: 1rem; }
+.input-group label { 
+  font-weight: bold; 
+  font-size: 1rem; 
+}
 
 input, select {
   border: 2px solid #000;

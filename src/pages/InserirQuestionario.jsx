@@ -139,8 +139,6 @@ export default function InserirQuestionario() {
                   ))}
                 </select>
               </div>
-            </div>
-            <div className="row">
               <div className="input-group">
                 <label>Data:</label>
                 <input type="date" name="data" value={formData.data} onChange={handleChange} required />

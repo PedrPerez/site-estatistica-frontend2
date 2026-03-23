@@ -29,7 +29,6 @@ export default function EditarImpresso() {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName);
 
-    // Carregar opções (Unidades e Tipos) e depois os dados do registo
     Promise.all([
       fetch('http://localhost/API/obterUnidade.php').then(res => res.json()),
       fetch('http://localhost/API/obterTipoMensagem.php').then(res => res.json()),
@@ -74,6 +73,7 @@ export default function EditarImpresso() {
       const res = await response.json();
       if (res.status === 'sucesso') {
         setSuccess('Registo atualizado com sucesso!');
+        window.scrollTo(0, 0);
         setTimeout(() => navigate('/listar-impresso'), 1500);
       } else {
         setError(res.mensagem || 'Erro ao atualizar registo.');
@@ -83,19 +83,14 @@ export default function EditarImpresso() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('userName');
-    navigate("/login");
-  };
-
   return (
     <div className="page-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <img src={logo} alt="Hospital Logo" className="hospital-logo" />
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
+            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>
               Terminar Sessão
             </button>
           </div>
@@ -103,7 +98,7 @@ export default function EditarImpresso() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/listar-impresso')} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>← Voltar à Lista</button>
+        <button onClick={() => navigate('/listar-impresso')} className="nav-link">← Voltar à Lista</button>
       </nav>
 
       <hr className="divider" />
@@ -111,27 +106,26 @@ export default function EditarImpresso() {
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
           
-          {/* Mensagens de Feedback */}
-          {error && <div className="error-message" style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-          {success && <div className="success-message" style={{ color: 'green', marginBottom: '10px' }}>{success}</div>}
+          {error && <div className="status-msg error" style={{ color: 'red', textAlign: 'center', marginBottom: '15px' }}>{error}</div>}
+          {success && <div className="status-msg success" style={{ color: 'green', textAlign: 'center', marginBottom: '15px' }}>{success}</div>}
 
           {/* Secção Identificação */}
           <section className="section-box">
-            <h2 className="section-title">Identificação (Editar)</h2>
+            <h2 className="section-title">Identificação (Modo Edição)</h2>
             <div className="row">
               <div className="input-group grow">
-                <label>Nome :</label>
+                <label>Nome:</label>
                 <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
               </div>
               <div className="input-group">
-                <label>Data :</label>
+                <label>Data:</label>
                 <input type="date" name="data" value={formData.data} onChange={handleChange} />
               </div>
             </div>
 
             <div className="row" style={{ paddingTop: 0 }}>
               <div className="input-group grow">
-                <label>Morada :</label>
+                <label>Morada:</label>
                 <input type="text" name="morada" value={formData.morada} onChange={handleChange} />
               </div>
             </div>
@@ -140,7 +134,7 @@ export default function EditarImpresso() {
           {/* Secção Tipo e Unidade */}
           <section className="section-box">
             <div className="row">
-              <div className="input-group">
+              <div className="input-group grow">
                 <label>Tipo:</label>
                 <select name="tipo" value={formData.tipo} onChange={handleChange}>
                   <option value="">Seleccione o Tipo</option>
@@ -150,7 +144,7 @@ export default function EditarImpresso() {
                 </select>
               </div>
 
-              <div className="input-group">
+              <div className="input-group grow">
                 <label>Unidade:</label>
                 <select name="unidade" value={formData.unidade} onChange={handleChange}>
                   <option value="">Seleccione a Unidade</option>
@@ -167,11 +161,11 @@ export default function EditarImpresso() {
             <h2 className="section-title">Contacto</h2>
             <div className="row">
               <div className="input-group grow">
-                <label>Email :</label>
+                <label>Email:</label>
                 <input type="email" name="email" value={formData.email} onChange={handleChange} />
               </div>
-              <div className="input-group">
-                <label>Tel :</label>
+              <div className="input-group grow">
+                <label>Telemóvel:</label>
                 <input type="text" name="tel" value={formData.tel} onChange={handleChange} />
               </div>
             </div>
@@ -193,10 +187,9 @@ export default function EditarImpresso() {
             </div>
           </section>
 
-          {/* Botões */}
           <div className="button-group">
-            <button type="submit" className="btn-submit">Atualizar</button>
-            <button type="button" className="btn-cancel" onClick={() => navigate('/listar-impresso')}>Cancelar</button>
+            <button type="submit" className="btn-submit">Atualizar Dados</button>
+            <button type="button" className="btn-cancel" onClick={() => navigate('/listar-impresso')}>Sair sem guardar</button>
           </div>
         </form>
       </main>

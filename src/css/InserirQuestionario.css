@@ -32,17 +32,25 @@
 
 .input-group {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column; /* Label acima do input no mobile ajuda no espaço */
+  gap: 5px;
   flex: 1;
+  min-width: 200px;
 }
 
-.input-group label {
-  font-weight: bold;
-  white-space: nowrap;
+.input-group label { 
+  font-weight: bold; 
+  font-size: 1rem; 
 }
 
-.input-group select, 
+input, select {
+  border: 2px solid #000;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #fff;
+  width: 100%;
+}
+
 .input-group input[type="date"] {
   height: 35px;
   padding: 5px;
@@ -82,29 +90,46 @@
   width: 100%;
   overflow-x: auto; /* Scroll lateral no mobile */
   -webkit-overflow-scrolling: touch;
+  margin: 10px 0;
+  border: 1px solid #000;
 }
 
 .rating-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
+  min-width: 500px; /* Garante que a tabela não esmague */
 }
 
 .rating-table th, .rating-table td {
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
 }
 
 .rating-table th { background-color: #f2f2f2; font-size: 0.9rem; }
 
 .rating-table td.question-text {
-  text-align: left;
+  text-align: left !important;
   width: 40%;
   font-weight: bold;
 }
 
+.rating-table td {
+  padding: 15px; /* Aumenta um pouco o espaço para facilitar o toque no mobile */
+  text-align: center;
+  vertical-align: middle; /* Alinhamento vertical clássico de tabelas */
+}
+
+.rating-table td:not(.question-text) {
+  text-align: center;
+}
+
 .rating-table input[type="radio"] {
+  display: inline-block;
+  margin: 0 auto; /* Margens automáticas ajudam no centro */
+  vertical-align: middle;
   width: 22px;
   height: 22px;
   accent-color: #4A72B2;
@@ -176,8 +201,8 @@
 
   .input-group select, 
   .input-group input[type="date"] {
-    height: 45px; /* Melhor para o toque */
-    font-size: 16px; /* Evita zoom no iPhone */
+    height: 45px;
+    font-size: 16px;
   }
 
   .section-title { font-size: 1.1rem; }
@@ -191,7 +216,6 @@
     width: 100%;
   }
 
-  /* Forçar a tabela a ter uma largura mínima para não esmagar o texto */
   .rating-table {
     min-width: 600px;
   }

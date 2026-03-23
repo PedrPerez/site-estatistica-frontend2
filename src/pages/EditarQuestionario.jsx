@@ -9,6 +9,7 @@ export default function EditarQuestionario() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
   const [questoes, setQuestoes] = useState([]);
+  const [unidades, setUnidades] = useState([]); // Adicionado para carregar unidades reais
   const [formData, setFormData] = useState({
     unidade: '',
     data: '',
@@ -23,21 +24,23 @@ export default function EditarQuestionario() {
 
     const fetchData = async () => {
       try {
-        // Carrega a estrutura das questões e os dados preenchidos em paralelo
-        const [resQ, resD] = await Promise.all([
+        const [resQ, resD, resU] = await Promise.all([
           fetch("http://localhost/API/listarQuestoes.php"),
-          fetch(`http://localhost/API/obterDetalhe.php?id=${id}`)
+          fetch(`http://localhost/API/obterDetalhe.php?id=${id}`),
+          fetch("http://localhost/API/obterUnidade.php")
         ]);
         
         const qData = await resQ.json();
         const dData = await resD.json();
+        const uData = await resU.json();
+
+        setUnidades(uData);
 
         if (dData.erro) {
           setStatus({ type: 'error', message: dData.erro });
           return;
         }
 
-        // Mapeia as respostas vindas do DB para o estado do formulário
         const respMap = {};
         if (dData.respostas_agrupadas) {
           dData.respostas_agrupadas.forEach(seccao => {
@@ -116,7 +119,7 @@ export default function EditarQuestionario() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/listar-questionario')} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>← Voltar à Lista</button>
+        <button onClick={() => navigate('/listar-questionario')} className="nav-link">← Voltar à Lista</button>
       </nav>
 
       <hr className="divider" />
@@ -124,7 +127,7 @@ export default function EditarQuestionario() {
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
           <div className="section-box">
-             <div className="section-title gray-bg">Identificação</div>
+             <div className="section-title gray-bg">Identificação (Modo Edição)</div>
              <div className="row">
                 <div className="input-group grow">
                   <label>Unidade:</label>
@@ -134,9 +137,9 @@ export default function EditarQuestionario() {
                     required
                   >
                     <option value="">Selecione...</option>
-                    <option value="1">Convalescença</option>
-                    <option value="2">Média Duração e Reabilitação</option>
-                    <option value="3">Cirurgia</option>
+                    {unidades.map(u => (
+                      <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="input-group grow">
@@ -155,52 +158,59 @@ export default function EditarQuestionario() {
             <div className="section-box" key={q.id}>
               <div className="section-title gray-bg">{q.titulo}</div>
               <div className="question-content show">
-                <table className="rating-table">
-                  <thead>
-                    <tr>
-                      <th className="text-left">Indicador</th>
-                      <th>Muito Bom</th><th>Bom</th><th>Aceitável</th><th>Mau</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {q.indicadores?.map(ind => (
-                      <tr key={ind.id}>
-                        <td className="question-text">{ind.texto}</td>
-                        {['muito_bom', 'bom', 'aceitavel', 'mau'].map(nivel => (
-                          <td key={nivel}>
-                            <input 
-                              type="radio" 
-                              name={`ind_${ind.id}`} 
-                              checked={formData.respostas[ind.id] === nivel}
-                              onChange={() => setFormData({
-                                ...formData, 
-                                respostas: {...formData.respostas, [ind.id]: nivel}
-                              })}
-                              required
-                            />
-                          </td>
-                        ))}
+                <div className="table-responsive">
+                  <table className="rating-table">
+                    <thead>
+                      <tr>
+                        <th className="text-left">Indicador</th>
+                        <th>Muito Bom</th><th>Bom</th><th>Aceitável</th><th>Mau</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {q.indicadores?.map(ind => (
+                        <tr key={ind.id}>
+                          <td className="question-text">{ind.texto}</td>
+                          {['muito_bom', 'bom', 'aceitavel', 'mau'].map(nivel => (
+                            <td key={nivel}>
+                              <input 
+                                type="radio" 
+                                name={`ind_${ind.id}`} 
+                                checked={formData.respostas[ind.id] === nivel}
+                                onChange={() => setFormData({
+                                  ...formData, 
+                                  respostas: {...formData.respostas, [ind.id]: nivel}
+                                })}
+                                required
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           ))}
 
           <div className="section-box">
-             <div className="section-title gray-bg">Sugestões</div>
-             <textarea 
-               className="textarea-container" 
-               style={{width: '100%', minHeight: '100px', padding: '10px'}}
-               value={formData.sugestoes} 
-               onChange={e => setFormData({...formData, sugestoes: e.target.value})} 
-             />
+             <div className="section-title gray-bg">Sugestões e Comentários</div>
+             <div className="textarea-container">
+               <textarea 
+                 value={formData.sugestoes} 
+                 onChange={e => setFormData({...formData, sugestoes: e.target.value})} 
+                 placeholder="Edite aqui as sugestões..."
+               />
+             </div>
           </div>
 
-          {status.message && <div className={`status-msg ${status.type}`}>{status.message}</div>}
+          {status.message && (
+            <div className={status.type === 'error' ? 'error-message' : 'status-msg'}>
+              {status.message}
+            </div>
+          )}
 
-          <div className="button-group" style={{marginTop: '20px', display: 'flex', gap: '10px'}}>
+          <div className="button-group">
             <button type="submit" className="btn-submit">Guardar Alterações</button>
             <button type="button" className="btn-cancel" onClick={() => navigate('/listar-questionario')}>Cancelar</button>
           </div>

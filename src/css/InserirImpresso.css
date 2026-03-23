@@ -145,3 +145,52 @@ textarea {
 .btn-cancel:hover {
   filter: brightness(0.9);
 }
+
+/* Ajustes para Mobile */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px 10px;
+  }
+
+  .row {
+    flex-direction: column; /* Empilha os campos verticalmente */
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .input-group {
+    flex-direction: column; /* Label em cima do input */
+    align-items: flex-start;
+    gap: 5px;
+    width: 100%;
+  }
+
+  .input-group label {
+    font-size: 1.1rem;
+  }
+
+  input, select, .grow {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .button-group {
+    flex-direction: column; /* Botões um por cima do outro */
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .btn-submit, .btn-cancel {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    padding: 10px 15px;
+  }
+
+  textarea {
+    height: 150px; /* Reduz um pouco a altura no mobile para não ocupar o ecrã todo */
+  }
+}
