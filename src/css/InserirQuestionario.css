@@ -184,39 +184,154 @@ input, select {
 .status-msg { background: #d4edda; color: #155724; }
 .error-message { background: #f8d7da; color: #721c24; }
 
+/* Adicione ao seu InserirQuestionario.css */
+
 /* ==========================================================================
-   MEDIA QUERIES (MOBILE)
+   ESTILOS MOBILE - CARDS COM BOTÕES DE RÁDIO
    ========================================================================== */
 @media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-    align-items: stretch;
+  /* Container dos indicadores mobile */
+  .indicadores-mobile {
     padding: 15px;
-  }
-
-  .input-group {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 20px;
   }
 
-  .input-group select, 
-  .input-group input[type="date"] {
-    height: 45px;
-    font-size: 16px;
+  /* Card individual do indicador */
+  .indicador-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
   }
 
-  .section-title { font-size: 1.1rem; }
-
-  .button-group {
-    flex-direction: column;
-    padding: 0 20px;
+  /* Texto do indicador */
+  .indicador-texto {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+    line-height: 1.4;
   }
 
+  /* Grid de opções de rating */
+  .rating-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* Cada opção de rating */
+  .rating-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .rating-option.selected {
+    background: #e3f2fd;
+    border-color: #4A72B2;
+  }
+
+  .rating-option input[type="radio"] {
+    display: none;
+  }
+
+  .rating-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057;
+  }
+
+  .rating-option.selected .rating-label {
+    color: #4A72B2;
+    font-weight: 600;
+  }
+
+  /* Hover effect para dispositivos touch */
+  .rating-option:active {
+    transform: scale(0.98);
+    background: #e9ecef;
+  }
+
+  /* Ajustes para telas muito pequenas */
+  @media (max-width: 480px) {
+    .rating-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .rating-option {
+      padding: 10px 6px;
+    }
+
+    .rating-label {
+      font-size: 0.75rem;
+    }
+
+    .indicador-card {
+      padding: 12px;
+    }
+  }
+}
+
+/* Estilo para tablets (opcional) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .indicadores-mobile {
+    display: none;
+  }
+  
+  .table-responsive {
+    display: block;
+  }
+}
+
+/* Ajustes gerais para melhor usabilidade mobile */
+@media (max-width: 768px) {
+  /* Melhorar área de toque dos botões */
   .btn-submit, .btn-cancel {
-    width: 100%;
+    padding: 14px 20px;
+    font-size: 1rem;
   }
 
-  .rating-table {
-    min-width: 600px;
+  /* Aumentar área de toque do header clicável */
+  .clickable-header {
+    padding: 15px 20px;
+  }
+
+  /* Melhorar espaçamento entre seções */
+  .section-box {
+    margin-bottom: 20px;
+  }
+
+  /* Ajustar padding do textarea */
+  .textarea-container textarea {
+    font-size: 16px; /* Evita zoom automático no iOS */
+    min-height: 100px;
+  }
+
+  /* Melhorar inputs para mobile */
+  input, select, textarea {
+    font-size: 16px; /* Evita zoom no iOS */
+  }
+
+  /* Ajustar margens */
+  .main-content {
+    padding: 12px;
+  }
+
+  .full-width-form {
+    max-width: 100%;
   }
 }

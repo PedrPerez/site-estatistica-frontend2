@@ -16,15 +16,24 @@ export default function InserirQuestionario() {
     sugestoes: '',
     respostas: {}
   });
-
+  const [isMobile, setIsMobile] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  // Carregar as questões e indicadores
+  // Detectar mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Carregar dados
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName);
 
-    // Carregar Unidades
     fetch('http://localhost/API/obterUnidade.php')
       .then(res => res.json())
       .then(data => setUnidades(data))
@@ -102,6 +111,78 @@ export default function InserirQuestionario() {
     navigate("/login");
   };
 
+  // Componente para renderizar indicadores em formato mobile (cards)
+  const IndicadoresMobile = ({ indicadores, respostas, onRadioChange }) => {
+    const niveis = [
+      { key: 'muito_bom', label: 'Muito Bom' },
+      { key: 'bom', label: 'Bom' },
+      { key: 'aceitavel', label: 'Aceitável' },
+      { key: 'mau', label: 'Mau' }
+    ];
+
+    return (
+      <div className="indicadores-mobile">
+        {indicadores.map((ind) => (
+          <div key={ind.id} className="indicador-card">
+            <div className="indicador-texto">{ind.texto}</div>
+            <div className="rating-grid">
+              {niveis.map((nivel) => (
+                <label 
+                  key={nivel.key} 
+                  className={`rating-option ${respostas[ind.id] === nivel.key ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`ind_${ind.id}`}
+                    required
+                    checked={respostas[ind.id] === nivel.key}
+                    onChange={() => onRadioChange(ind.id, nivel.key)}
+                  />
+                  <span className="rating-label">{nivel.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Componente para renderizar indicadores em formato desktop (tabela)
+  const IndicadoresDesktop = ({ indicadores, respostas, onRadioChange }) => (
+    <div className="table-responsive">
+      <table className="rating-table">
+        <thead>
+          <tr>
+            <th className="text-left"></th>
+            <th>Muito Bom</th>
+            <th>Bom</th>
+            <th>Aceitável</th>
+            <th>Mau</th>
+          </tr>
+        </thead>
+        <tbody>
+          {indicadores.map((ind) => (
+            <tr key={ind.id}>
+              <td className="question-text">{ind.texto}</td>
+              {['muito_bom', 'bom', 'aceitavel', 'mau'].map(nivel => (
+                <td key={nivel}>
+                  <input 
+                    type="radio" 
+                    name={`ind_${ind.id}`} 
+                    required
+                    checked={respostas[ind.id] === nivel}
+                    onChange={() => onRadioChange(ind.id, nivel)} 
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   return (
     <div className="page-wrapper">
       <header className="login-header">
@@ -158,38 +239,19 @@ export default function InserirQuestionario() {
               </div>
               
               <div className={`question-content ${seccoesAbertas[q.id] ? 'show' : 'hide'}`}>
-                {/* Wrapper para permitir scroll horizontal no mobile */}
-                <div className="table-responsive">
-                  <table className="rating-table">
-                    <thead>
-                      <tr>
-                        <th className="text-left"></th>
-                        <th>Muito Bom</th>
-                        <th>Bom</th>
-                        <th>Aceitável</th>
-                        <th>Mau</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {q.indicadores && q.indicadores.map((ind) => (
-                        <tr key={ind.id}>
-                          <td className="question-text">{ind.texto}</td>
-                          {['muito_bom', 'bom', 'aceitavel', 'mau'].map(nivel => (
-                            <td key={nivel}>
-                              <input 
-                                type="radio" 
-                                name={`ind_${ind.id}`} 
-                                required
-                                checked={formData.respostas[ind.id] === nivel}
-                                onChange={() => handleRadioChange(ind.id, nivel)} 
-                              />
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                {isMobile ? (
+                  <IndicadoresMobile 
+                    indicadores={q.indicadores}
+                    respostas={formData.respostas}
+                    onRadioChange={handleRadioChange}
+                  />
+                ) : (
+                  <IndicadoresDesktop 
+                    indicadores={q.indicadores}
+                    respostas={formData.respostas}
+                    onRadioChange={handleRadioChange}
+                  />
+                )}
               </div>
             </div>
           ))}

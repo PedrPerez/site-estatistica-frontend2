@@ -44,8 +44,7 @@ function App() {
           <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
           <Route path="/estatistica-impresso" element={<EstatisticaImpresso />} />
         </Route>
-
-        {/* REDIRECIONAMENTO PARA QUEM SE PERDER */}
+        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
