@@ -206,7 +206,7 @@ textarea {
   border-top: none;
   background-color: #fff;
   padding: 20px;
-  margin-top: -2px; /* Une a caixa à de cima */
+  margin-top: -2px;
   font-size: 1.2rem;
 }
 
@@ -276,14 +276,49 @@ textarea {
   border-left: 1px solid #eee;
 }
 
-/* Responsividade Básica para o Dashboard */
+/* --- ADIÇÕES PARA MOBILE (RESOLUÇÃO GRÁFICOS) --- */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+  border: 1px solid #000;
+}
+
 @media (max-width: 768px) {
   .charts-container {
-    flex-direction: column;
-    height: auto;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important; /* Liberta a altura fixa de 400px */
+    gap: 40px !important;
   }
+
   .bar-chart-wrapper, .pie-chart-wrapper {
-    height: 300px;
-    border-left: none;
+    width: 100% !important;
+    height: 350px !important; /* Força a altura para o ResponsiveContainer */
+    display: block !important;
+    border-left: none !important;
+  }
+
+  .main-content {
+    align-items: flex-start;
+    padding: 20px 10px;
+  }
+
+  .row {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .input-group, .grow, .filter-select {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .btn-filter {
+    width: 100%;
+    margin-top: 10px;
+    height: 50px;
   }
 }

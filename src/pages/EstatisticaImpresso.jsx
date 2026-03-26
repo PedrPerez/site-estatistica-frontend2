@@ -16,7 +16,7 @@ export default function EstatisticaImpresso() {
 
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
-    if (storedName) setUserName(storedName)
+    if (storedName) setUserName(storedName);
     fetch("http://localhost/API/obterUnidade.php").then(res => res.json()).then(data => setUnidades(data));
     carregarDados();
   }, []);
@@ -25,7 +25,8 @@ export default function EstatisticaImpresso() {
     const query = new URLSearchParams(filtros).toString();
     fetch(`http://localhost/API/estatisticaImpresso.php?${query}`)
       .then(res => res.json())
-      .then(data => setDados(data));
+      .then(data => setDados(data))
+      .catch(err => console.error("Erro:", err));
   };
 
   const handleLogout = () => {
@@ -33,16 +34,17 @@ export default function EstatisticaImpresso() {
     navigate("/login");
   };
 
+  // Lógica para detetar mobile no JS para forçar altura do gráfico
+  const isMobile = window.innerWidth < 768;
+
   return (
     <div className="page-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <img src={logo} alt="Hospital Logo" className="hospital-logo" />
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Terminar Sessão
-            </button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
@@ -84,39 +86,41 @@ export default function EstatisticaImpresso() {
                 Resumo por Tipo de Mensagem e Unidade
             </div>
 
-            {/* Tabela Dinâmica */}
-            <table className="rating-table full-width">
-              <thead>
-                <tr className="light-gray-bg">
-                  <th className="table-cell text-left">Unidade</th>
-                  {dados.categorias.map(cat => (
-                    <th key={cat.id} className="table-cell">{cat.descricao}</th>
-                  ))}
-                  <th className="table-cell">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dados.lista.map((item, i) => (
-                  <tr key={i}>
-                    <td className="table-cell">{item.unidade_nome}</td>
+            {/* Tabela com Scroll */}
+            <div className="table-responsive">
+              <table className="rating-table full-width">
+                <thead>
+                  <tr className="light-gray-bg">
+                    <th className="table-cell text-left">Unidade</th>
                     {dados.categorias.map(cat => (
-                      <td key={cat.id} className="table-cell text-center">
-                        {item[`total_cat_${cat.id}`] || 0}
-                      </td>
+                      <th key={cat.id} className="table-cell">{cat.descricao}</th>
                     ))}
-                    <td className="table-cell text-center bold">{item.total_geral}</td>
+                    <th className="table-cell">Total</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {dados.lista.map((item, i) => (
+                    <tr key={i}>
+                      <td className="table-cell">{item.unidade_nome}</td>
+                      {dados.categorias.map(cat => (
+                        <td key={cat.id} className="table-cell text-center">
+                          {item[`total_cat_${cat.id}`] || 0}
+                        </td>
+                      ))}
+                      <td className="table-cell text-center bold">{item.total_geral}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-            {/* Gráficos em Dashboard */}
+            {/* Gráficos - IMPORTANTE: ResponsiveContainer com height fixo no mobile */}
             <div className="charts-container">
               <div className="bar-chart-wrapper">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height={isMobile ? 300 : "100%"}>
                   <BarChart data={dados.lista}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="unidade_nome" />
+                    <XAxis dataKey="unidade_nome" hide={isMobile} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
@@ -134,9 +138,9 @@ export default function EstatisticaImpresso() {
               </div>
 
               <div className="pie-chart-wrapper">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height={isMobile ? 300 : "100%"}>
                   <PieChart>
-                    <Pie data={dados.totais_pizza} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                    <Pie data={dados.totais_pizza} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={isMobile ? 60 : 80}>
                       {dados.totais_pizza.map((entry, index) => (
                         <Cell key={index} fill={COLORS[index % COLORS.length]} stroke="#000" />
                       ))}

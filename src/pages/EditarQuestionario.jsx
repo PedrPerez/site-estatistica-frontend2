@@ -9,14 +9,25 @@ export default function EditarQuestionario() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
   const [questoes, setQuestoes] = useState([]);
-  const [unidades, setUnidades] = useState([]); // Adicionado para carregar unidades reais
+  const [unidades, setUnidades] = useState([]);
   const [formData, setFormData] = useState({
     unidade: '',
     data: '',
     sugestoes: '',
     respostas: {} 
   });
+  const [seccoesAbertas, setSeccoesAbertas] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
@@ -55,6 +66,13 @@ export default function EditarQuestionario() {
         }
 
         setQuestoes(qData);
+
+        const estadoInicial = {};
+        qData.forEach(q => {
+          estadoInicial[q.id] = true;
+        });
+        setSeccoesAbertas(estadoInicial);
+        
         setFormData({
           unidade: dData.cod_unidade || '',
           data: dData.data ? dData.data.split(' ')[0] : '',
@@ -70,6 +88,13 @@ export default function EditarQuestionario() {
 
     fetchData();
   }, [id]);
+
+  const toggleSeccao = (id) => {
+    setSeccoesAbertas(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,6 +129,88 @@ export default function EditarQuestionario() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    navigate("/login");
+  };
+
+  const handleRadioChange = (indicadorId, valor) => {
+    setFormData({
+      ...formData,
+      respostas: { ...formData.respostas, [indicadorId]: valor }
+    });
+  };
+
+  const IndicadoresMobile = ({ indicadores, respostas, onRadioChange }) => {
+    const niveis = [
+      { key: 'muito_bom', label: 'Muito Bom' },
+      { key: 'bom', label: 'Bom' },
+      { key: 'aceitavel', label: 'Aceitável' },
+      { key: 'mau', label: 'Mau' }
+    ];
+
+    return (
+      <div className="indicadores-mobile">
+        {indicadores.map((ind) => (
+          <div key={ind.id} className="indicador-card">
+            <div className="indicador-texto">{ind.texto}</div>
+            <div className="rating-grid">
+              {niveis.map((nivel) => (
+                <label 
+                  key={nivel.key} 
+                  className={`rating-option ${respostas[ind.id] === nivel.key ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`ind_${ind.id}`}
+                    required
+                    checked={respostas[ind.id] === nivel.key}
+                    onChange={() => onRadioChange(ind.id, nivel.key)}
+                  />
+                  <span className="rating-label">{nivel.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const IndicadoresDesktop = ({ indicadores, respostas, onRadioChange }) => (
+    <div className="table-responsive">
+      <table className="rating-table">
+        <thead>
+          <tr>
+            <th className="text-left">Indicador</th>
+            <th>Muito Bom</th>
+            <th>Bom</th>
+            <th>Aceitável</th>
+            <th>Mau</th>
+          </tr>
+        </thead>
+        <tbody>
+          {indicadores.map((ind) => (
+            <tr key={ind.id}>
+              <td className="question-text">{ind.texto}</td>
+              {['muito_bom', 'bom', 'aceitavel', 'mau'].map(nivel => (
+                <td key={nivel}>
+                  <input 
+                    type="radio" 
+                    name={`ind_${ind.id}`} 
+                    checked={respostas[ind.id] === nivel}
+                    onChange={() => onRadioChange(ind.id, nivel)}
+                    required
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   return (
     <div className="page-wrapper">
       <header className="login-header">
@@ -111,7 +218,7 @@ export default function EditarQuestionario() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>
+            <button className="logout-btn" onClick={handleLogout}>
               Terminar Sessão
             </button>
           </div>
@@ -127,81 +234,70 @@ export default function EditarQuestionario() {
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
           <div className="section-box">
-             <div className="section-title gray-bg">Identificação (Modo Edição)</div>
-             <div className="row">
-                <div className="input-group grow">
-                  <label>Unidade:</label>
-                  <select 
-                    value={formData.unidade} 
-                    onChange={e => setFormData({...formData, unidade: e.target.value})} 
-                    required
-                  >
-                    <option value="">Selecione...</option>
-                    {unidades.map(u => (
-                      <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="input-group grow">
-                  <label>Data:</label>
-                  <input 
-                    type="date" 
-                    value={formData.data} 
-                    onChange={e => setFormData({...formData, data: e.target.value})} 
-                    required 
-                  />
-                </div>
-             </div>
+            <div className="section-title gray-bg">Identificação (Modo Edição)</div>
+            <div className="row">
+              <div className="input-group grow">
+                <label>Unidade:</label>
+                <select 
+                  value={formData.unidade} 
+                  onChange={e => setFormData({...formData, unidade: e.target.value})} 
+                  required
+                >
+                  <option value="">Selecione...</option>
+                  {unidades.map(u => (
+                    <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="input-group grow">
+                <label>Data:</label>
+                <input 
+                  type="date" 
+                  value={formData.data} 
+                  onChange={e => setFormData({...formData, data: e.target.value})} 
+                  required 
+                />
+              </div>
+            </div>
           </div>
 
           {questoes.map(q => (
             <div className="section-box" key={q.id}>
-              <div className="section-title gray-bg">{q.titulo}</div>
-              <div className="question-content show">
-                <div className="table-responsive">
-                  <table className="rating-table">
-                    <thead>
-                      <tr>
-                        <th className="text-left">Indicador</th>
-                        <th>Muito Bom</th><th>Bom</th><th>Aceitável</th><th>Mau</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {q.indicadores?.map(ind => (
-                        <tr key={ind.id}>
-                          <td className="question-text">{ind.texto}</td>
-                          {['muito_bom', 'bom', 'aceitavel', 'mau'].map(nivel => (
-                            <td key={nivel}>
-                              <input 
-                                type="radio" 
-                                name={`ind_${ind.id}`} 
-                                checked={formData.respostas[ind.id] === nivel}
-                                onChange={() => setFormData({
-                                  ...formData, 
-                                  respostas: {...formData.respostas, [ind.id]: nivel}
-                                })}
-                                required
-                              />
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+              <div 
+                className="section-title gray-bg clickable-header" 
+                onClick={() => toggleSeccao(q.id)}
+              >
+                <span>{q.titulo}</span>
+                <span className="toggle-icon">{seccoesAbertas[q.id] ? '▲' : '▼'}</span>
+              </div>
+              
+              <div className={`question-content ${seccoesAbertas[q.id] ? 'show' : 'hide'}`}>
+                {isMobile ? (
+                  <IndicadoresMobile 
+                    indicadores={q.indicadores || []}
+                    respostas={formData.respostas}
+                    onRadioChange={handleRadioChange}
+                  />
+                ) : (
+                  <IndicadoresDesktop 
+                    indicadores={q.indicadores || []}
+                    respostas={formData.respostas}
+                    onRadioChange={handleRadioChange}
+                  />
+                )}
               </div>
             </div>
           ))}
 
           <div className="section-box">
-             <div className="section-title gray-bg">Sugestões e Comentários</div>
-             <div className="textarea-container">
-               <textarea 
-                 value={formData.sugestoes} 
-                 onChange={e => setFormData({...formData, sugestoes: e.target.value})} 
-                 placeholder="Edite aqui as sugestões..."
-               />
-             </div>
+            <div className="section-title gray-bg">Sugestões e Comentários</div>
+            <div className="textarea-container">
+              <textarea 
+                value={formData.sugestoes} 
+                onChange={e => setFormData({...formData, sugestoes: e.target.value})} 
+                placeholder="Edite aqui as sugestões..."
+              />
+            </div>
           </div>
 
           {status.message && (

@@ -1,14 +1,21 @@
-/* Reset e Estrutura Base */
+/* ==========================================================================
+   ESTRUTURA BASE E RESET
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
 .main-content {
   display: flex;
   justify-content: center;
-  padding: 20px 10px; /* Reduzido para mobile */
+  padding: 20px 10px;
 }
 
 .container-1200 {
@@ -16,24 +23,9 @@
   max-width: 1200px;
 }
 
-/* Boxes e Títulos */
-.section-box {
-  border: 2px solid #000;
-  margin-bottom: 20px;
-  background-color: #e0e0e0;
-}
-
-.section-title {
-  padding: 12px 20px;
-  font-size: 1.2rem; /* Ligeiramente menor para caber IDs longos */
-  border-bottom: 2px solid #000;
-  font-weight: bold;
-}
-
-.gray-bg { background-color: #cccccc; }
-.clickable-header { cursor: pointer; }
-
-/* Filtros */
+/* ==========================================================================
+   FILTROS
+   ========================================================================== */
 .filter-header {
   display: flex;
   justify-content: space-between;
@@ -41,7 +33,10 @@
   margin-bottom: 10px;
 }
 
-.filter-title { font-size: 1.5rem; font-weight: bold; }
+.filter-title { 
+  font-size: 1.5rem; 
+  font-weight: bold; 
+}
 
 .clean-filters {
   background: none;
@@ -50,6 +45,12 @@
   cursor: pointer;
   font-size: 1rem;
   color: #333;
+}
+
+.filter-box {
+  border: 2px solid #000;
+  margin-bottom: 15px;
+  background-color: #e0e0e0;
 }
 
 .filter-box .row {
@@ -61,7 +62,7 @@
 
 .input-group {
   display: flex;
-  flex-direction: column; /* Label acima do input no mobile ajuda no espaço */
+  flex-direction: column;
   gap: 5px;
   flex: 1;
   min-width: 200px;
@@ -69,7 +70,6 @@
 
 .input-group label { 
   font-weight: bold; 
-  font-size: 1rem; 
 }
 
 input, select {
@@ -77,98 +77,192 @@ input, select {
   padding: 10px;
   font-size: 1rem;
   background-color: #fff;
-  width: 100%;
 }
 
-/* Listagem de Resultados */
+/* ==========================================================================
+   NOVOS BOTÕES (EXPANDIR / RECOLHER)
+   ========================================================================== */
+.action-bar-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.btn-toggle-main {
+  background-color: #444;
+  color: white;
+  border: 2px solid #000;
+  padding: 12px 24px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  box-shadow: 3px 3px 0px #000;
+  text-transform: uppercase;
+}
+
+.btn-toggle-main:hover {
+  background-color: #222;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #000;
+}
+
+.btn-toggle-main.active {
+  background-color: #8b0000; 
+}
+
+.expand-questions-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ccc;
+}
+
+.btn-text-action {
+  background: none;
+  border: none;
+  color: #1976D2;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-text-action:hover {
+  color: #000;
+}
+
+/* ==========================================================================
+   LISTAGEM DE QUESTIONÁRIOS - CORREÇÃO DE ALINHAMENTO
+   ========================================================================== */
 .results-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
+.section-box {
+  border: 2px solid #000;
+  background-color: #e0e0e0;
+  overflow: hidden;
+}
+
+.section-title {
+  padding: 12px 20px;
+  border-bottom: 2px solid #000;
+  font-weight: bold;
+}
+
+.gray-bg { background-color: #cccccc; }
+.clickable-header { cursor: pointer; }
+
+/* AJUSTADO: width 100% garante que o flex ocupe o espaço todo */
 .row-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 100%; 
 }
 
+/* AJUSTADO: flex 1 faz com que este grupo empurre as ações para a direita */
 .row-info-text {
-  font-size: 1rem;
-  line-height: 1.4;
-  padding-right: 10px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex: 1; 
 }
 
-/* Botão Editar na Lista */
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .btn-edit-list {
   background-color: #2196F3;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 15px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.8rem;
-  white-space: nowrap;
 }
 
-/* Tabelas Internas (Avaliação) */
+.toggle-icon {
+  font-size: 1.2rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   CONTEÚDO INTERNO
+   ========================================================================== */
+.question-content.expanded {
+  background-color: #eee;
+}
+
+.question-box {
+  margin: 10px;
+  border: 1px solid #999;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+
 .table-responsive {
-  width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 10px 0;
-  border: 1px solid #000;
+  background: #fff;
+  padding: 10px;
 }
 
 .rating-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  min-width: 500px; /* Garante que a tabela não esmague */
 }
 
 .rating-table th, .rating-table td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
-  font-size: 0.9rem;
 }
 
-.rating-table th { background: #eee; }
-
-.question-text {
-  text-align: left !important;
-  width: 40%;
-  font-weight: bold;
-}
-
-/* Círculos de Status */
 .radio-circle {
   width: 18px;
   height: 18px;
   border: 2px solid #000;
   border-radius: 50%;
   display: inline-block;
-  vertical-align: middle;
 }
 
 .radio-circle.active { background-color: #000; }
 
-/* Comentários */
-.comment-box {
-  border: 2px solid #000;
+.comentarios-section {
   padding: 15px;
-  background-color: #fff;
-  margin-top: 10px;
+  border-top: 2px solid #000;
+}
+
+.comment-box {
+  background: white;
+  padding: 15px;
+  border: 1px solid #000;
+  margin-top: 5px;
   font-style: italic;
 }
 
 /* ==========================================================================
-   MEDIA QUERIES (MOBILE)
+   MOBILE RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
+  .btn-toggle-main {
+    width: 100%;
+    margin-top: 10px;
+  }
+
   .row-content {
     flex-direction: column;
     align-items: flex-start;
@@ -176,25 +270,46 @@ input, select {
   }
 
   .row-info-text {
-    font-size: 0.9rem;
-  }
-
-  .filter-box .row {
     flex-direction: column;
-  }
-
-  .input-group {
+    align-items: flex-start;
+    gap: 5px;
     width: 100%;
   }
 
-  .section-title {
-    font-size: 1rem;
-    padding: 10px;
+  .row-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
-  .btn-edit-list {
-    width: 100%; /* No mobile o botão ocupa a largura toda da sua área */
-    text-align: center;
+  .expand-questions-row {
+    justify-content: center;
+  }
+
+  .indicador-card-visualizacao {
+    background: #fff;
+    margin: 10px;
     padding: 12px;
+    border: 1px solid #ccc;
+  }
+
+  .rating-grid-visualizacao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .rating-option-visualizacao {
+    padding: 8px;
+    background: #f0f0f0;
+    text-align: center;
+    font-size: 0.8rem;
+    border: 1px solid #ddd;
+  }
+
+  .rating-option-visualizacao.selected {
+    background: #2196F3;
+    color: white;
+    border-color: #0d47a1;
   }
 }

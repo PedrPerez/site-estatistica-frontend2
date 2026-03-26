@@ -33,12 +33,12 @@ export default function InserirImpresso() {
     fetch('http://localhost/API/obterUnidade.php')
       .then(res => res.json())
       .then(data => setUnidades(data))
-      .catch(err => console.error("Erro:", err));
+      .catch(err => console.error("Erro ao carregar unidades:", err));
       
     fetch('http://localhost/API/obterTipoMensagem.php')
       .then(res => res.json())
       .then(data => setTipos(data))
-      .catch(err => console.error("Erro:", err));
+      .catch(err => console.error("Erro ao carregar tipos:", err));
   }, []);
 
   const handleChange = (e) => {
@@ -51,7 +51,7 @@ export default function InserirImpresso() {
     setError(''); setSuccess('');
 
     if (!formData.tipo || !formData.unidade || !formData.nome || !formData.descritivo) {
-      setError('Preencha os campos obrigatórios (Nome, Unidade, Tipo e Descritivo).');
+      setError('Campos obrigatórios: Nome, Unidade, Tipo e Descritivo.');
       return;
     }
 
@@ -66,12 +66,12 @@ export default function InserirImpresso() {
       if (result.status === 'sucesso') {
         setSuccess('Registo inserido com sucesso!');
         setFormData(initialForm);
-        window.scrollTo(0, 0); // Volta ao topo para ver a mensagem
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll suave para o topo
       } else {
         setError(result.mensagem || 'Erro ao inserir registo.');
       }
     } catch (err) {
-      setError('Não foi possível contactar o servidor.');
+      setError('Erro na ligação ao servidor.');
     }
   };
 
@@ -83,7 +83,7 @@ export default function InserirImpresso() {
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
             <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>
-              Terminar Sessão
+              Sair
             </button>
           </div>
         </div>
@@ -99,16 +99,17 @@ export default function InserirImpresso() {
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
           
-          {error && <div className="status-msg error" style={{color: 'red', textAlign: 'center', marginBottom: '15px'}}>{error}</div>}
-          {success && <div className="status-msg success" style={{color: 'green', textAlign: 'center', marginBottom: '15px'}}>{success}</div>}
+          {/* Feedback Visual Centralizado */}
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="status-msg" style={{color: 'green', textAlign: 'center', fontWeight: 'bold', marginBottom: '15px'}}>{success}</div>}
 
-          {/* Identificação */}
+          {/* Secção Identificação */}
           <section className="section-box">
             <h2 className="section-title">Identificação</h2>
             <div className="row">
               <div className="input-group grow">
                 <label>Nome:</label>
-                <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder="Nome completo" />
+                <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder="Nome do utente" />
               </div>
               <div className="input-group">
                 <label>Data:</label>
@@ -123,27 +124,27 @@ export default function InserirImpresso() {
             </div>
           </section>
 
-          {/* Tipo e Unidade */}
+          {/* Secção Tipo e Unidade */}
           <section className="section-box">
             <div className="row">
               <div className="input-group grow">
                 <label>Tipo:</label>
                 <select name="tipo" value={formData.tipo} onChange={handleChange}>
-                  <option value="">Seleccione o Tipo</option>
+                  <option value="">Selecione o Tipo...</option>
                   {tipos.map(t => <option key={t.id} value={t.id}>{t.descricao}</option>)}
                 </select>
               </div>
               <div className="input-group grow">
                 <label>Unidade:</label>
                 <select name="unidade" value={formData.unidade} onChange={handleChange}>
-                  <option value="">Seleccione a Unidade</option>
+                  <option value="">Selecione a Unidade...</option>
                   {unidades.map(u => <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>)}
                 </select>
               </div>
             </div>
           </section>
 
-          {/* Contacto */}
+          {/* Secção Contacto */}
           <section className="section-box">
             <h2 className="section-title">Contacto</h2>
             <div className="row">
@@ -153,29 +154,29 @@ export default function InserirImpresso() {
               </div>
               <div className="input-group grow">
                 <label>Telemóvel:</label>
-                <input type="text" name="tel" value={formData.tel} onChange={handleChange} placeholder="9xxxxxxxx" />
+                <input type="text" name="tel" value={formData.tel} onChange={handleChange} placeholder="Nº Telefone" />
               </div>
             </div>
           </section>
 
-          {/* Descritivo e Resolução */}
+          {/* Áreas de Texto */}
           <section className="section-box no-padding">
             <h2 className="section-title gray-bg">Descritivo:</h2>
             <div className="textarea-container">
-              <textarea name="descritivo" value={formData.descritivo} onChange={handleChange} placeholder="Detalhes da ocorrência..." />
+              <textarea name="descritivo" value={formData.descritivo} onChange={handleChange} placeholder="Escreva aqui os detalhes..." />
             </div>
           </section>
 
           <section className="section-box no-padding">
             <h2 className="section-title gray-bg">Resolução:</h2>
             <div className="textarea-container">
-              <textarea name="resolucao" value={formData.resolucao} onChange={handleChange} placeholder="Ações tomadas..." />
+              <textarea name="resolucao" value={formData.resolucao} onChange={handleChange} placeholder="Ações tomadas para resolver..." />
             </div>
           </section>
 
           <div className="button-group">
-            <button type="submit" className="btn-submit">Submeter Registo</button>
-            <button type="button" className="btn-cancel" onClick={() => setFormData(initialForm)}>Limpar Campos</button>
+            <button type="submit" className="btn-submit">Submeter</button>
+            <button type="button" className="btn-cancel" onClick={() => setFormData(initialForm)}>Limpar</button>
           </div>
         </form>
       </main>
