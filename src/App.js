@@ -13,6 +13,7 @@ import ListarQuestionario from './pages/ListarQuestionario';
 import EditarQuestionario from './pages/EditarQuestionario';
 import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 import EstatisticaImpresso from './pages/EstatisticaImpresso';
+import ExportarDados from './pages/ExportarDados';
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
           {/* Estatísticas */}
           <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
           <Route path="/estatistica-impresso" element={<EstatisticaImpresso />} />
+
+          <Route path="/exportar" element={<ExportarDados />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/" replace />} />

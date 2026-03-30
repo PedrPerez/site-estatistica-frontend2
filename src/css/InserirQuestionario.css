@@ -1,12 +1,23 @@
-/* Reset e Base */
+/* ==========================================================================
+   RESET E BASE
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --azul-hospital: #4A72B2;
+  --preto: #000000;
+  --branco: #ffffff;
+  --cinza-fundo: #f5f7fa;
+  --cinza-borda: #cccccc;
 }
 
 .page-wrapper {
-  background-color: #f9f9f9;
+  background-color: var(--cinza-fundo);
   min-height: 100vh;
 }
 
@@ -19,178 +30,193 @@
 
 .full-width-form {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
 }
 
-/* Estrutura de Linhas e Inputs */
-.row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 15px 20px;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column; /* Label acima do input no mobile ajuda no espaço */
-  gap: 5px;
-  flex: 1;
-  min-width: 200px;
-}
-
-.input-group label { 
-  font-weight: bold; 
-  font-size: 1rem; 
-}
-
-input, select {
-  border: 2px solid #000;
-  padding: 10px;
-  font-size: 1rem;
-  background-color: #fff;
-  width: 100%;
-}
-
-.input-group input[type="date"] {
-  height: 35px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-}
-
-/* Boxes de Secção */
+/* ==========================================================================
+   SECÇÕES E IDENTIFICAÇÃO (DESKTOP)
+   ========================================================================== */
 .section-box {
-  border: 2px solid #000;
+  border: 1px solid var(--cinza-borda);
   margin-bottom: 25px;
-  background-color: #e0e0e0;
-  border-radius: 4px;
+  background-color: var(--branco);
+  border-radius: 6px;
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .section-title {
-  padding: 12px 20px;
-  font-size: 1.3rem;
-  border-bottom: 2px solid #000;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  background-color: var(--azul-hospital);
+  color: var(--branco);
   font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* Cor preta para a secção de Identificação */
+.section-box:first-of-type .section-title {
+  background-color: var(--preto);
+}
+
 .clickable-header { cursor: pointer; }
 
-/* Efeito Recolher */
-.question-content { padding: 0; transition: all 0.3s ease; }
-.question-content.hide { display: none; }
-.question-content.show { display: block; }
+/* Identificação Form Layout */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background-color: var(--branco);
+}
 
-/* TABELA RESPONSIVA - CRUCIAL */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 250px;
+}
+
+.input-group label { 
+  font-weight: bold; 
+  color: var(--preto);
+}
+
+input[type="date"], select {
+  border: 1px solid var(--cinza-borda);
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   CONTROLO DO ACORDEÃO (FIX)
+   ========================================================================== */
+.question-content.hide { 
+  display: none !important; 
+}
+
+.question-content.show { 
+  display: block !important; 
+}
+
+/* ==========================================================================
+   TABELA DE RATINGS (DESKTOP - ALINHAMENTO CORRIGIDO)
+   ========================================================================== */
 .table-responsive {
   width: 100%;
-  overflow-x: auto; /* Scroll lateral no mobile */
-  -webkit-overflow-scrolling: touch;
-  margin: 10px 0;
-  border: 1px solid #000;
+  overflow-x: auto;
 }
 
 .rating-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  min-width: 500px; /* Garante que a tabela não esmague */
 }
 
-.rating-table th, .rating-table td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+.rating-table th {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-bottom: 2px solid var(--cinza-fundo);
+  color: #555;
   font-size: 0.9rem;
-}
-
-.rating-table th { background-color: #f2f2f2; font-size: 0.9rem; }
-
-.rating-table td.question-text {
-  text-align: left !important;
-  width: 40%;
-  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .rating-table td {
-  padding: 15px; /* Aumenta um pouco o espaço para facilitar o toque no mobile */
+  padding: 18px 15px;
+  border-bottom: 1px solid #eee;
   text-align: center;
-  vertical-align: middle; /* Alinhamento vertical clássico de tabelas */
+  vertical-align: middle; /* Centraliza verticalmente o conteúdo da célula */
 }
 
-.rating-table td:not(.question-text) {
-  text-align: center;
+.rating-table td.question-text {
+  text-align: left;
+  font-weight: 500;
+  color: var(--preto);
+  padding-left: 25px;
+  width: 40%;
 }
 
+/* Estilo do Input de Rádio */
 .rating-table input[type="radio"] {
-  display: inline-block;
-  margin: 0 auto; /* Margens automáticas ajudam no centro */
-  vertical-align: middle;
   width: 22px;
   height: 22px;
-  accent-color: #4A72B2;
+  accent-color: var(--azul-hospital);
   cursor: pointer;
+  margin: 0; 
+  display: inline-block;
+  vertical-align: middle; /* Alinhamento crucial com o texto */
 }
 
-/* Textarea de Sugestões */
+/* Efeito de hover na linha para facilitar a leitura */
+.rating-table tr:hover td {
+  background-color: #fcfcfc;
+}
+
+/* ==========================================================================
+   SUGESTÕES E BOTÕES
+   ========================================================================== */
 .textarea-container { padding: 20px; }
 .textarea-container textarea {
   width: 100%;
   min-height: 120px;
   padding: 15px;
+  border: 1px solid var(--cinza-borda);
   border-radius: 4px;
-  border: 1px solid #ccc;
   font-size: 1rem;
   resize: vertical;
 }
 
-/* Botões */
-/* Botões de Acção */
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
+  gap: 20px;
+  margin-top: 10px;
   padding-bottom: 50px;
 }
 
 .btn-submit, .btn-cancel {
-  padding: 12px 50px;
-  font-size: 1.2rem;
-  cursor: pointer;
+  padding: 14px 50px;
+  font-size: 1.1rem;
   font-weight: bold;
-  border-radius: 8px;
-  background-color: #ffffff !important;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.btn-submit { border: 2px solid #4A72B2 !important; color: #4A72B2 !important; }
-.btn-cancel { border: 2px solid #ff2727 !important; color: #ff2727 !important; }
+.btn-submit {
+  background-color: var(--azul-hospital) !important;
+  color: white !important;
+  border: none !important;
+}
 
-.btn-submit:hover { background-color: #4A72B2 !important; color: #fff !important; }
-.btn-cancel:hover { background-color: #ff2727 !important; color: #fff !important; }
+.btn-cancel {
+  background-color: transparent !important;
+  color: #ff2727 !important;
+  border: 1px solid #ff2727 !important;
+}
 
-/* Mensagens */
+.btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-cancel:hover { background-color: #fffafa !important; }
+
+/* Mensagens de Status */
 .status-msg, .error-message {
   padding: 15px;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 10px 0 20px 0;
   border-radius: 4px;
   font-weight: bold;
 }
 .status-msg { background: #d4edda; color: #155724; }
 .error-message { background: #f8d7da; color: #721c24; }
 
-/* Adicione ao seu InserirQuestionario.css */
-
 /* ==========================================================================
-   ESTILOS MOBILE - CARDS COM BOTÕES DE RÁDIO
+   ESTILOS MOBILE (REVERTIDO PARA O TEU ORIGINAL)
    ========================================================================== */
 @media (max-width: 768px) {
-  /* Container dos indicadores mobile */
   .indicadores-mobile {
     padding: 15px;
     display: flex;
@@ -198,7 +224,6 @@ input, select {
     gap: 20px;
   }
 
-  /* Card individual do indicador */
   .indicador-card {
     background: #fff;
     border-radius: 12px;
@@ -207,7 +232,6 @@ input, select {
     border: 1px solid #e0e0e0;
   }
 
-  /* Texto do indicador */
   .indicador-texto {
     font-size: 1rem;
     font-weight: 600;
@@ -218,14 +242,12 @@ input, select {
     line-height: 1.4;
   }
 
-  /* Grid de opções de rating */
   .rating-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 
-  /* Cada opção de rating */
   .rating-option {
     display: flex;
     align-items: center;
@@ -259,79 +281,18 @@ input, select {
     font-weight: 600;
   }
 
-  /* Hover effect para dispositivos touch */
-  .rating-option:active {
-    transform: scale(0.98);
-    background: #e9ecef;
-  }
-
-  /* Ajustes para telas muito pequenas */
-  @media (max-width: 480px) {
-    .rating-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .rating-option {
-      padding: 10px 6px;
-    }
-
-    .rating-label {
-      font-size: 0.75rem;
-    }
-
-    .indicador-card {
-      padding: 12px;
-    }
-  }
-}
-
-/* Estilo para tablets (opcional) */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .indicadores-mobile {
-    display: none;
+  /* Ajustes gerais de formulário para Mobile */
+  .button-group {
+    flex-direction: column;
+    padding: 20px;
   }
   
-  .table-responsive {
-    display: block;
-  }
-}
-
-/* Ajustes gerais para melhor usabilidade mobile */
-@media (max-width: 768px) {
-  /* Melhorar área de toque dos botões */
   .btn-submit, .btn-cancel {
-    padding: 14px 20px;
-    font-size: 1rem;
+    width: 100%;
   }
 
-  /* Aumentar área de toque do header clicável */
-  .clickable-header {
-    padding: 15px 20px;
-  }
-
-  /* Melhorar espaçamento entre seções */
-  .section-box {
-    margin-bottom: 20px;
-  }
-
-  /* Ajustar padding do textarea */
-  .textarea-container textarea {
-    font-size: 16px; /* Evita zoom automático no iOS */
-    min-height: 100px;
-  }
-
-  /* Melhorar inputs para mobile */
-  input, select, textarea {
-    font-size: 16px; /* Evita zoom no iOS */
-  }
-
-  /* Ajustar margens */
-  .main-content {
-    padding: 12px;
-  }
-
-  .full-width-form {
-    max-width: 100%;
+  .row {
+    flex-direction: column;
+    gap: 15px;
   }
 }

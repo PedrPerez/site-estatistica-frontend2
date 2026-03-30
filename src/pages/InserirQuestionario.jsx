@@ -111,7 +111,6 @@ export default function InserirQuestionario() {
     navigate("/login");
   };
 
-  // Componente para renderizar indicadores em formato mobile (cards)
   const IndicadoresMobile = ({ indicadores, respostas, onRadioChange }) => {
     const niveis = [
       { key: 'muito_bom', label: 'Muito Bom' },
@@ -148,7 +147,6 @@ export default function InserirQuestionario() {
     );
   };
 
-  // Componente para renderizar indicadores em formato desktop (tabela)
   const IndicadoresDesktop = ({ indicadores, respostas, onRadioChange }) => (
     <div className="table-responsive">
       <table className="rating-table">
@@ -206,8 +204,6 @@ export default function InserirQuestionario() {
 
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
-          
-          {/* Secção de Identificação */}
           <div className="section-box">
             <div className="section-title">Identificação</div>
             <div className="row">
@@ -227,7 +223,6 @@ export default function InserirQuestionario() {
             </div>
           </div>
 
-          {/* Renderização Dinâmica das Questões */}
           {questoes.map((q) => (
             <div className="section-box" key={q.id}>
               <div 
@@ -256,7 +251,6 @@ export default function InserirQuestionario() {
             </div>
           ))}
 
-          {/* Secção de Sugestões */}
           <div className="section-box">
             <div className="section-title">Sugestões e outros comentários</div>
             <div className="textarea-container">
@@ -269,7 +263,6 @@ export default function InserirQuestionario() {
             </div>
           </div>
 
-          {/* Mensagens de Feedback */}
           {status.message && (
             <div className={status.type === 'error' ? 'error-message' : 'status-msg'}>
               {status.message}
