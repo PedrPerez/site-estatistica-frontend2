@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from "./pages/HomePage";
+import HomePageAdmin from './pages/HomePageAdmin';
 import LogIn from "./pages/LogIn";
+import LogInAdmin from "./pages/LogInAdmin";
 import InserirEmail from "./pages/InserirEmail";
 import ListarEmail from './pages/ListarEmail';
 import EditarEmail from './pages/EditarEmail';
@@ -21,6 +23,8 @@ function App() {
       <Routes>
         {/* ROTA PÚBLICA */}
         <Route path="/" element={<LogIn />} />
+        <Route path="/login-admin" element={<LogInAdmin />} />
+        <Route path="/principal-admin" element={<HomePageAdmin />} />
 
         {/* GRUPO DE ROTAS PROTEGIDAS */}
         <Route element={<ProtectedRoute />}>

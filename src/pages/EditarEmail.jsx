@@ -153,8 +153,8 @@ export default function EditarEmail() {
           </section>
 
           {/* Secção Conteúdo */}
-          <section className="section-box no-padding">
-            <h2 className="section-title gray-bg">Conteúdo do Email:</h2>
+          <section className="section-box">
+            <h2 className="section-title">Conteúdo do Email:</h2>
             <div className="textarea-container">
               <textarea 
                 name="conteudo" 

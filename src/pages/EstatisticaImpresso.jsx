@@ -13,12 +13,21 @@ export default function EstatisticaImpresso() {
   const [dados, setDados] = useState({ categorias: [], lista: [], totais_pizza: [] });
   const [unidades, setUnidades] = useState([]);
   const [filtros, setFiltros] = useState({ unidade: '', inicio: '', fim: '' });
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName);
-    fetch("http://localhost/API/obterUnidade.php").then(res => res.json()).then(data => setUnidades(data));
+    
+    fetch("http://localhost/API/obterUnidade.php")
+      .then(res => res.json())
+      .then(data => setUnidades(data));
+    
     carregarDados();
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const carregarDados = () => {
@@ -34,34 +43,31 @@ export default function EstatisticaImpresso() {
     navigate("/login");
   };
 
-  // Lógica para detetar mobile no JS para forçar altura do gráfico
-  const isMobile = window.innerWidth < 768;
-
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper" style={{ backgroundColor: '#f5f7fa', minHeight: '100vh' }}>
       <header className="login-header">
         <img src={logo} alt="Hospital Logo" className="hospital-logo" />
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
+            <button className="logout-btn" onClick={handleLogout}>Sair</button>
           </div>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
-        <button onClick={() => navigate('/listar-impresso')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Lista de Registos →</button>
+        <button onClick={() => navigate('/principal')} className="nav-link">← Menu</button>
+        <button onClick={() => navigate('/listar-impresso')} className="nav-link">Lista de Registos →</button>
       </nav>
 
       <hr className="divider" />
 
-      <main className="main-content dashboard-padding">
+      <main className="main-content">
         <div className="container-1200">
           
-          {/* Filtros */}
-          <div className="section-box filter-box border-black">
-            <div className="row flex-gap">
+          {/* Filtros (Fundo Branco Forçado) */}
+          <div className="section-box filter-box" style={{ backgroundColor: '#fff', border: '1px solid #d1d9e6', borderRadius: '8px', marginBottom: '20px' }}>
+            <div className="row flex-gap" style={{ padding: '15px' }}>
               <div className="input-group grow">
                 <label>Unidade:</label>
                 <select value={filtros.unidade} onChange={e => setFiltros({...filtros, unidade: e.target.value})}>
@@ -77,78 +83,107 @@ export default function EstatisticaImpresso() {
                 <label>Até:</label>
                 <input type="date" value={filtros.fim} onChange={e => setFiltros({...filtros, fim: e.target.value})} />
               </div>
-              <button onClick={carregarDados} className="btn-filter">Filtrar</button>
+              <div className="btn-container">
+                <button onClick={carregarDados} className="btn-submit" style={{ padding: '10px 20px' }}>Filtrar</button>
+              </div>
             </div>
           </div>
 
-          <div className="section-box white-bg border-black padding-20">
-            <div className="section-title gray-bg mb-20">
-                Resumo por Tipo de Mensagem e Unidade
+          <div className="section-box" style={{ backgroundColor: '#fff', border: '1px solid #d1d9e6', borderRadius: '8px', overflow: 'hidden' }}>
+            <div className="section-title" style={{ backgroundColor: '#4A72B2', color: '#fff', padding: '15px' }}>
+              Resumo por Tipo de Mensagem e Unidade
             </div>
-
-            {/* Tabela com Scroll */}
-            <div className="table-responsive">
-              <table className="rating-table full-width">
-                <thead>
-                  <tr className="light-gray-bg">
-                    <th className="table-cell text-left">Unidade</th>
-                    {dados.categorias.map(cat => (
-                      <th key={cat.id} className="table-cell">{cat.descricao}</th>
-                    ))}
-                    <th className="table-cell">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dados.lista.map((item, i) => (
-                    <tr key={i}>
-                      <td className="table-cell">{item.unidade_nome}</td>
+            
+            <div style={{ padding: '20px', backgroundColor: '#fff' }}>
+              {/* Tabela Responsiva */}
+              <div className="table-responsive" style={{ marginBottom: '30px' }}>
+                <table className="rating-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ backgroundColor: '#f8f9fa' }}>
+                      <th className="text-left" style={{ padding: '12px', borderBottom: '2px solid #dee2e6' }}>Unidade</th>
                       {dados.categorias.map(cat => (
-                        <td key={cat.id} className="table-cell text-center">
-                          {item[`total_cat_${cat.id}`] || 0}
-                        </td>
+                        <th key={cat.id} style={{ padding: '12px', borderBottom: '2px solid #dee2e6' }}>{cat.descricao}</th>
                       ))}
-                      <td className="table-cell text-center bold">{item.total_geral}</td>
+                      <th style={{ padding: '12px', borderBottom: '2px solid #dee2e6' }}>Total</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Gráficos - IMPORTANTE: ResponsiveContainer com height fixo no mobile */}
-            <div className="charts-container">
-              <div className="bar-chart-wrapper">
-                <ResponsiveContainer width="100%" height={isMobile ? 300 : "100%"}>
-                  <BarChart data={dados.lista}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="unidade_nome" hide={isMobile} />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    {dados.categorias.map((cat, idx) => (
-                      <Bar 
-                        key={cat.id} 
-                        dataKey={`total_cat_${cat.id}`} 
-                        name={cat.descricao} 
-                        fill={COLORS[idx % COLORS.length]} 
-                        stroke="#000"
-                      />
-                    ))}
-                  </BarChart>
-                </ResponsiveContainer>
+                  </thead>
+                  <tbody>
+                    {dados.lista.length === 0 ? (
+                      <tr><td colSpan={dados.categorias.length + 2} style={{ textAlign: 'center', padding: '20px' }}>Sem dados para o período selecionado.</td></tr>
+                    ) : (
+                      dados.lista.map((item, i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid #eee' }}>
+                          <td style={{ padding: '12px', fontWeight: '500' }}>{item.unidade_nome}</td>
+                          {dados.categorias.map(cat => (
+                            <td key={cat.id} style={{ textAlign: 'center', padding: '12px' }}>
+                              {item[`total_cat_${cat.id}`] || 0}
+                            </td>
+                          ))}
+                          <td style={{ textAlign: 'center', padding: '12px', fontWeight: 'bold', backgroundColor: '#fcfcfc' }}>
+                            {item.total_geral}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
 
-              <div className="pie-chart-wrapper">
-                <ResponsiveContainer width="100%" height={isMobile ? 300 : "100%"}>
-                  <PieChart>
-                    <Pie data={dados.totais_pizza} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={isMobile ? 60 : 80}>
-                      {dados.totais_pizza.map((entry, index) => (
-                        <Cell key={index} fill={COLORS[index % COLORS.length]} stroke="#000" />
+              {/* Contentor de Gráficos (Flexbox para Desktop, Coluna para Mobile) */}
+              <div className="charts-grid" style={{ 
+                display: 'flex', 
+                flexDirection: isMobile ? 'column' : 'row', 
+                gap: '20px',
+                marginTop: '30px' 
+              }}>
+                
+                {/* Gráfico de Barras */}
+                <div style={{ flex: 1, height: '400px', minWidth: isMobile ? '100%' : '60%' }}>
+                  <h4 style={{ textAlign: 'center', marginBottom: '10px', color: '#666' }}>Distribuição por Unidade</h4>
+                  <ResponsiveContainer width="100%" height="90%">
+                    <BarChart data={dados.lista}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <XAxis dataKey="unidade_nome" hide={isMobile} />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      {dados.categorias.map((cat, idx) => (
+                        <Bar 
+                          key={cat.id} 
+                          dataKey={`total_cat_${cat.id}`} 
+                          name={cat.descricao} 
+                          fill={COLORS[idx % COLORS.length]} 
+                          radius={[4, 4, 0, 0]}
+                        />
                       ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Gráfico de Pizza */}
+                <div style={{ flex: 1, height: '400px', minWidth: isMobile ? '100%' : '35%' }}>
+                  <h4 style={{ textAlign: 'center', marginBottom: '10px', color: '#666' }}>Total Global</h4>
+                  <ResponsiveContainer width="100%" height="90%">
+                    <PieChart>
+                      <Pie 
+                        data={dados.totais_pizza} 
+                        dataKey="value" 
+                        nameKey="name" 
+                        cx="50%" 
+                        cy="50%" 
+                        outerRadius={isMobile ? 80 : 100}
+                        label={!isMobile}
+                      >
+                        {dados.totais_pizza.map((entry, index) => (
+                          <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend verticalAlign="bottom" height={36}/>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+
               </div>
             </div>
           </div>

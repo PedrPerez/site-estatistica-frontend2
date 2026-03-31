@@ -109,7 +109,6 @@ export default function EditarImpresso() {
           {error && <div className="status-msg error" style={{ color: 'red', textAlign: 'center', marginBottom: '15px' }}>{error}</div>}
           {success && <div className="status-msg success" style={{ color: 'green', textAlign: 'center', marginBottom: '15px' }}>{success}</div>}
 
-          {/* Secção Identificação */}
           <section className="section-box">
             <h2 className="section-title">Identificação (Modo Edição)</h2>
             <div className="row">
@@ -131,7 +130,6 @@ export default function EditarImpresso() {
             </div>
           </section>
 
-          {/* Secção Tipo e Unidade */}
           <section className="section-box">
             <div className="row">
               <div className="input-group grow">
@@ -156,7 +154,6 @@ export default function EditarImpresso() {
             </div>
           </section>
 
-          {/* Secção Contacto */}
           <section className="section-box">
             <h2 className="section-title">Contacto</h2>
             <div className="row">
@@ -171,17 +168,15 @@ export default function EditarImpresso() {
             </div>
           </section>
 
-          {/* Secção Descritivo */}
-          <section className="section-box no-padding">
-            <h2 className="section-title gray-bg">Descritivo:</h2>
+          <section className="section-box">
+            <h2 className="section-title">Descritivo:</h2>
             <div className="textarea-container">
               <textarea name="descritivo" value={formData.descritivo} onChange={handleChange} />
             </div>
           </section>
 
-          {/* Secção Resolução */}
-          <section className="section-box no-padding">
-            <h2 className="section-title gray-bg">Resolução:</h2>
+          <section className="section-box">
+            <h2 className="section-title">Resolução:</h2>
             <div className="textarea-container">
               <textarea name="resolucao" value={formData.resolucao} onChange={handleChange} />
             </div>

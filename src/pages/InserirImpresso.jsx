@@ -124,7 +124,6 @@ export default function InserirImpresso() {
             </div>
           </section>
 
-          {/* Secção Tipo e Unidade */}
           <section className="section-box">
             <div className="row">
               <div className="input-group grow">
@@ -144,7 +143,6 @@ export default function InserirImpresso() {
             </div>
           </section>
 
-          {/* Secção Contacto */}
           <section className="section-box">
             <h2 className="section-title">Contacto</h2>
             <div className="row">
@@ -159,16 +157,15 @@ export default function InserirImpresso() {
             </div>
           </section>
 
-          {/* Áreas de Texto */}
-          <section className="section-box no-padding">
-            <h2 className="section-title gray-bg">Descritivo:</h2>
+          <section className="section-box">
+            <h2 className="section-title">Descritivo:</h2>
             <div className="textarea-container">
               <textarea name="descritivo" value={formData.descritivo} onChange={handleChange} placeholder="Escreva aqui os detalhes..." />
             </div>
           </section>
 
-          <section className="section-box no-padding">
-            <h2 className="section-title gray-bg">Resolução:</h2>
+          <section className="section-box">
+            <h2 className="section-title">Resolução:</h2>
             <div className="textarea-container">
               <textarea name="resolucao" value={formData.resolucao} onChange={handleChange} placeholder="Ações tomadas para resolver..." />
             </div>

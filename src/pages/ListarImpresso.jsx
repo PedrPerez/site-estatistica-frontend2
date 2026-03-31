@@ -20,7 +20,6 @@ export default function ListarImpresso() {
 
   const [expandedId, setExpandedId] = useState(null);
 
-  // 1. Carregar dados da API ao iniciar
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName)
@@ -52,7 +51,6 @@ export default function ListarImpresso() {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  // 2. Lógica de Filtragem Dinâmica
   const resultadosFiltrados = registos.filter(item => {
     const correspondeUnidade = formData.unidade === '' || String(item.unidade_id) === formData.unidade;
     const correspondeTipo = formData.tipo === '' || String(item.tipo_id) === formData.tipo;
@@ -91,8 +89,7 @@ export default function ListarImpresso() {
 
       <main className="main-content list-page">
         <div className="container-1200">
-          
-          {/* FILTROS */}
+
           <div className="filter-header">
             <span className="filter-title">Filtros:</span>
             <button onClick={limparFiltros} className="clean-filters">Limpar Filtros</button>
@@ -131,7 +128,6 @@ export default function ListarImpresso() {
             Total de Resultados: {resultadosFiltrados.length}
           </h2>
 
-          {/* LISTA DE RESULTADOS */}
           <div className="results-container">
             {resultadosFiltrados.length > 0 ? (
               resultadosFiltrados.map((item) => (
@@ -172,7 +168,6 @@ export default function ListarImpresso() {
                     </div>
                   </div>
 
-                  {/* CONTEÚDO EXPANDIDO */}
                   {expandedId === item.id && (
                     <div className="expanded-content" style={{ padding: '20px', borderTop: '1px solid #ccc', backgroundColor: '#fdfdfd' }}>
                       <p><strong>Tipo de Mensagem:</strong> {item.tipo_nome}</p>

@@ -21,7 +21,6 @@ export default function InserirEmail() {
 
   const [status, setStatus] = useState({ type: '', msg: '' });
 
-  // Carregar opções dinâmicas
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName)
@@ -141,8 +140,8 @@ export default function InserirEmail() {
               </div>
             </section>
 
-            <section className="section-box no-padding">
-              <h2 className="section-title gray-bg">Conteúdo do email:</h2>
+            <section className="section-box">
+              <h2 className="section-title">Conteúdo do email:</h2>
               <div className="textarea-container">
                 <textarea name="conteudo" value={formData.conteudo} onChange={handleChange} />
               </div>

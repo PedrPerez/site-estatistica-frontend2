@@ -4,7 +4,7 @@ import "../css/HomePage.css";
 import "../css/Header.css";
 import logo from '../assets/logohospital_cores.png'; 
 
-export default function HomePage() {
+export default function HomePageAdmin() {
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(null);
   const [userName, setUserName] = useState("Utilizador");
@@ -41,42 +41,13 @@ export default function HomePage() {
         <div className="menu-grid">
           {/* Questionários */}
           <MenuBox
-            title="Questionários"
-            isOpen={openMenu === "questionario"}
-            onClick={() => handleClick("questionario")}
+            title="Utilizadores"
+            isOpen={openMenu === "utilizadores"}
+            onClick={() => handleClick("utilizadores")}
           >
             <Option onClick={() => navigate("/inserir-questionario")}>Registar Novo</Option>
             <Option onClick={() => navigate("/listar-questionario")}>Consultar Lista</Option>
             <Option onClick={() => navigate("/estatistica-questionario")}>Estatísticas</Option>
-          </MenuBox>
-
-          {/* Impressos */}
-          <MenuBox
-            title="Impressos"
-            isOpen={openMenu === "impressos"}
-            onClick={() => handleClick("impressos")}
-          >
-            <Option onClick={() => navigate("/inserir-impresso")}>Registar Novo</Option>
-            <Option onClick={() => navigate("/listar-impresso")}>Consultar Lista</Option>
-            <Option onClick={() => navigate("/estatistica-impresso")}>Estatísticas</Option> 
-          </MenuBox>
-
-          {/* Emails */}
-          <MenuBox
-            title="Gestão de Emails"
-            isOpen={openMenu === "emails"}
-            onClick={() => handleClick("emails")}
-          >
-            <Option onClick={() => navigate("/inserir-email")}>Registar</Option>
-            <Option onClick={() => navigate("/listar-email")}>Histórico</Option>
-          </MenuBox>
-
-          <MenuBox
-            title="Exportar Dados"
-            isOpen={openMenu === "exportar"}
-            onClick={() => handleClick("exportar")}
-          >
-            <Option onClick={() => navigate("/exportar")}>bacalhau</Option>
           </MenuBox>
         </div>
       </main>
