@@ -76,7 +76,7 @@ export default function HomePage() {
             isOpen={openMenu === "exportar"}
             onClick={() => handleClick("exportar")}
           >
-            <Option onClick={() => navigate("/exportar")}>bacalhau</Option>
+            <Option onClick={() => navigate("/exportar")}>exportar</Option>
           </MenuBox>
         </div>
       </main>

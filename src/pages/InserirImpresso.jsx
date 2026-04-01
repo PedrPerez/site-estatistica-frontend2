@@ -7,6 +7,7 @@ import logo from '../assets/logohospital_cores.png';
 export default function InserirImpresso() {
   const [unidades, setUnidades] = useState([]);
   const [userName, setUserName] = useState("Utilizador");
+  const today = new Date().toISOString().split('T')[0];
   const [tipos, setTipos] = useState([]);
   const navigate = useNavigate();
   
@@ -113,7 +114,7 @@ export default function InserirImpresso() {
               </div>
               <div className="input-group">
                 <label>Data:</label>
-                <input type="date" name="data" value={formData.data} onChange={handleChange} />
+                <input type="date" name="data" value={formData.data} max={today} onChange={handleChange} />
               </div>
             </div>
             <div className="row" style={{ paddingTop: 0 }}>

@@ -9,6 +9,7 @@ export default function InserirQuestionario() {
   const [unidades, setUnidades] = useState([]);
   const [userName, setUserName] = useState("Utilizador");
   const [questoes, setQuestoes] = useState([]);
+  const today = new Date().toISOString().split('T')[0];
   const [seccoesAbertas, setSeccoesAbertas] = useState({});
   const [formData, setFormData] = useState({
     unidade: '',
@@ -73,6 +74,11 @@ export default function InserirQuestionario() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (new Date(formData.data) > new Date()) {
+      setStatus({ type: 'error', message: 'Não é permitido selecionar uma data futura.' });
+      return;
+    }
     setStatus({ type: 'info', message: 'A gravar...' });
 
     const listaRespostas = Object.keys(formData.respostas).map(id => ({
@@ -218,7 +224,7 @@ export default function InserirQuestionario() {
               </div>
               <div className="input-group">
                 <label>Data:</label>
-                <input type="date" name="data" value={formData.data} onChange={handleChange} required />
+                <input type="date" name="data" value={formData.data} onChange={handleChange} max={today} required />
               </div>
             </div>
           </div>

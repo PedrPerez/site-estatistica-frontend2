@@ -3,7 +3,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from "./pages/HomePage";
 import HomePageAdmin from './pages/HomePageAdmin';
 import LogIn from "./pages/LogIn";
-import LogInAdmin from "./pages/LogInAdmin";
 import InserirEmail from "./pages/InserirEmail";
 import ListarEmail from './pages/ListarEmail';
 import EditarEmail from './pages/EditarEmail';
@@ -16,6 +15,9 @@ import EditarQuestionario from './pages/EditarQuestionario';
 import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 import EstatisticaImpresso from './pages/EstatisticaImpresso';
 import ExportarDados from './pages/ExportarDados';
+import LogInAdmin from "./pages/LogInAdmin";
+import GerirUtilizadores from './pages/ListarUser';
+import InserirUser from './pages/InserirUser';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/" element={<LogIn />} />
         <Route path="/login-admin" element={<LogInAdmin />} />
         <Route path="/principal-admin" element={<HomePageAdmin />} />
+        <Route path="/listar-user" element={<GerirUtilizadores />} />
+        <Route path="/inserir-user" element={<InserirUser />} />
 
         {/* GRUPO DE ROTAS PROTEGIDAS */}
         <Route element={<ProtectedRoute />}>

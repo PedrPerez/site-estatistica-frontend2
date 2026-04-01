@@ -56,6 +56,18 @@
   align-items: center;
 }
 
+.section-title.clickable-header:hover {
+    background-color: var(--azul-hospital) !important;
+    color: var(--branco) !important;
+    opacity: 1 !important;
+}
+
+/* Força o fundo preto e texto branco na primeira secção */
+.section-box:first-of-type .section-title.clickable-header:hover {
+    background-color: var(--preto) !important;
+    color: var(--branco) !important;
+}
+
 /* Cor preta para a secção de Identificação */
 .section-box:first-of-type .section-title {
   background-color: var(--preto);
