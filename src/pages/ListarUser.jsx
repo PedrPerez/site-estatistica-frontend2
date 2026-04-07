@@ -66,7 +66,7 @@ export default function ListarUser() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link">← Página Principal</button>
+        <button onClick={() => navigate('/principal-admin')} className="nav-link">← Página Principal</button>
       </nav>
 
       <hr className="divider" />

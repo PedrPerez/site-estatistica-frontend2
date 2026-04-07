@@ -45,9 +45,8 @@ export default function HomePageAdmin() {
             isOpen={openMenu === "utilizadores"}
             onClick={() => handleClick("utilizadores")}
           >
-            <Option onClick={() => navigate("/inserir-questionario")}>Registar Novo</Option>
-            <Option onClick={() => navigate("/listar-questionario")}>Consultar Lista</Option>
-            <Option onClick={() => navigate("/estatistica-questionario")}>Estatísticas</Option>
+            <Option onClick={() => navigate("/inserir-user")}>Registar Novo</Option>
+            <Option onClick={() => navigate("/listar-user")}>Consultar Lista</Option>
           </MenuBox>
         </div>
       </main>

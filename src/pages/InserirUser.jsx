@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/InserirEmail.css'; // Mantendo o CSS base
+import '../css/InserirEmail.css'; 
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png'; 
 
@@ -12,7 +12,7 @@ export default function InserirUser() {
     username: '',
     password: '',
     nome: '',
-    idcategoria: '1',
+    idcategoria: '9',
     pin: '',
     activo: '1'
   });
@@ -26,7 +26,9 @@ export default function InserirUser() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    // Alteração: Garante que idcategoria seja tratado como número
+    const val = name === "idcategoria" ? parseInt(value, 10) : value;
+    setFormData(prev => ({ ...prev, [name]: val }));
   };
 
   const handleLogout = () => {
@@ -52,8 +54,8 @@ export default function InserirUser() {
       const result = await response.json();
       if (result.status === 'sucesso') {
         setStatus({ type: 'success', msg: result.mensagem });
-        // Limpar formulário após sucesso
-        setFormData({ username: '', password: '', nome: '', idcategoria: '1', pin: '', activo: '1' });
+        // Alteração: Reset para o valor padrão '9'
+        setFormData({ username: '', password: '', nome: '', idcategoria: '9', pin: '', activo: '1' });
       } else {
         setStatus({ type: 'error', msg: result.mensagem });
       }
@@ -75,7 +77,7 @@ export default function InserirUser() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/principal-admin')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
         <button onClick={() => navigate('/listar-user')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Utilizadores →</button>
       </nav>
 
@@ -103,18 +105,23 @@ export default function InserirUser() {
               <div className="row">
                 <div className="input-group grow">
                   <label>Nome Completo:</label>
-                  <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder="Ex: Ana Costa" />
+                  <input type="text" name="nome" value={formData.nome} onChange={handleChange}/>
                 </div>
+                {/* ALTERAÇÃO AQUI: De input number para select */}
                 <div className="input-group">
-                  <label>ID Categoria:</label>
-                  <input type="number" name="idcategoria" value={formData.idcategoria} onChange={handleChange} />
+                  <label>Nível de Acesso:</label>
+                  <select name="idcategoria" value={formData.idcategoria} onChange={handleChange}>
+                    <option value="1">Admin</option>
+                    <option value="7">Funcionário</option>
+                    <option value="9">Geral</option>
+                  </select>
                 </div>
               </div>
 
               <div className="row">
                 <div className="input-group grow">
                   <label>Username:</label>
-                  <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="anacosta" />
+                  <input type="text" name="username" value={formData.username} onChange={handleChange}/>
                 </div>
                 <div className="input-group grow">
                   <label>Password:</label>
@@ -139,7 +146,7 @@ export default function InserirUser() {
 
             <div className="button-group">
               <button type="submit" className="btn-submit">Criar Utilizador</button>
-              <button type="button" className="btn-cancel" onClick={() => navigate('/principal')}>Cancelar</button>
+              <button type="button" className="btn-cancel" onClick={() => navigate('/principal-admin')}>Cancelar</button>
             </div>
         </form>
       </main>

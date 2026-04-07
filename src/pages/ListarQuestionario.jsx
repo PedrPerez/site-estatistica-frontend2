@@ -211,7 +211,8 @@ export default function ListarQuestionarios() {
             ) : (
               questionariosFiltrados.map((q) => (
                 <div key={q.id_questionario} className="section-box">
-                  <div className="section-title gray-bg clickable-header" onClick={() => toggleExpandQuestionario(q.id_questionario)}>
+                  {/* ALTERAÇÃO FEITA AQUI NAS CLASSES */}
+                  <div className="cabecalho-questionario-branco" onClick={() => toggleExpandQuestionario(q.id_questionario)}>
                     <div className="row-content">
                       <div className="row-info-text">
                         <strong>ID: {q.id_questionario}</strong>
