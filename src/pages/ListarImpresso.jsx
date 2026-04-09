@@ -131,55 +131,47 @@ export default function ListarImpresso() {
           <div className="results-container">
             {resultadosFiltrados.length > 0 ? (
               resultadosFiltrados.map((item) => (
-                <div key={item.id} className="section-box list-item">
-                  <div 
-                    className="clickable-header"
-                    onClick={() => toggleExpand(item.id)}
-                    style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', cursor: 'pointer', alignItems: 'center' }}
-                  >
-                    <span style={{ fontSize: '1.2rem' }}>
-                      <strong>#{item.id}</strong> | {item.unidade_nome} | {new Date(item.data).toLocaleDateString('pt-PT')}
-                    </span>
-                    
-                    <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                      {/* BOTÃO EDITAR */}
-                      <button 
-                        onClick={(e) => { 
-                          e.stopPropagation(); 
-                          navigate(`/editar-impresso/${item.id}`); 
-                        }}
-                        className="btn-edit-list"
-                        style={{ 
-                          backgroundColor: '#2196F3', 
-                          color: 'white', 
-                          border: 'none', 
-                          padding: '6px 15px', 
-                          borderRadius: '4px', 
-                          cursor: 'pointer',
-                          fontWeight: 'bold',
-                          fontSize: '0.9rem'
-                        }}
-                      >
-                        EDITAR
-                      </button>
-                      <span style={{ fontWeight: 'bold' }}>
-                        {expandedId === item.id ? '▲' : '▼'}
-                      </span>
+                <div key={item.id} className="section-box">
+                  {/* CABEÇALHO COM A MESMA ESTÉTICA DO PRIMEIRO */}
+                  <div className="cabecalho-questionario-branco" onClick={() => toggleExpand(item.id)}>
+                    <div className="row-content">
+                      <div className="row-info-text">
+                        <strong>ID: {item.id}</strong>
+                        <span>{item.unidade_nome}</span>
+                        <small>{new Date(item.data).toLocaleDateString('pt-PT')}</small>
+                      </div>
+                      
+                      <div className="row-actions">
+                        <button 
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            navigate(`/editar-impresso/${item.id}`); 
+                          }} 
+                          className="btn-edit-list"
+                        >
+                          EDITAR
+                        </button>
+                        <span className="toggle-icon">
+                          {expandedId === item.id ? '▲' : '▼'}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
+                  {/* CONTEÚDO EXPANDIDO */}
                   {expandedId === item.id && (
-                    <div className="expanded-content" style={{ padding: '20px', borderTop: '1px solid #ccc', backgroundColor: '#fdfdfd' }}>
-                      <p><strong>Tipo de Mensagem:</strong> {item.tipo_nome}</p>
-                      <div style={{ marginTop: '15px' }}>
-                        <p><strong>Descritivo:</strong></p>
-                        <div className="detail-box">
-                          {item.descritivo || <i>Sem descrição.</i>}
+                    <div className="question-content expanded">
+                      <div className="comentarios-section">
+                        <p><strong>Tipo de Mensagem:</strong> {item.tipo_nome}</p>
+                        
+                        <div className="comentarios-titulo" style={{ marginTop: '15px' }}>Descritivo:</div>
+                        <div className="comment-box">
+                          {item.descritivo || "Sem descrição."}
                         </div>
                         
-                        <p style={{ marginTop: '15px' }}><strong>Resolução:</strong></p>
-                        <div className="detail-box resolution">
-                          {item.resolucao || <i>Pendente de resolução.</i>}
+                        <div className="comentarios-titulo" style={{ marginTop: '15px' }}>Resolução:</div>
+                        <div className="comment-box">
+                          {item.resolucao || "Pendente de resolução."}
                         </div>
                       </div>
                     </div>
@@ -187,7 +179,7 @@ export default function ListarImpresso() {
                 </div>
               ))
             ) : (
-              <p className="no-results">Nenhum registo encontrado com os filtros selecionados.</p>
+              <p style={{textAlign: 'center', marginTop: '20px'}}>Nenhum registo encontrado.</p>
             )}
           </div>
         </div>

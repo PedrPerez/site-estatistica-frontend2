@@ -24,8 +24,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* ROTA PÚBLICA */}
-        <Route path="/log" element={<LogIn />} />
-        <Route path="/" element={<LogInAdmin />} />
+        <Route path="/" element={<LogIn />} />
+        <Route path="/loginAdmin" element={<LogInAdmin />} />
         <Route path="/principal-admin" element={<HomePageAdmin />} />
         <Route path="/listar-user" element={<GerirUtilizadores />} />
         <Route path="/inserir-user" element={<InserirUser />} />

@@ -128,46 +128,50 @@ export default function ListarEmail() {
           <div className="results-container">
             {emailsFiltrados.length > 0 ? (
               emailsFiltrados.map((item) => (
-                <div key={item.id_email} className="list-item-wrapper">
-                  {/* CABEÇALHO DA LINHA (CLICÁVEL) */}
+                <div key={item.id_email} className="section-box">
+                  {/* CABEÇALHO DA LINHA (ESTILO QUESTIONÁRIO) */}
                   <div 
-                    className="section-box list-row" 
+                    className="cabecalho-questionario-branco" 
                     onClick={() => setExpandedId(expandedId === item.id_email ? null : item.id_email)}
                   >
                     <div className="row-content">
-                      <span className="row-text">
-                        <strong>#{item.id_email}</strong> | {item.nome || 'Sem Nome'} | <span className="text-muted">{item.assunto}</span>
-                      </span>
+                      <div className="row-info-text">
+                        <strong>ID: {item.id_email}</strong>
+                        <span>{item.nome || 'Sem Nome'}</span>
+                        <small>{item.assunto}</small>
+                      </div>
                       
-                      <div className="action-group">
+                      <div className="row-actions">
                         <button 
                           onClick={(e) => { 
-                            e.stopPropagation(); // Impede que a linha abra/feche ao clicar em editar
+                            e.stopPropagation(); 
                             navigate(`/editar-email/${item.id_email}`); 
-                          }}
-                          className="btn-edit-small"
+                          }} 
+                          className="btn-edit-list"
                         >
                           EDITAR
                         </button>
-                        <span className="row-icon">{expandedId === item.id_email ? '▲' : '▼'}</span>
+                        <span className="toggle-icon">
+                          {expandedId === item.id_email ? '▲' : '▼'}
+                        </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* CONTEÚDO DETALHADO (EXPANDIDO) */}
+                  {/* CONTEÚDO EXPANDIDO (ESTILO QUESTIONÁRIO) */}
                   {expandedId === item.id_email && (
-                    <div className="expanded-details">
-                      <div className="details-grid">
-                        <p><strong>Remetente:</strong> {item.email}</p>
-                        <p><strong>Data:</strong> {new Date(item.data).toLocaleDateString('pt-PT')}</p>
-                        <p><strong>Categoria:</strong> {item.tipo_descricao || 'Não definida'}</p>
-                      </div>
-                      
-                      <hr className="inner-divider" />
-                      
-                      <p className="content-label"><strong>Conteúdo da Mensagem:</strong></p>
-                      <div className="detail-box-email">
-                        {item.conteudo || <i>Este email não possui conteúdo registado.</i>}
+                    <div className="question-content expanded">
+                      <div className="comentarios-section">
+                        <div className="details-grid-email">
+                          <p><strong>Remetente:</strong> {item.email}</p>
+                          <p><strong>Data:</strong> {new Date(item.data).toLocaleDateString('pt-PT')}</p>
+                          <p><strong>Categoria:</strong> {item.tipo_descricao || 'Não definida'}</p>
+                        </div>
+                        
+                        <div className="comentarios-titulo" style={{ marginTop: '15px' }}>Conteúdo da Mensagem:</div>
+                        <div className="comment-box">
+                          {item.conteudo || <i>Este email não possui conteúdo registado.</i>}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -175,7 +179,7 @@ export default function ListarEmail() {
               ))
             ) : (
               <div className="no-results-box">
-                <p>Nenhum registo corresponde aos critérios de pesquisa selecionados.</p>
+                <p style={{textAlign: 'center', padding: '40px', color: '#666'}}>Nenhum registo encontrado.</p>
               </div>
             )}
           </div>
