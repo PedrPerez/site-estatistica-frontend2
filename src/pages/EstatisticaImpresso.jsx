@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import '../css/ListarQuestionario.css';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png'; 
 
 const COLORS = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58', '#AB47BC', '#00ACC1', '#FF7043'];
@@ -50,13 +48,13 @@ export default function EstatisticaImpresso() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>Sair</button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link">← Menu</button>
+        <button onClick={() => navigate('/principal')} className="nav-link">← Página Principal</button>
         <button onClick={() => navigate('/listar-impresso')} className="nav-link">Lista de Registos →</button>
       </nav>
 
@@ -64,8 +62,6 @@ export default function EstatisticaImpresso() {
 
       <main className="main-content">
         <div className="container-1200">
-          
-          {/* Filtros (Fundo Branco Forçado) */}
           <div className="section-box filter-box" style={{ backgroundColor: '#fff', border: '1px solid #d1d9e6', borderRadius: '8px', marginBottom: '20px' }}>
             <div className="row flex-gap" style={{ padding: '15px' }}>
               <div className="input-group grow">
@@ -189,6 +185,17 @@ export default function EstatisticaImpresso() {
           </div>
         </div>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

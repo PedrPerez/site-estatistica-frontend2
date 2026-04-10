@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/InserirImpresso.css';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function InserirImpresso() {
@@ -83,9 +81,7 @@ export default function InserirImpresso() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>
-              Sair
-            </button>
+            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>Terminar Sessão</button>
           </div>
         </div>
       </header>
@@ -112,20 +108,16 @@ export default function InserirImpresso() {
                 <label>Nome:</label>
                 <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder="Nome do utente" />
               </div>
+              <div className="input-group grow">
+                <label>Morada:</label>
+                <input type="text" name="morada" value={formData.morada} onChange={handleChange} placeholder="Morada completa" />
+              </div>
               <div className="input-group">
                 <label>Data:</label>
                 <input type="date" name="data" value={formData.data} max={today} onChange={handleChange} />
               </div>
             </div>
-            <div className="row" style={{ paddingTop: 0 }}>
-              <div className="input-group grow">
-                <label>Morada:</label>
-                <input type="text" name="morada" value={formData.morada} onChange={handleChange} placeholder="Morada completa" />
-              </div>
-            </div>
-          </section>
-
-          <section className="section-box">
+  
             <div className="row">
               <div className="input-group grow">
                 <label>Tipo:</label>
@@ -178,6 +170,17 @@ export default function InserirImpresso() {
           </div>
         </form>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

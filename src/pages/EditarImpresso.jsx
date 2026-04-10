@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../css/InserirImpresso.css';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function EditarImpresso() {
@@ -90,9 +88,7 @@ export default function EditarImpresso() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>
-              Terminar Sessão
-            </button>
+            <button className="logout-btn" onClick={() => { localStorage.removeItem('userName'); navigate("/login"); }}>Terminar Sessão</button>
           </div>
         </div>
       </header>
@@ -188,6 +184,17 @@ export default function EditarImpresso() {
           </div>
         </form>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

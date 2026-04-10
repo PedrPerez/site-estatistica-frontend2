@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import "../css/HomePage.css";
 import "../css/Header.css";
+import "../css/Footer.css";
+import "../css/HomePage.css";
+import "../css/InserirEmail.css";
+import "../css/InserirEmail.css";
+import "../css/InserirQuestionario.css";
+import "../css/ListarEmail.css";
+import "../css/ListarQuestionario.css";
 import logo from '../assets/logohospital_cores.png'; 
 
 export default function HomePage() {
@@ -30,9 +36,7 @@ export default function HomePage() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Terminar Sessão
-            </button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
@@ -80,6 +84,17 @@ export default function HomePage() {
           </MenuBox>
         </div>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

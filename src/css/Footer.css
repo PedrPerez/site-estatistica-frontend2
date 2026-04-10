@@ -1,0 +1,59 @@
+/* Container do Rodapé */
+.footer-minimal {
+  width: 100%;
+  margin-top: 80px; /* Afastamento do formulário */
+  padding: 40px 0 20px 0;
+  border-top: 1px solid #e0e6ed; /* Linha sutil da imagem */
+  background-color: #fcfdfe; /* Fundo quase branco */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-content {
+  max-width: 1100px; /* Alinhado com a largura do seu formulário */
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o conteúdo */
+  gap: 15px;
+}
+
+/* Estilo dos Textos */
+.footer-info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.hospital-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #333;
+  letter-spacing: 0.5px;
+}
+
+.hospital-sub {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.footer-copyright {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Garante que o footer fique no fundo se a página for curta */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}

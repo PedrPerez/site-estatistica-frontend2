@@ -79,8 +79,10 @@ export default function InserirQuestionario() {
       setStatus({ type: 'error', message: 'Não é permitido selecionar uma data futura.' });
       return;
     }
+    
     setStatus({ type: 'info', message: 'A gravar...' });
 
+    // Mapeia apenas o que foi respondido
     const listaRespostas = Object.keys(formData.respostas).map(id => ({
       id_indicador: parseInt(id),
       valor: formData.respostas[id]
@@ -117,6 +119,7 @@ export default function InserirQuestionario() {
     navigate("/login");
   };
 
+  // COMPONENTE MOBILE (SEM REQUIRED NOS RADIOS)
   const IndicadoresMobile = ({ indicadores, respostas, onRadioChange }) => {
     const niveis = [
       { key: 'muito_bom', label: 'Muito Bom' },
@@ -139,7 +142,7 @@ export default function InserirQuestionario() {
                   <input
                     type="radio"
                     name={`ind_${ind.id}`}
-                    required
+                    // Removido o required para permitir submissão parcial
                     checked={respostas[ind.id] === nivel.key}
                     onChange={() => onRadioChange(ind.id, nivel.key)}
                   />
@@ -153,6 +156,7 @@ export default function InserirQuestionario() {
     );
   };
 
+  // COMPONENTE DESKTOP (SEM REQUIRED NOS RADIOS)
   const IndicadoresDesktop = ({ indicadores, respostas, onRadioChange }) => (
     <div className="table-responsive">
       <table className="rating-table">
@@ -174,7 +178,7 @@ export default function InserirQuestionario() {
                   <input 
                     type="radio" 
                     name={`ind_${ind.id}`} 
-                    required
+                    // Removido o required para permitir submissão parcial
                     checked={respostas[ind.id] === nivel}
                     onChange={() => onRadioChange(ind.id, nivel)} 
                   />
@@ -194,9 +198,7 @@ export default function InserirQuestionario() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Terminar Sessão
-            </button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
@@ -275,13 +277,23 @@ export default function InserirQuestionario() {
             </div>
           )}
 
-          {/* Botões de Ação */}
           <div className="button-group">
             <button type="submit" className="btn-submit">Submeter</button>
             <button type="button" className="btn-cancel" onClick={() => window.history.back()}>Cancelar</button>
           </div>
         </form>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

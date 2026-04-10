@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import '../css/ListarQuestionario.css';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function EstatisticaQuestionario() {
@@ -76,13 +74,13 @@ export default function EstatisticaQuestionario() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>Sair</button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal')} className="nav-link">← Menu</button>
+        <button onClick={() => navigate('/principal')} className="nav-link">← Página Principal</button>
         <button onClick={() => navigate('/listar-questionario')} className="nav-link">Registos →</button>
       </nav>
 
@@ -189,6 +187,17 @@ export default function EstatisticaQuestionario() {
           ))}
         </div>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

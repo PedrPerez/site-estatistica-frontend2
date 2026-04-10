@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/ListarImpresso.css';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function ListarUser() {
@@ -36,7 +34,6 @@ export default function ListarUser() {
       const res = await fetch('http://localhost/API/obterUser.php');
       if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
       const data = await res.json();
-      // Os dados vêm da DB e o estado 'activo' já vem definido (0 ou 1)
       setRegistos(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Erro:", err);
@@ -66,7 +63,6 @@ export default function ListarUser() {
       const result = await response.json();
 
       if (result.status === 'sucesso') {
-        // Sincroniza o estado local imediatamente após o sucesso na DB
         setRegistos(prev => prev.map(user => 
           user.iduser === iduser ? { ...user, activo: String(novoStatus) } : user
         ));
@@ -105,7 +101,7 @@ export default function ListarUser() {
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
-            <button className="logout-btn" onClick={handleLogout}>Sair</button>
+            <button className="logout-btn" onClick={handleLogout}>Terminar Sessão</button>
           </div>
         </div>
       </header>
@@ -225,6 +221,17 @@ export default function ListarUser() {
           </div>
         </div>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende</span>
+            <span className="hospital-sub">Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
