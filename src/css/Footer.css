@@ -1,42 +1,50 @@
-/* Container do Rodapé */
+/* OBRIGATÓRIO: Sem isso, o navegador não sabe qual é o limite do fundo */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* O wrapper deve ser flexível para o 'margin-top: auto' funcionar no footer */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa a tela toda */
+}
+
+/* Estilo do Rodapé */
 .footer-minimal {
+  /* O SEGREDO: Empurra o footer para o fundo, 
+     independente do que está acima dele */
+  margin-top: auto; 
+  
   width: 100%;
-  margin-top: 80px; /* Afastamento do formulário */
   padding: 40px 0 20px 0;
-  border-top: 1px solid #e0e6ed; /* Linha sutil da imagem */
-  background-color: #fcfdfe; /* Fundo quase branco */
-  font-family: 'Segoe UI', sans-serif;
+  border-top: 1px solid #e0e6ed;
+  background-color: #fcfdfe;
+  flex-shrink: 0;
 }
 
 .footer-content {
-  max-width: 1100px; /* Alinhado com a largura do seu formulário */
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza o conteúdo */
-  gap: 15px;
-}
-
-/* Estilo dos Textos */
-.footer-info {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .hospital-name {
   font-weight: 700;
   font-size: 1.1rem;
   color: #333;
-  letter-spacing: 0.5px;
 }
 
 .hospital-sub {
   font-weight: 400;
   font-size: 0.9rem;
   color: #666;
-  margin-top: 2px;
 }
 
 .footer-copyright {
@@ -44,16 +52,4 @@
   font-size: 0.8rem;
   color: #999;
   text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Garante que o footer fique no fundo se a página for curta */
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.main-content {
-  flex: 1;
 }
