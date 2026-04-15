@@ -8,6 +8,7 @@ import "../css/InserirEmail.css";
 import "../css/InserirQuestionario.css";
 import "../css/ListarEmail.css";
 import "../css/ListarQuestionario.css";
+import '../css/ExportarDados.css';
 import logo from '../assets/logohospital_cores.png'; 
 
 export default function HomePage() {

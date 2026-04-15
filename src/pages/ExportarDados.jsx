@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function ExportarEstatisticas() {
   const navigate = useNavigate();
-  const reportRef = useRef(); // Referência para a captura do PDF
+  const reportRef = useRef();
 
   // Estados
   const [userName, setUserName] = useState("Utilizador");
@@ -129,18 +128,25 @@ export default function ExportarEstatisticas() {
 
       <nav className="nav-links">
         <button onClick={() => navigate('/principal')} className="nav-link">← Voltar</button>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={exportarExcel} className="nav-link" style={{ backgroundColor: '#27ae60', color: 'white' }}>Excel</button>
-          <button onClick={exportarPDF} className="nav-link" style={{ backgroundColor: '#c0392b', color: 'white' }}>PDF</button>
-        </div>
       </nav>
 
+      <hr className="divider" />
+
+      <div className="export-actions">
+        <button onClick={exportarExcel} className="btn-export btn-excel">
+          Excel
+        </button>
+        <button onClick={exportarPDF} className="btn-export btn-pdf">
+          PDF
+        </button>
+      </div>
+
       <main className="main-content list-page">
-        <div className="container-1200" style={{ marginTop: '20px' }}>
+        <div className="container-1200 stats-page-container">
           
           {/* Filtros */}
-          <div className="section-box" style={{ marginBottom: '20px' }}>
-            <div className="row" style={{ display: 'flex', gap: '15px', alignItems: 'flex-end' }}>
+          <div className="section-box filters-box">
+            <div className="row filters-row">
               <div className="input-group">
                 <label>Unidade:</label>
                 <select value={filtros.unidade} onChange={(e) => setFiltros({...filtros, unidade: e.target.value})}>
@@ -156,15 +162,15 @@ export default function ExportarEstatisticas() {
                 <label>Fim:</label>
                 <input type="date" onChange={(e) => setFiltros({...filtros, fim: e.target.value})} />
               </div>
-              <button onClick={carregarDados} className="nav-link" style={{ height: '40px' }}>Filtrar</button>
+              <button onClick={carregarDados} className="nav-link btn-filter">Filtrar</button>
             </div>
           </div>
 
           {/* Área de Captura (O que sai no PDF) */}
-          <div ref={reportRef} style={{ background: 'white', padding: '20px', borderRadius: '8px' }}>
+          <div ref={reportRef} className="capture-area">
             
             {/* Widgets de Totais */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '15px', marginBottom: '30px' }}>
+            <div className="cards-grid">
               <Card titulo="Muito Bom" valor={totaisGerais.mb} cor="#2ecc71" />
               <Card titulo="Bom" valor={totaisGerais.b} cor="#3498db" />
               <Card titulo="Aceitável" valor={totaisGerais.a} cor="#f1c40f" />
@@ -173,31 +179,31 @@ export default function ExportarEstatisticas() {
             </div>
 
             {/* Tabela de Visualização */}
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+            <table className="stats-table">
               <thead>
-                <tr style={{ background: '#f4f4f4' }}>
-                  <th style={{ textAlign: 'left', padding: '10px', border: '1px solid #ddd' }}>Indicador</th>
-                  <th style={{ padding: '10px', border: '1px solid #ddd' }}>MB</th>
-                  <th style={{ padding: '10px', border: '1px solid #ddd' }}>B</th>
-                  <th style={{ padding: '10px', border: '1px solid #ddd' }}>A</th>
-                  <th style={{ padding: '10px', border: '1px solid #ddd' }}>M</th>
-                  <th style={{ padding: '10px', border: '1px solid #ddd' }}>Total</th>
+                <tr>
+                  <th className="text-left">Indicador</th>
+                  <th>MB</th>
+                  <th>B</th>
+                  <th>A</th>
+                  <th>M</th>
+                  <th>Total</th>
                 </tr>
               </thead>
               <tbody>
                 {dados.map(p => (
                   <React.Fragment key={p.pergunta_id}>
-                    <tr style={{ background: '#005596', color: 'white' }}>
-                      <td colSpan="6" style={{ padding: '8px', fontWeight: 'bold' }}>{p.titulo}</td>
+                    <tr className="group-row">
+                      <td colSpan="6">{p.titulo}</td>
                     </tr>
                     {p.indicadores.map((ind, idx) => (
                       <tr key={idx}>
-                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ind.texto}</td>
-                        <td style={{ textAlign: 'center', border: '1px solid #ddd' }}>{ind.mb}</td>
-                        <td style={{ textAlign: 'center', border: '1px solid #ddd' }}>{ind.b}</td>
-                        <td style={{ textAlign: 'center', border: '1px solid #ddd' }}>{ind.a}</td>
-                        <td style={{ textAlign: 'center', border: '1px solid #ddd' }}>{ind.m}</td>
-                        <td style={{ textAlign: 'center', border: '1px solid #ddd', fontWeight: 'bold' }}>{ind.mb + ind.b + ind.a + ind.m}</td>
+                        <td>{ind.texto}</td>
+                        <td className="text-center">{ind.mb}</td>
+                        <td className="text-center">{ind.b}</td>
+                        <td className="text-center">{ind.a}</td>
+                        <td className="text-center">{ind.m}</td>
+                        <td className="text-center text-bold">{ind.mb + ind.b + ind.a + ind.m}</td>
                       </tr>
                     ))}
                   </React.Fragment>
@@ -222,15 +228,12 @@ export default function ExportarEstatisticas() {
   );
 }
 
-// Sub-componente para os Cartões
+// Sub-componente para os Cartões (Apenas os valores dinâmicos ficam inline)
 function Card({ titulo, valor, cor }) {
   return (
-    <div style={{ 
-      padding: '15px', borderRadius: '8px', borderLeft: `6px solid ${cor}`,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)', textAlign: 'center', background: '#fff'
-    }}>
-      <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>{titulo}</div>
-      <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: cor }}>{valor}</div>
+    <div className="stat-card" style={{ borderLeftColor: cor }}>
+      <div className="stat-card-title">{titulo}</div>
+      <div className="stat-card-value" style={{ color: cor }}>{valor}</div>
     </div>
   );
 }

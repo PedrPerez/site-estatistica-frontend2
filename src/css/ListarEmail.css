@@ -56,6 +56,14 @@
   min-width: 300px;
 }
 
+.comment-box {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+  padding: 10px 0; 
+}
+
 input, select, textarea {
   border: 2px solid #000;
   padding: 8px;
