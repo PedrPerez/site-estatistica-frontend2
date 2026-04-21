@@ -7,6 +7,7 @@ import logo from '../assets/logohospital_cores.png';
 export default function LogIn() {
     const [utilizador, setUtilizador] = useState('');
     const [password, setPassword] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false); // 1. Estado para a checkbox
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -18,8 +19,12 @@ export default function LogIn() {
             return;
         }
 
+        const url = isAdmin 
+            ? 'http://localhost/API/loginAdmin.php' 
+            : 'http://localhost/API/login.php';
+
         try {
-            const response = await fetch('http://localhost/API/login.php', {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ utilizador, password })
@@ -30,7 +35,15 @@ export default function LogIn() {
             if (data.status === 'sucesso') {
                 setError('');
                 localStorage.setItem('userName', data.user.nome);
-                navigate('/principal'); 
+                localStorage.setItem('userRole', isAdmin ? 'admin' : 'user');
+
+                // Lógica de Redirecionamento condicional
+                if (isAdmin) {
+                    navigate('/HomePageAdmin'); // Rota para Admin
+                } else {
+                    navigate('/principal');     // Rota normal
+                }
+
             } else {
                 setError(data.mensagem);
             }
@@ -71,10 +84,25 @@ export default function LogIn() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+
+                    {/* 3. Checkbox de Admin */}
+                    <div className="admin-checkbox">
+                        <label>Entrar como Administrador</label>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                            <input
+                                type="checkbox"
+                                checked={isAdmin}
+                                onChange={(e) => setIsAdmin(e.target.checked)}
+                            />
+                        </label>
+                    </div>
                     
-                    <button type="submit" className="btn-login">Entrar</button>
+                    <button type="submit" className="btn-login" style={{ marginTop: '20px' }}>
+                        Entrar
+                    </button>
                 </form>
             </div>
+            
             <footer className="footer-minimal">
                 <div className="footer-content">
                 <div className="footer-info">

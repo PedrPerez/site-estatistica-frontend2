@@ -57,7 +57,7 @@ export default function HomePage() {
 
           {/* Impressos */}
           <MenuBox
-            title="Impressos"
+            title="Inquerito"
             isOpen={openMenu === "impressos"}
             onClick={() => handleClick("impressos")}
           >

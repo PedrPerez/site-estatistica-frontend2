@@ -162,7 +162,9 @@ export default function ExportarEstatisticas() {
                 <label>Fim:</label>
                 <input type="date" onChange={(e) => setFiltros({...filtros, fim: e.target.value})} />
               </div>
-              <button onClick={carregarDados} className="nav-link btn-filter">Filtrar</button>
+              <div className="btn-container">
+                <button onClick={carregarDados} className="btn-submit" style={{ padding: '10px 20px' }}>Filtrar</button>
+              </div>
             </div>
           </div>
 

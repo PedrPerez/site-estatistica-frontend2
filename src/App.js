@@ -16,7 +16,8 @@ import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 import EstatisticaImpresso from './pages/EstatisticaImpresso';
 import ExportarDados from './pages/ExportarDados';
 import LogInAdmin from "./pages/LogInAdmin";
-import GerirUtilizadores from './pages/ListarUser';
+import EditarUser from './pages/EditarUser';
+import ListarUser from './pages/ListarUser';
 import InserirUser from './pages/InserirUser';
 
 function App() {
@@ -25,14 +26,11 @@ function App() {
       <Routes>
         {/* ROTA PÚBLICA */}
         <Route path="/" element={<LogIn />} />
-        <Route path="/loginAdmin" element={<LogInAdmin />} />
-        <Route path="/principal-admin" element={<HomePageAdmin />} />
-        <Route path="/listar-user" element={<GerirUtilizadores />} />
-        <Route path="/inserir-user" element={<InserirUser />} />
 
         {/* GRUPO DE ROTAS PROTEGIDAS */}
         <Route element={<ProtectedRoute />}>
           <Route path="/principal" element={<HomePage />} />
+          <Route path="/HomePageAdmin" element={<HomePageAdmin />} /> 
           
           {/* Emails */}
           <Route path="/inserir-email" element={<InserirEmail />} />
@@ -53,7 +51,13 @@ function App() {
           <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
           <Route path="/estatistica-impresso" element={<EstatisticaImpresso />} />
 
+          {/* Exportar Dados */}
           <Route path="/exportar" element={<ExportarDados />} />
+
+          {/* Gerir Utilizadores */}
+          <Route path="/gerir-utilizadores" element={<ListarUser />} />
+          <Route path="/inserir-utilizador" element={<InserirUser />} /> 
+          <Route path="/editar-utilizador/:id" element={<EditarUser />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/" replace />} />

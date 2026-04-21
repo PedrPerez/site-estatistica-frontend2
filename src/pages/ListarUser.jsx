@@ -107,7 +107,8 @@ export default function ListarUser() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal-admin')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/HomePageAdmin')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/inserir-utilizador')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Registar Utilizadores →</button>
       </nav>
 
       <hr className="divider" />
@@ -185,7 +186,7 @@ export default function ListarUser() {
                       </button>
 
                       <button 
-                        onClick={(e) => { e.stopPropagation(); navigate(`/editar-user/${item.iduser}`); }}
+                        onClick={(e) => { e.stopPropagation(); navigate(`/editar-utilizador/${item.iduser}`); }}
                         className="btn-edit-list"
                       >
                         EDITAR

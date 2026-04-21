@@ -77,8 +77,8 @@ export default function InserirUser() {
       </header>
 
       <nav className="nav-links">
-        <button onClick={() => navigate('/principal-admin')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
-        <button onClick={() => navigate('/listar-user')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Utilizadores →</button>
+        <button onClick={() => navigate('/HomePageAdmin')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>← Página Principal</button>
+        <button onClick={() => navigate('/gerir-utilizadores')} className="nav-link" style={{background:'none', border:'none', cursor:'pointer'}}>Listar Utilizadores →</button>
       </nav>
 
       <hr className="divider" />
