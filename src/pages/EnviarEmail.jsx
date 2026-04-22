@@ -17,79 +17,138 @@ export default function EnviarEmail() {
   );
 
   const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleEnviar = async () => {
-  setEnviando(true);
-  try {
-    const response = await fetch('http://localhost/API/enviarEmail.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      // MUITO IMPORTANTE: a chave tem de ser "email"
-      body: JSON.stringify({ 
-        email: email, // Este 'email' vem do state (location.state)
-        mensagem: mensagem 
-      })
-    });
-    const data = await response.json();
+    setEnviando(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await fetch('http://localhost/API/enviarEmail.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, mensagem })
+      });
+      
+      const data = await response.json();
       
       if (data.status === 'sucesso') {
-        alert("E-mail enviado com sucesso!");
-        navigate('/listar-impresso');
+        setSuccess("E-mail enviado com sucesso!");
+        setTimeout(() => navigate('/listar-impresso'), 2000);
       } else {
-        alert("Erro: " + data.mensagem);
+        setError("Erro: " + data.mensagem);
       }
     } catch (error) {
-      alert("Erro ao comunicar com o servidor.");
+      setError("Erro ao comunicar com o servidor.");
     } finally {
       setEnviando(false);
     }
   };
 
-  if (!email) return <div className="page-wrapper">Dados insuficientes para envio.</div>;
+  if (!email) return (
+    <div className="page-wrapper">
+      <div className="status-msg" style={{color: 'red', textAlign: 'center', marginTop: '50px'}}>
+        Dados insuficientes para envio. Por favor, volte atrás.
+      </div>
+    </div>
+  );
 
   return (
     <div className="page-wrapper">
       <header className="login-header">
         <img src={logo} alt="Logo" className="hospital-logo" />
+        <div className="user-section">
+          <div className="user-info">
+             <span className="user-name"><strong>{localStorage.getItem('userName')}</strong></span>
+          </div>
+        </div>
       </header>
 
-      <main className="main-content container-1200">
-        <section className="section-box">
-          <h2>Notificar Utente por E-mail</h2>
-          <hr />
+      <nav className="nav-links">
+        <button onClick={() => navigate('/listar-impresso')} className="nav-link">← Cancelar e Voltar</button>
+      </nav>
+
+      <hr className="divider" />
+
+      <main className="main-content">
+        <div className="full-width-form">
           
-          <div className="input-group" style={{ marginBottom: '15px' }}>
-            <label>Destinatário:</label>
-            <input type="text" value={email} disabled style={{ backgroundColor: '#f0f0f0' }} />
-          </div>
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="status-msg" style={{color: 'green', textAlign: 'center', fontWeight: 'bold', marginBottom: '15px'}}>{success}</div>}
 
-          <div className="input-group">
-            <label>Conteúdo da Mensagem:</label>
-            <textarea 
-              style={{ width: '100%', height: '300px', padding: '15px', borderRadius: '8px', border: '1px solid #ccc' }}
-              value={mensagem}
-              onChange={(e) => setMensagem(e.target.value)}
-            />
-          </div>
+          {/* Secção Destinatário */}
+          <section className="section-box">
+            <h2 className="section-title">Confirmação de Envio</h2>
+            <div className="row">
+              <div className="input-group grow">
+                <label>Destinatário (Utente):</label>
+                <input 
+                  type="text" 
+                  value={email} 
+                  disabled 
+                  style={{ backgroundColor: '#f9f9f9', cursor: 'not-allowed', color: '#666' }} 
+                />
+              </div>
+              <div className="input-group">
+                <label>ID do Processo:</label>
+                <input 
+                  type="text" 
+                  value={id} 
+                  disabled 
+                  style={{ backgroundColor: '#f9f9f9', textAlign: 'center', width: '80px' }} 
+                />
+              </div>
+            </div>
+          </section>
 
-          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+          {/* Secção Conteúdo - Usando o mesmo estilo da Ocorrência/Resolução */}
+          <section className="section-box">
+            <h2 className="section-title">Conteúdo da Mensagem:</h2>
+            <div className="textarea-container">
+              <textarea 
+                style={{ minHeight: '300px' }}
+                value={mensagem} 
+                onChange={(e) => setMensagem(e.target.value)}
+                placeholder="Escreva aqui a mensagem que o utente irá receber..."
+              />
+            </div>
+            <p style={{fontSize: '0.85rem', color: '#666', marginTop: '10px'}}>
+              * Pode editar o texto acima antes de carregar em enviar.
+            </p>
+          </section>
+
+          <div className="button-group">
             <button 
-              className="logout-btn" 
-              style={{ backgroundColor: '#6c757d' }} 
-              onClick={() => navigate('/listar-impresso')}
-            >
-              Cancelar
-            </button>
-            <button 
-              className="btn-edit-list" 
+              type="button" 
+              className="btn-submit" 
               onClick={handleEnviar} 
               disabled={enviando}
             >
               {enviando ? "A enviar..." : "Confirmar e Enviar E-mail"}
             </button>
+            <button 
+              type="button" 
+              className="btn-cancel" 
+              onClick={() => navigate('/listar-impresso')}
+            >
+              Sair sem enviar
+            </button>
           </div>
-        </section>
+        </div>
       </main>
+
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
