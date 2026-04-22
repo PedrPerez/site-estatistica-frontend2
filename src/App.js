@@ -9,6 +9,7 @@ import EditarEmail from './pages/EditarEmail';
 import InserirImpresso from "./pages/InserirImpresso";
 import ListarImpresso from './pages/ListarImpresso';
 import EditarImpresso from './pages/EditarImpresso';
+import EnviarEmail from './pages/EnviarEmail';
 import InserirQuestionario from './pages/InserirQuestionario';
 import ListarQuestionario from './pages/ListarQuestionario';
 import EditarQuestionario from './pages/EditarQuestionario';
@@ -41,6 +42,7 @@ function App() {
           <Route path="/inserir-impresso" element={<InserirImpresso />} />
           <Route path="/listar-impresso" element={<ListarImpresso />} />
           <Route path="/editar-impresso/:id" element={<EditarImpresso />} />
+          <Route path="/enviar-email" element={<EnviarEmail />} />
 
           {/* Questionários */}
           <Route path="/inserir-questionario" element={<InserirQuestionario />} />

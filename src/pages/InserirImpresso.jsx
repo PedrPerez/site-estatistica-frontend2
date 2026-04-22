@@ -8,6 +8,9 @@ export default function InserirImpresso() {
   const today = new Date().toISOString().split('T')[0];
   const [tipos, setTipos] = useState([]);
   const navigate = useNavigate();
+
+  // NOVO: Estado para a checkbox de email
+  const [enviarEmailCheck, setEnviarEmailCheck] = useState(false);
   
   const initialForm = {
     nome: '',
@@ -64,8 +67,24 @@ export default function InserirImpresso() {
       const result = await response.json();
       if (result.status === 'sucesso') {
         setSuccess('Registo inserido com sucesso!');
-        setFormData(initialForm);
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll suave para o topo
+        
+        // LÓGICA DE REDIRECIONAMENTO
+        if (enviarEmailCheck && formData.email) {
+          // Se a checkbox estiver marcada, vai para a página de email
+          navigate('/enviar-email', { 
+            state: { 
+              email: formData.email, 
+              nome: formData.nome, 
+              id: result.id, 
+              resolucao: formData.resolucao 
+            } 
+          });
+        } else {
+          // Caso contrário, limpa o form e avisa o sucesso
+          setFormData(initialForm);
+          setEnviarEmailCheck(false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       } else {
         setError(result.mensagem || 'Erro ao inserir registo.');
       }
@@ -96,11 +115,9 @@ export default function InserirImpresso() {
       <main className="main-content">
         <form onSubmit={handleSubmit} className="full-width-form">
           
-          {/* Feedback Visual Centralizado */}
           {error && <div className="error-message">{error}</div>}
           {success && <div className="status-msg" style={{color: 'green', textAlign: 'center', fontWeight: 'bold', marginBottom: '15px'}}>{success}</div>}
 
-          {/* Secção Identificação */}
           <section className="section-box">
             <h2 className="section-title">Identificação</h2>
             <div className="row">
@@ -164,12 +181,29 @@ export default function InserirImpresso() {
             </div>
           </section>
 
+          {/* NOVA SECÇÃO: Opção de Email */}
+          <section className="section-box" style={{display: 'flex', alignItems: 'center', gap: '10px', padding: '15px'}}>
+            <input 
+              type="checkbox" 
+              id="enviarEmail" 
+              style={{width: '20px', height: '20px', cursor: 'pointer'}}
+              checked={enviarEmailCheck} 
+              onChange={(e) => setEnviarEmailCheck(e.target.checked)} 
+              disabled={!formData.email}
+            />
+            <label htmlFor="enviarEmail" style={{cursor: 'pointer', fontWeight: 'bold'}}>
+              Deseja enviar notificação por e-mail para o utente após submeter? 
+              {!formData.email && <span style={{color: 'red', fontSize: '0.8rem', marginLeft: '5px'}}>(Requer preencher o campo Email)</span>}
+            </label>
+          </section>
+
           <div className="button-group">
             <button type="submit" className="btn-submit">Submeter</button>
-            <button type="button" className="btn-cancel" onClick={() => setFormData(initialForm)}>Limpar</button>
+            <button type="button" className="btn-cancel" onClick={() => {setFormData(initialForm); setEnviarEmailCheck(false);}}>Limpar</button>
           </div>
         </form>
       </main>
+      
       <footer className="footer-minimal">
         <div className="footer-content">
           <div className="footer-info">
