@@ -230,7 +230,6 @@ export default function ExportarEstatisticas() {
   );
 }
 
-// Sub-componente para os Cartões (Apenas os valores dinâmicos ficam inline)
 function Card({ titulo, valor, cor }) {
   return (
     <div className="stat-card" style={{ borderLeftColor: cor }}>

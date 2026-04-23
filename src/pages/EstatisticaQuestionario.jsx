@@ -162,22 +162,81 @@ export default function EstatisticaQuestionario() {
                     </div>
                   )}
 
-                  {/* Gráfico (Mantém-se para ambos, ResponsiveContainer trata do tamanho) */}
-                  <div className="chart-wrapper" style={{ height: '350px', padding: '20px', width: '100%' }}>
+                  {/* Gráfico Final - Legenda e Eixo X corrigidos */}
+                  <div className="chart-wrapper" style={{ height: '600px', padding: '20px', width: '100%' }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart 
                         data={seccao.indicadores}
-                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                        margin={{ top: 40, right: 10, left: -20, bottom: 150 }} 
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="texto" hide />
+                        
+                        <XAxis 
+                          dataKey="texto" 
+                          interval={0} 
+                          angle={-30} 
+                          textAnchor="end"
+                          tick={{ fontSize: 11, fill: '#444' }}
+                          dx={-5} 
+                          dy={25} // Empurra os nomes dos indicadores bem para baixo
+                        />
+                        
                         <YAxis tick={{fontSize: 12}} tickFormatter={(val) => `${val}%`} />
-                        <Tooltip contentStyle={{ fontSize: '12px', borderRadius: '8px' }} />
-                        <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                        <Bar dataKey="mb_p" name="M. Bom" fill="#2d6a4f" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="b_p" name="Bom" fill="#52b788" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="a_p" name="Aceit." fill="#ffcd38" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="m_p" name="Mau" fill="#e63946" radius={[4, 4, 0, 0]} />
+                        <Legend 
+                          verticalAlign="bottom" 
+                          align="center" 
+                          content={() => (
+                            <div style={{ 
+                              display: 'flex', 
+                              justifyContent: 'center', 
+                              gap: '20px', 
+                              paddingTop: '60px',
+                              fontSize: '14px' 
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div style={{ width: '12px', height: '12px', backgroundColor: '#2d6a4f', marginRight: '5px' }}></div>
+                                <span>M. Bom</span>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div style={{ width: '12px', height: '12px', backgroundColor: '#52b788', marginRight: '5px' }}></div>
+                                <span>Bom</span>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div style={{ width: '12px', height: '12px', backgroundColor: '#ffcd38', marginRight: '5px' }}></div>
+                                <span>Aceit.</span>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div style={{ width: '12px', height: '12px', backgroundColor: '#e63946', marginRight: '5px' }}></div>
+                                <span>Mau</span>
+                              </div>
+                            </div>
+                          )}
+                        />
+                        
+                        <Bar 
+                          dataKey="mb_p" 
+                          fill="#2d6a4f" 
+                          radius={[4, 4, 0, 0]} 
+                          label={{ position: 'top', formatter: (val) => `${val}%`, fontSize: 10, fill: '#2d6a4f', fontWeight: 'bold' }}
+                        />
+                        <Bar 
+                          dataKey="b_p" 
+                          fill="#52b788" 
+                          radius={[4, 4, 0, 0]} 
+                          label={{ position: 'top', formatter: (val) => `${val}%`, fontSize: 10, fill: '#52b788', fontWeight: 'bold' }}
+                        />
+                        <Bar 
+                          dataKey="a_p" 
+                          fill="#ffcd38" 
+                          radius={[4, 4, 0, 0]} 
+                          label={{ position: 'top', formatter: (val) => `${val}%`, fontSize: 10, fill: '#b88a00', fontWeight: 'bold' }}
+                        />
+                        <Bar 
+                          dataKey="m_p" 
+                          fill="#e63946" 
+                          radius={[4, 4, 0, 0]} 
+                          label={{ position: 'top', formatter: (val) => `${val}%`, fontSize: 10, fill: '#e63946', fontWeight: 'bold' }}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
