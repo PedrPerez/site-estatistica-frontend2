@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, 
+  ResponsiveContainer, PieChart, Pie, Cell 
+} from 'recharts';
 import logo from '../assets/logohospital_cores.png'; 
 
+// Cores para as diferentes categorias de mensagens
 const COLORS = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58', '#AB47BC', '#00ACC1', '#FF7043'];
 
 export default function EstatisticaImpresso() {
@@ -62,6 +66,7 @@ export default function EstatisticaImpresso() {
 
       <main className="main-content">
         <div className="container-1200">
+          {/* Filtros */}
           <div className="section-box filter-box" style={{ backgroundColor: '#fff', border: '1px solid #d1d9e6', borderRadius: '8px', marginBottom: '20px' }}>
             <div className="row flex-gap" style={{ padding: '15px' }}>
               <div className="input-group grow">
@@ -91,7 +96,7 @@ export default function EstatisticaImpresso() {
             </div>
             
             <div style={{ padding: '20px', backgroundColor: '#fff' }}>
-              {/* Tabela Responsiva */}
+              {/* Tabela de Dados */}
               <div className="table-responsive" style={{ marginBottom: '30px' }}>
                 <table className="rating-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
@@ -125,7 +130,7 @@ export default function EstatisticaImpresso() {
                 </table>
               </div>
 
-              {/* Contentor de Gráficos (Flexbox para Desktop, Coluna para Mobile) */}
+              {/* Zona de Gráficos */}
               <div className="charts-grid" style={{ 
                 display: 'flex', 
                 flexDirection: isMobile ? 'column' : 'row', 
@@ -133,16 +138,18 @@ export default function EstatisticaImpresso() {
                 marginTop: '30px' 
               }}>
                 
-                {/* Gráfico de Barras */}
-                <div style={{ flex: 1, height: '400px', minWidth: isMobile ? '100%' : '60%' }}>
+                {/* Gráfico de Barras - Percentagem por Unidade */}
+                <div style={{ flex: 1, height: '450px', minWidth: isMobile ? '100%' : '60%' }}>
                   <h4 style={{ textAlign: 'center', marginBottom: '10px', color: '#666' }}>Distribuição por Unidade</h4>
                   <ResponsiveContainer width="100%" height="90%">
-                    <BarChart data={dados.lista}>
+                    <BarChart data={dados.lista} margin={{ top: 30, right: 10, left: -20, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <XAxis dataKey="unidade_nome" hide={isMobile} />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
+                      <XAxis dataKey="unidade_nome" hide={isMobile} tick={{fontSize: 11}} />
+                      <YAxis tick={{fontSize: 12}} />
+                      
+                      {/* Tooltip removido para evitar hover */}
+                      <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: '20px' }}/>
+
                       {dados.categorias.map((cat, idx) => (
                         <Bar 
                           key={cat.id} 
@@ -150,14 +157,28 @@ export default function EstatisticaImpresso() {
                           name={cat.descricao} 
                           fill={COLORS[idx % COLORS.length]} 
                           radius={[4, 4, 0, 0]}
+                          label={{ 
+                            position: 'top', 
+                            fontSize: 10, 
+                            fontWeight: 'bold',
+                            fill: '#444',
+                            // Otimizado para evitar erros de undefined
+                            formatter: (value, entry) => {
+                                const total = entry?.payload?.total_geral;
+                                if (value > 0 && total > 0) {
+                                    return `${((value / total) * 100).toFixed(0)}%`;
+                                }
+                                return '';
+                            }
+                          }}
                         />
                       ))}
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
 
-                {/* Gráfico de Pizza */}
-                <div style={{ flex: 1, height: '400px', minWidth: isMobile ? '100%' : '35%' }}>
+                {/* Gráfico de Pizza - Percentagem Global */}
+                <div style={{ flex: 1, height: '450px', minWidth: isMobile ? '100%' : '35%' }}>
                   <h4 style={{ textAlign: 'center', marginBottom: '10px', color: '#666' }}>Total Global</h4>
                   <ResponsiveContainer width="100%" height="90%">
                     <PieChart>
@@ -168,14 +189,16 @@ export default function EstatisticaImpresso() {
                         cx="50%" 
                         cy="50%" 
                         outerRadius={isMobile ? 80 : 100}
-                        label={!isMobile}
+                        // Label mostra a % da fatia
+                        label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+                        labelLine={true}
                       >
                         {dados.totais_pizza.map((entry, index) => (
                           <Cell key={index} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip />
-                      <Legend verticalAlign="bottom" height={36}/>
+                      {/* Tooltip removido para evitar hover */}
+                      <Legend verticalAlign="bottom" />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -185,6 +208,7 @@ export default function EstatisticaImpresso() {
           </div>
         </div>
       </main>
+
       <footer className="footer-minimal">
         <div className="footer-content">
           <div className="footer-info">
