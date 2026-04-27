@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/InserirQuestionario.css';
-import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function InserirQuestionario() {
@@ -82,7 +80,6 @@ export default function InserirQuestionario() {
     
     setStatus({ type: 'info', message: 'A gravar...' });
 
-    // Mapeia apenas o que foi respondido
     const listaRespostas = Object.keys(formData.respostas).map(id => ({
       id_indicador: parseInt(id),
       valor: formData.respostas[id]

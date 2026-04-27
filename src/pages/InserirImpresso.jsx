@@ -8,8 +8,6 @@ export default function InserirImpresso() {
   const today = new Date().toISOString().split('T')[0];
   const [tipos, setTipos] = useState([]);
   const navigate = useNavigate();
-
-  // NOVO: Estado para a checkbox de email
   const [enviarEmailCheck, setEnviarEmailCheck] = useState(false);
   
   const initialForm = {
@@ -68,9 +66,7 @@ export default function InserirImpresso() {
       if (result.status === 'sucesso') {
         setSuccess('Registo inserido com sucesso!');
         
-        // LÓGICA DE REDIRECIONAMENTO
         if (enviarEmailCheck && formData.email) {
-          // Se a checkbox estiver marcada, vai para a página de email
           navigate('/enviar-email', { 
             state: { 
               email: formData.email, 
@@ -80,7 +76,6 @@ export default function InserirImpresso() {
             } 
           });
         } else {
-          // Caso contrário, limpa o form e avisa o sucesso
           setFormData(initialForm);
           setEnviarEmailCheck(false);
           window.scrollTo({ top: 0, behavior: 'smooth' });

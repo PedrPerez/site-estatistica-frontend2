@@ -5,8 +5,6 @@ import logo from '../assets/logohospital_cores.png';
 export default function EnviarEmail() {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  // Recupera os dados enviados pelo redirecionamento
   const { email, nome, id, resolucao } = location.state || {};
 
   const [mensagem, setMensagem] = useState(
@@ -102,8 +100,6 @@ export default function EnviarEmail() {
               </div>
             </div>
           </section>
-
-          {/* Secção Conteúdo - Usando o mesmo estilo da Ocorrência/Resolução */}
           <section className="section-box">
             <h2 className="section-title">Conteúdo da Mensagem:</h2>
             <div className="textarea-container">

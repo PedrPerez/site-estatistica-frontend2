@@ -132,7 +132,7 @@ export default function EditarQuestionario() {
                   name={`ind_${ind.id}`}
                   checked={formData.respostas[ind.id] === nivel.key}
                   onChange={() => handleRadioChange(ind.id, nivel.key)}
-                  required
+                  // Removido o atributo 'required' aqui
                 />
                 <span className="rating-label">{nivel.label}</span>
               </label>
@@ -163,7 +163,7 @@ export default function EditarQuestionario() {
                     name={`ind_${ind.id}`} 
                     checked={formData.respostas[ind.id] === nivel}
                     onChange={() => handleRadioChange(ind.id, nivel)}
-                    required
+                    // Removido o atributo 'required' aqui
                   />
                 </td>
               ))}
