@@ -7,12 +7,10 @@ import logo from '../assets/logohospital_cores.png';
 export default function InserirEmail() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
-  const [unidades, setUnidades] = useState([]);
   const today = new Date().toISOString().split('T')[0];
   const [tipos, setTipos] = useState([]);
   const [formData, setFormData] = useState({
     tipo: '',
-    unidade: '',
     email: '',
     data: new Date().toISOString().split('T')[0],
     conteudo: '',
@@ -25,7 +23,6 @@ export default function InserirEmail() {
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName)
-    fetch('http://localhost/API/obterUnidade.php').then(res => res.json()).then(setUnidades);
     fetch('http://localhost/API/obterTipoMensagem.php').then(res => res.json()).then(setTipos);
   }, []);
 
@@ -104,14 +101,6 @@ export default function InserirEmail() {
                     {tipos.map(t => (
                       <option key={t.id} value={t.id}>{t.descricao}</option>
                     ))}
-                  </select>
-                </div>
-
-                <div className="input-group">
-                  <label>Unidade:</label>
-                  <select name="unidade" value={formData.unidade} onChange={handleChange}>
-                    <option value="">Selecione a Unidade</option>
-                    {unidades.map(u => <option key={u.cod_unidade} value={u.cod_unidade}>{u.descricao}</option>)}
                   </select>
                 </div>
               </div>

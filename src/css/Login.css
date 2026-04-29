@@ -57,6 +57,40 @@ input:focus {
   border-color: #4A72B2; /* Azul institucional extraído do logo */
 }
 
+/* Container relativo para envolver o input e o botão */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ajuste no input para o texto não ficar por baixo do ícone */
+.password-wrapper input {
+  padding-right: 45px;
+  margin-bottom: 20px; /* Mantém a margem que já tinhas */
+}
+
+/* Botão do ícone */
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  top: 22px; /* Ajustado para centralizar verticalmente no input (considerando a altura do input) */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  transition: color 0.2s;
+}
+
+.toggle-password-btn:hover {
+  color: #4A72B2;
+}
+
 /* Botão Principal */
 .btn-login {
   padding: 14px;

@@ -4,10 +4,26 @@ import '../css/Login.css';
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
+// Componentes de Ícones (SVG) para evitar dependências externas
+const EyeIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+    </svg>
+);
+
+const EyeOffIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+        <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+);
+
 export default function LogIn() {
     const [utilizador, setUtilizador] = useState('');
     const [password, setPassword] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false); // 1. Estado para a checkbox
+    const [showPassword, setShowPassword] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -37,13 +53,11 @@ export default function LogIn() {
                 localStorage.setItem('userName', data.user.nome);
                 localStorage.setItem('userRole', isAdmin ? 'admin' : 'user');
 
-                // Lógica de Redirecionamento condicional
                 if (isAdmin) {
-                    navigate('/HomePageAdmin'); // Rota para Admin
+                    navigate('/HomePageAdmin');
                 } else {
-                    navigate('/principal');     // Rota normal
+                    navigate('/principal');
                 }
-
             } else {
                 setError(data.mensagem);
             }
@@ -67,8 +81,9 @@ export default function LogIn() {
                         {error || "Espaço reservado"}
                     </p>
                     
-                    <label>Utilizador</label>
+                    <label htmlFor="user">Utilizador</label>
                     <input
+                        id="user"
                         type="text"
                         placeholder="Introduza o seu utilizador"
                         value={utilizador}
@@ -76,28 +91,38 @@ export default function LogIn() {
                         required
                     />
                     
-                    <label>Palavra-passe</label>
-                    <input
-                        type="password"
-                        placeholder="Introduza a sua password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <label htmlFor="pass">Palavra-passe</label>
+                    <div className="password-wrapper">
+                        <input
+                            id="pass"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Introduza a sua password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password-btn"
+                            onClick={() => setShowPassword(!showPassword)}
+                            title={showPassword ? "Ocultar password" : "Mostrar password"}
+                        >
+                            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                    </div>
 
-                    {/* 3. Checkbox de Admin */}
                     <div className="admin-checkbox">
-                        <label>Entrar como Administrador</label>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                             <input
                                 type="checkbox"
                                 checked={isAdmin}
                                 onChange={(e) => setIsAdmin(e.target.checked)}
                             />
+                            <span>Entrar como Administrador</span>
                         </label>
                     </div>
                     
-                    <button type="submit" className="btn-login" style={{ marginTop: '20px' }}>
+                    <button type="submit" className="btn-login">
                         Entrar
                     </button>
                 </form>
@@ -105,12 +130,12 @@ export default function LogIn() {
             
             <footer className="footer-minimal">
                 <div className="footer-content">
-                <div className="footer-info">
-                    <span className="hospital-name">Hospital de Esposende Valentim Ribeiro</span>
-                </div>
-                <div className="footer-copyright">
-                    <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
-                </div>
+                    <div className="footer-info">
+                        <span className="hospital-name">Hospital de Esposende Valentim Ribeiro</span>
+                    </div>
+                    <div className="footer-copyright">
+                        <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+                    </div>
                 </div>
             </footer>
         </div>

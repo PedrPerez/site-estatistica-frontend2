@@ -15,6 +15,7 @@ import ListarQuestionario from './pages/ListarQuestionario';
 import EditarQuestionario from './pages/EditarQuestionario';
 import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 import EstatisticaImpresso from './pages/EstatisticaImpresso';
+import EstatisticaEmail from './pages/EstatisticaEmail';
 import ExportarDados from './pages/ExportarDados';
 import LogInAdmin from "./pages/LogInAdmin";
 import EditarUser from './pages/EditarUser';
@@ -52,7 +53,7 @@ function App() {
           {/* Estatísticas */}
           <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
           <Route path="/estatistica-impresso" element={<EstatisticaImpresso />} />
-
+          <Route path="/estatistica-email" element={<EstatisticaEmail />} />
           {/* Exportar Dados */}
           <Route path="/exportar" element={<ExportarDados />} />
 

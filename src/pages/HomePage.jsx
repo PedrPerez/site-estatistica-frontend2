@@ -74,6 +74,7 @@ export default function HomePage() {
           >
             <Option onClick={() => navigate("/inserir-email")}>Registar</Option>
             <Option onClick={() => navigate("/listar-email")}>Histórico</Option>
+            <Option onClick={() => navigate("/estatistica-email")}>Estatísticas</Option>
           </MenuBox>
 
           <MenuBox
