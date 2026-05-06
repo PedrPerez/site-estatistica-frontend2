@@ -53,6 +53,7 @@ export default function HomePage() {
             <Option onClick={() => navigate("/inserir-questionario")}>Registar Novo</Option>
             <Option onClick={() => navigate("/listar-questionario")}>Consultar Lista</Option>
             <Option onClick={() => navigate("/estatistica-questionario")}>Estatísticas</Option>
+            <Option onClick={() => navigate("/gerir-questoes")}>Gerir Questões</Option>
           </MenuBox>
 
           {/* Impressos */}

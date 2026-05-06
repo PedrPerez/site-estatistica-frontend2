@@ -21,6 +21,7 @@ import LogInAdmin from "./pages/LogInAdmin";
 import EditarUser from './pages/EditarUser';
 import ListarUser from './pages/ListarUser';
 import InserirUser from './pages/InserirUser';
+import GerirQuestoes from './pages/GerirQuestao';
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/principal" element={<HomePage />} />
           <Route path="/HomePageAdmin" element={<HomePageAdmin />} /> 
-          
+          <Route path="/gerir-questoes" element={<GerirQuestoes />} />
+
           {/* Emails */}
           <Route path="/inserir-email" element={<InserirEmail />} />
           <Route path="/listar-email" element={<ListarEmail />} />
