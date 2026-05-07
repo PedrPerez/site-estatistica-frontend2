@@ -19,7 +19,7 @@ export default function LogInAdmin() {
         }
 
         try {
-            const response = await fetch('http://localhost/API/loginAdmin.php', {
+            const response = await fetch('http://localhost/API/login.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ utilizador, password })
@@ -30,7 +30,8 @@ export default function LogInAdmin() {
             if (data.status === 'sucesso') {
                 setError('');
                 localStorage.setItem('userName', data.user.nome);
-                navigate('/principal-admin'); 
+                localStorage.setItem('userId', data.user.id);
+                navigate('/principal'); 
             } else {
                 setError(data.mensagem);
             }
@@ -48,7 +49,7 @@ export default function LogInAdmin() {
 
             <div className="login-container">
                 <form onSubmit={handleSubmit}>
-                    <h1>Acesso ao Sistema Admin</h1>
+                    <h1>Acesso ao Sistema</h1>
                     
                     <p className={`error ${error ? 'visible' : 'hidden'}`}>
                         {error || "Espaço reservado"}

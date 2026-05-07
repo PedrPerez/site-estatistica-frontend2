@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../css/GerirQuestao.css';
 import logo from '../assets/logohospital_cores.png';
 
 export default function GerirQuestoes() {
@@ -134,29 +135,41 @@ export default function GerirQuestoes() {
       <main className="main-content list-page" style={{padding: '20px'}}>
         <div className="container-1200">
           
-          <section className="section-box" style={{border: '1px solid #007bff', padding: '20px', marginBottom: '30px'}}>
+          <section className="section-box create-question-card">
             <h3>Criar Nova Questão</h3>
-            <div className="input-group">
-              <label>Pergunta:</label>
-              <input type="text" value={novoTitulo} onChange={e => setNovoTitulo(e.target.value)} placeholder="Título da questão..." />
+            
+            <div className="form-group-custom">
+              <label>Pergunta Principal:</label>
+              <input 
+                type="text" 
+                value={novoTitulo} 
+                onChange={e => setNovoTitulo(e.target.value)} 
+                placeholder="Ex: Qual o seu grau de satisfação..." 
+              />
             </div>
 
-            <div style={{marginTop: '15px'}}>
-              <label><strong>Indicadores:</strong></label>
-              {listaIndicadores.map((texto, idx) => (
-                <input 
-                  key={idx} 
-                  type="text" 
-                  value={texto} 
-                  onChange={e => updateIndicador(idx, e.target.value)} 
-                  placeholder={`Indicador ${idx+1}`} 
-                  style={{display: 'block', width: '100%', marginBottom: '5px'}}
-                />
-              ))}
-              <button onClick={addCampoIndicador} style={{cursor:'pointer'}}>+ Adicionar Indicador</button>
+            <div className="form-group-custom">
+              <label>Indicadores (Opções de Avaliação):</label>
+              <div className="indicators-list">
+                {listaIndicadores.map((texto, idx) => (
+                  <div key={idx} className="indicator-row">
+                    <input 
+                      type="text" 
+                      value={texto} 
+                      onChange={e => updateIndicador(idx, e.target.value)} 
+                      placeholder={`Indicador ${idx + 1}`} 
+                    />
+                  </div>
+                ))}
+              </div>
+              <button className="btn-add-indicator" onClick={addCampoIndicador}>
+                + Adicionar Novo Indicador
+              </button>
             </div>
 
-            <button onClick={salvarQuestao} className="btn-edit-list" style={{marginTop: '15px', backgroundColor: '#28a745', color: '#fff'}}>GRAVAR TUDO</button>
+            <button className="btn-save-main" onClick={salvarQuestao}>
+              GRAVAR TUDO
+            </button>
           </section>
 
           <hr className="divider" />
