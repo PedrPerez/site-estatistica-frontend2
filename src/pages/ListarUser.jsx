@@ -6,8 +6,8 @@ export default function ListarUser() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
   const [registos, setRegistos] = useState([]);
-  const [menus, setMenus] = useState([]); // Todos os menus possíveis
-  const [userPermissions, setUserPermissions] = useState({}); // Permissões do user expandido
+  const [menus, setMenus] = useState([]); 
+  const [userPermissions, setUserPermissions] = useState({}); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
@@ -21,7 +21,6 @@ export default function ListarUser() {
     fetchMenus();
   }, []);
 
-  // 1. Carrega utilizadores
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -35,7 +34,6 @@ export default function ListarUser() {
     }
   };
 
-  // 2. Carrega todos os menus disponíveis no sistema
   const fetchMenus = async () => {
     try {
       const res = await fetch('http://localhost/API/obterMenu.php');
@@ -46,7 +44,6 @@ export default function ListarUser() {
     }
   };
 
-  // 3. Carrega as permissões de um utilizador específico ao expandir
   const handleExpand = async (iduser) => {
     if (expandedId === iduser) {
       setExpandedId(null);
@@ -57,7 +54,6 @@ export default function ListarUser() {
     try {
       const res = await fetch(`http://localhost/API/obterPermissoesUser.php?iduser=${iduser}`);
       const data = await res.json();
-      // Transformamos a lista de permissões num objeto para busca rápida: { idmenu: true/false }
       const permsMap = {};
       data.forEach(p => { permsMap[p.idmenu] = String(p.activo) === "1"; });
       setUserPermissions(permsMap);
@@ -66,40 +62,54 @@ export default function ListarUser() {
     }
   };
 
-  // 4. Altera a permissão na BD
-  const togglePermission = async (iduser, idmenu, estadoAtual) => {
+  // 4. Alteração de Permissão com bloqueio para Categoria 1
+  const togglePermission = async (user, idmenu, estadoAtual) => {
+    // Bloqueio preventivo no Front-end
+    if (String(user.idcategoria) === "1") {
+      alert("Não é permitido alterar permissões de um Administrador.");
+      return;
+    }
+
     const novoEstado = estadoAtual ? 0 : 1;
 
     try {
       const response = await fetch('http://localhost/API/alterarPermissao.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ iduser, idmenu, activo: novoEstado })
+        body: new URLSearchParams({ iduser: user.iduser, idmenu, activo: novoEstado })
       });
 
       const result = await response.json();
       if (result.status === 'sucesso') {
         setUserPermissions(prev => ({ ...prev, [idmenu]: !estadoAtual }));
+      } else {
+        alert(result.mensagem);
       }
     } catch (err) {
       alert("Erro ao comunicar com o servidor.");
     }
   };
 
-  // ... (Mantenha a função toggleStatus e lógica de filtros igual ao seu original)
-  const toggleStatus = async (e, iduser, statusAtual) => {
+  // 5. Alteração de Status com bloqueio para Categoria 1
+  const toggleStatus = async (e, item) => {
     e.stopPropagation();
-    const novoStatus = String(statusAtual) === "1" ? 0 : 1;
+
+    if (String(item.idcategoria) === "1") {
+      alert("Por motivos de segurança, não pode desativar um Administrador do sistema.");
+      return;
+    }
+
+    const novoStatus = String(item.activo) === "1" ? 0 : 1;
     try {
       const response = await fetch('http://localhost/API/alterarStatusUser.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ iduser: iduser, activo: novoStatus })
+        body: new URLSearchParams({ iduser: item.iduser, activo: novoStatus })
       });
       const result = await response.json();
       if (result.status === 'sucesso') {
-        setRegistos(prev => prev.map(user => 
-          user.iduser === iduser ? { ...user, activo: String(novoStatus) } : user
+        setRegistos(prev => prev.map(u => 
+          u.iduser === item.iduser ? { ...u, activo: String(novoStatus) } : u
         ));
       }
     } catch (err) { console.error(err); }
@@ -119,14 +129,14 @@ export default function ListarUser() {
   });
 
   const handleLogout = () => {
-    localStorage.removeItem('userName');
+    localStorage.clear();
     navigate("/login");
   };
 
   return (
     <div className="page-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Hospital de Esposende Logo" className="hospital-logo" />
+        <img src={logo} alt="Hospital Logo" className="hospital-logo" />
         <div className="user-section">
           <div className="user-info">
             <span className="user-name"><strong>{userName}</strong></span>
@@ -143,30 +153,38 @@ export default function ListarUser() {
 
       <main className="main-content list-page">
         <div className="container-1200">
-          {/* Box de Filtros aqui... */}
+          
           <div className="results-container">
             {resultadosFiltrados.map((item) => {
               const isActivo = String(item.activo) === "1";
+              const isAdmin = String(item.idcategoria) === "1";
 
               return (
-                <div key={item.iduser} className="section-box list-item" style={{marginBottom: '10px', border: '1px solid #eee'}}>
+                <div key={item.iduser} className="section-box list-item" style={{marginBottom: '10px', border: isAdmin ? '1px solid #007bff' : '1px solid #eee'}}>
                   <div 
                     className="clickable-header"
                     onClick={() => handleExpand(item.iduser)}
                     style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', cursor: 'pointer', alignItems: 'center' }}
                   >
                     <span style={{ fontSize: '1.1rem' }}>
-                      <strong>#{item.iduser}</strong> | {item.nome} <small style={{color: '#666'}}>@{item.username}</small>
+                      <strong>#{item.iduser}</strong> | {item.nome} 
+                      {isAdmin && <span style={{ marginLeft: '10px', fontSize: '0.8rem', backgroundColor: '#007bff', color: '#fff', padding: '2px 8px', borderRadius: '10px' }}>SISTEMA</span>}
+                      <br/>
+                      <small style={{color: '#666'}}>@{item.username}</small>
                     </span>
                     
                     <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                       <button 
-                        onClick={(e) => toggleStatus(e, item.iduser, item.activo)}
+                        onClick={(e) => toggleStatus(e, item)}
+                        disabled={isAdmin}
                         style={{ 
-                          backgroundColor: isActivo ? "#d4edda" : "#f8d7da", 
-                          color: isActivo ? "#155724" : "#721c24",
+                          backgroundColor: isAdmin ? "#e9ecef" : (isActivo ? "#d4edda" : "#f8d7da"), 
+                          color: isAdmin ? "#6c757d" : (isActivo ? "#155724" : "#721c24"),
                           border: `1px solid ${isActivo ? "#c3e6cb" : "#f5c6cb"}`,
-                          padding: '6px 14px', borderRadius: '4px', cursor: 'pointer', minWidth: '100px'
+                          padding: '6px 14px', borderRadius: '4px', 
+                          cursor: isAdmin ? 'not-allowed' : 'pointer', 
+                          minWidth: '100px',
+                          fontWeight: 'bold'
                         }}
                       >
                         {isActivo ? "● ATIVO" : "○ INATIVO"}
@@ -182,18 +200,28 @@ export default function ListarUser() {
                           <h4>Dados do Utilizador</h4>
                           <p><strong>Username:</strong> {item.username}</p>
                           <p><strong>Categoria:</strong> {getCategoriaNome(item.idcategoria)}</p>
+                          {isAdmin && <p style={{color: '#d9534f', fontSize: '0.85rem'}}>* Contas de administrador não podem ser editadas.</p>}
                         </div>
 
-                        {/* SECÇÃO DE PERMISSÕES */}
-                        <div style={{ backgroundColor: '#fff', padding: '15px', borderRadius: '8px', border: '1px solid #ddd' }}>
-                          <h4 style={{ marginTop: 0, borderBottom: '2px solid #007bff', paddingBottom: '5px' }}>Gestão de Acessos</h4>
+                        <div style={{ backgroundColor: '#fff', padding: '15px', borderRadius: '8px', border: '1px solid #ddd', opacity: isAdmin ? 0.7 : 1 }}>
+                          <h4 style={{ marginTop: 0, borderBottom: '2px solid #007bff', paddingBottom: '5px' }}>
+                            Gestão de Acessos {isAdmin && "(Bloqueado)"}
+                          </h4>
                           <div style={{ maxHeight: '200px', overflowY: 'auto', marginTop: '10px' }}>
                             {menus.map(menu => (
-                              <label key={menu.idmenu} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', cursor: 'pointer', fontSize: '0.9rem' }}>
+                              <label key={menu.idmenu} style={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                marginBottom: '8px', 
+                                cursor: isAdmin ? 'not-allowed' : 'pointer', 
+                                fontSize: '0.9rem',
+                                color: isAdmin ? '#999' : '#000'
+                              }}>
                                 <input 
                                   type="checkbox" 
-                                  checked={!!userPermissions[menu.idmenu]} 
-                                  onChange={() => togglePermission(item.iduser, menu.idmenu, userPermissions[menu.idmenu])}
+                                  checked={isAdmin ? true : !!userPermissions[menu.idmenu]} 
+                                  disabled={isAdmin}
+                                  onChange={() => togglePermission(item, menu.idmenu, userPermissions[menu.idmenu])}
                                   style={{ marginRight: '10px', width: '18px', height: '18px' }}
                                 />
                                 {menu.descmenu}
