@@ -92,27 +92,42 @@ export default function ListarUser() {
 
   // 5. Alteração de Status com bloqueio para Categoria 1
   const toggleStatus = async (e, item) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Impede de abrir/fechar o acordeão ao clicar no botão
 
+    // Bloqueio visual/lógico no JS
     if (String(item.idcategoria) === "1") {
-      alert("Por motivos de segurança, não pode desativar um Administrador do sistema.");
+      alert("Não é possível desativar o Administrador de Sistema.");
       return;
     }
 
-    const novoStatus = String(item.activo) === "1" ? 0 : 1;
+    // Se está "1" vira "0", se está "0" vira "1"
+    const novoStatus = String(item.activo) === "1" ? "0" : "1";
+
     try {
       const response = await fetch('http://localhost/API/alterarStatusUser.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ iduser: item.iduser, activo: novoStatus })
+        // IMPORTANTE: URLSearchParams para o PHP ler via $_POST
+        body: new URLSearchParams({ 
+          iduser: item.iduser, 
+          activo: novoStatus 
+        })
       });
+
       const result = await response.json();
+
       if (result.status === 'sucesso') {
+        // Atualiza o estado local para o botão mudar de cor na hora
         setRegistos(prev => prev.map(u => 
-          u.iduser === item.iduser ? { ...u, activo: String(novoStatus) } : u
+          u.iduser === item.iduser ? { ...u, activo: novoStatus } : u
         ));
+      } else {
+        alert(result.mensagem);
       }
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error("Erro ao mudar status:", err);
+      alert("Erro de ligação ao servidor.");
+    }
   };
 
   const getCategoriaNome = (id) => {
@@ -202,6 +217,20 @@ export default function ListarUser() {
                           <p><strong>Categoria:</strong> {getCategoriaNome(item.idcategoria)}</p>
                           {isAdmin && <p style={{color: '#d9534f', fontSize: '0.85rem'}}>* Contas de administrador não podem ser editadas.</p>}
                         </div>
+                        
+                        <div>
+                          {!isAdmin && (
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    navigate(`/editar-utilizador/${item.iduser}`); 
+                                }} 
+                                className="btn-edit-list"
+                            >
+                                EDITAR
+                            </button>
+                          )}
+                        </div>
 
                         <div style={{ backgroundColor: '#fff', padding: '15px', borderRadius: '8px', border: '1px solid #ddd', opacity: isAdmin ? 0.7 : 1 }}>
                           <h4 style={{ marginTop: 0, borderBottom: '2px solid #007bff', paddingBottom: '5px' }}>
@@ -238,6 +267,16 @@ export default function ListarUser() {
           </div>
         </div>
       </main>
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

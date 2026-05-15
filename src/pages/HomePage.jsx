@@ -84,7 +84,7 @@ export default function HomePage() {
         <div className="menu-grid">
           
           {/* QUESTIONÁRIOS - IDs 1, 8, 11 */}
-          {hasAccessToCategory([1, 8, 3, 4]) && (
+          {hasAccessToCategory([1, 2, 3, 4]) && (
             <MenuBox
               title="Questionários"
               isOpen={openMenu === "questionario"}
@@ -111,7 +111,7 @@ export default function HomePage() {
           )}
 
           {/* Emails - IDs 9, 10 */}
-          {hasAccessToCategory([8, 9, 10]) && (
+          {hasAccessToCategory([9]) && (
             <MenuBox
               title="Emails"
               isOpen={openMenu === "emails"}
@@ -130,12 +130,12 @@ export default function HomePage() {
               isOpen={openMenu === "exportar"}
               onClick={() => setOpenMenu(openMenu === "exportar" ? null : "exportar")}
             >
-              <Option onClick={() => navigate("/exportar")}>Exportar (Excel/CSV)</Option>
+              <Option onClick={() => navigate("/exportar")}>Exportar</Option>
             </MenuBox>
           )}
           
           {/* UTILIZADORES - Geralmente idmenu 1 ou apenas se idcategoria for 1 (Admin) */}
-          {canAccess(12, 13) && (
+          {canAccess(13) && (
             <MenuBox
               title="Utilizadores"
               isOpen={openMenu === "utilizadores"}

@@ -164,6 +164,17 @@ export default function EstatisticaEmails() {
           </div>
         </div>
       </main>
+
+      <footer className="footer-minimal">
+        <div className="footer-content">
+          <div className="footer-info">
+            <span className="hospital-name">Hospital de Esposende Valentim Ribeiro</span>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; {new Date().getFullYear()} — Todos os direitos reservados</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

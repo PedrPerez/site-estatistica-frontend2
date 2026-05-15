@@ -201,7 +201,6 @@ export default function EstatisticaImpresso() {
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-
               </div>
             </div>
           </div>

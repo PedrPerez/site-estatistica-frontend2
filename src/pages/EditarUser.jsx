@@ -11,7 +11,7 @@ export default function EditarUser() {
     iduser: '',
     username: '',
     nome: '',
-    password: '', // Deixar vazio se não quiser alterar
+    password: '',
     idcategoria: ''
   });
 
@@ -128,7 +128,7 @@ export default function EditarUser() {
 
           <div className="button-group">
             <button type="submit" className="btn-submit">Guardar Alterações</button>
-            <button type="button" className="btn-cancel" onClick={() => navigate('/listar-user')}>Cancelar</button>
+            <button type="button" className="btn-cancel" onClick={() => navigate('/gerir-utilizadores')}>Cancelar</button>
           </div>
         </form>
       </main>
