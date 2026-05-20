@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from "./pages/HomePage";
-import HomePageAdmin from './pages/HomePageAdmin';
 import LogIn from "./pages/LogIn";
 import InserirEmail from "./pages/InserirEmail";
 import ListarEmail from './pages/ListarEmail';
@@ -17,7 +16,7 @@ import EstatisticaQuestionario from './pages/EstatisticaQuestionario';
 import EstatisticaImpresso from './pages/EstatisticaImpresso';
 import EstatisticaEmail from './pages/EstatisticaEmail';
 import ExportarDados from './pages/ExportarDados';
-import LogInAdmin from "./pages/LogInAdmin";
+import ExportarImpressos from './pages/ExportarImpressos';
 import EditarUser from './pages/EditarUser';
 import ListarUser from './pages/ListarUser';
 import InserirUser from './pages/InserirUser';
@@ -33,8 +32,6 @@ function App() {
         {/* GRUPO DE ROTAS PROTEGIDAS */}
         <Route element={<ProtectedRoute />}>
           <Route path="/principal" element={<HomePage />} />
-          <Route path="/HomePageAdmin" element={<HomePageAdmin />} /> 
-          <Route path="/gerir-questoes" element={<GerirQuestoes />} />
 
           {/* Emails */}
           <Route path="/inserir-email" element={<InserirEmail />} />
@@ -51,13 +48,15 @@ function App() {
           <Route path="/inserir-questionario" element={<InserirQuestionario />} />
           <Route path="/listar-questionario" element={<ListarQuestionario />} />
           <Route path="/editar-questionario/:id" element={<EditarQuestionario />} />
+          <Route path="/gerir-questoes" element={<GerirQuestoes />} />
 
           {/* Estatísticas */}
           <Route path="/estatistica-questionario" element={<EstatisticaQuestionario />} />
           <Route path="/estatistica-impresso" element={<EstatisticaImpresso />} />
           <Route path="/estatistica-email" element={<EstatisticaEmail />} />
           {/* Exportar Dados */}
-          <Route path="/exportar" element={<ExportarDados />} />
+          <Route path="/exportar-questionario" element={<ExportarDados />} />
+          <Route path="/exportar-impresso" element={<ExportarImpressos />} />
 
           {/* Gerir Utilizadores */}
           <Route path="/gerir-utilizadores" element={<ListarUser />} />

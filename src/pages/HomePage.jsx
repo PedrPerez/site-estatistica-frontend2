@@ -124,25 +124,26 @@ export default function HomePage() {
           )}
 
           {/* EXPORTAR DADOS - ID 11 */}
-          {canAccess(11) && (
+          {hasAccessToCategory([11]) && (
             <MenuBox
               title="Exportar Dados"
               isOpen={openMenu === "exportar"}
               onClick={() => setOpenMenu(openMenu === "exportar" ? null : "exportar")}
             >
-              <Option onClick={() => navigate("/exportar")}>Exportar</Option>
+              {canAccess(11) && <Option onClick={() => navigate("/exportar-questionario")}>Exportar Questionario</Option>}
+              {canAccess(12) && <Option onClick={() => navigate("/exportar-impresso")}>Exportar Impressos</Option>}
             </MenuBox>
           )}
           
           {/* UTILIZADORES - Geralmente idmenu 1 ou apenas se idcategoria for 1 (Admin) */}
-          {canAccess(13) && (
+          {hasAccessToCategory([14]) && (
             <MenuBox
               title="Utilizadores"
               isOpen={openMenu === "utilizadores"}
               onClick={() => setOpenMenu(openMenu === "utilizadores" ? null : "utilizadores")}
             >
-              {canAccess(12) && <Option onClick={() => navigate("/inserir-utilizador")}>Registar Novo</Option>}
-              {canAccess(13) && <Option onClick={() => navigate("/gerir-utilizadores")}>Consultar Lista</Option>}
+              {canAccess(13) && <Option onClick={() => navigate("/inserir-utilizador")}>Registar Novo</Option>}
+              {canAccess(14) && <Option onClick={() => navigate("/gerir-utilizadores")}>Consultar Lista</Option>}
             </MenuBox>
           )}
           
