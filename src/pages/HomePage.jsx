@@ -11,13 +11,38 @@ import "../css/ListarQuestionario.css";
 import '../css/ExportarDados.css';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente HomePage
+ * 
+ * Painel principal do sistema administrativo. 
+ * 
+ * Funcionalidades principais:
+ * 1. Validação de sessão via localStorage.
+ * 2. Carregamento dinâmico de permissões de utilizador via API (obterPermissoesUser.php).
+ * 3. Renderização condicional de menus baseada nos IDs de permissão.
+ * 
+ * @component
+ */
 export default function HomePage() {
   const navigate = useNavigate();
+  
+  /** @type {string|null} Estado do menu atualmente expandido */
   const [openMenu, setOpenMenu] = useState(null);
+
+  /** @type {string} Nome do utilizador logado */
   const [userName, setUserName] = useState("Utilizador");
+  
+  /** @type {number[]} Lista de IDs de menu autorizados para o utilizador */
   const [userPerms, setUserPerms] = useState([]); 
+  
+  /** @type {boolean} Estado de carregamento da interface */
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Efeito de inicialização:
+   * Verifica a existência de sessão e busca permissões.
+   * Redireciona para o login caso não encontre ID de utilizador.
+   */
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     const storedId = localStorage.getItem('userId');
@@ -32,6 +57,12 @@ export default function HomePage() {
     }
   }, [navigate]);
 
+  /**
+   * Busca as permissões no backend PHP.
+   * Filtra apenas itens onde 'activo' é igual a "1".
+   * 
+   * @param {string} userId - ID do utilizador logado
+   */
   const fetchPermissions = async (userId) => {
     try {
       // Chamada à API que criámos anteriormente
@@ -51,13 +82,15 @@ export default function HomePage() {
     }
   };
 
+  /** Limpa localStorage e redireciona para a página de login */
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  // Funções de verificação baseadas nos IDs da tua base de dados
+  /** Verifica se o utilizador possui um ID de permissão específico */
   const canAccess = (id) => userPerms.includes(id);
+  /** Verifica se possui pelo menos uma permissão dentro de um grupo */
   const hasAccessToCategory = (ids) => ids.some(id => canAccess(id));
 
   if (loading) {

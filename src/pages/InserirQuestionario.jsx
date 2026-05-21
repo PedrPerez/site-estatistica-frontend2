@@ -2,8 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente InserirQuestionario
+ * 
+ * Permite ao utilizador registar um novo questionário de satisfação.
+ * 
+ * Funcionalidades:
+ * - Busca de unidades disponíveis via API.
+ * - Listagem dinâmica de indicadores/perguntas.
+ * - Design adaptativo (Mobile vs Desktop).
+ * - Validação de data (impedir datas futuras).
+ * - Submissão de respostas via POST para a API.
+ * 
+ * @component
+ */
 export default function InserirQuestionario() {
   const navigate = useNavigate();
+  // ESTADOS
   const [unidades, setUnidades] = useState([]);
   const [userName, setUserName] = useState("Utilizador");
   const [questoes, setQuestoes] = useState([]);
@@ -18,7 +33,10 @@ export default function InserirQuestionario() {
   const [isMobile, setIsMobile] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  // Detectar mobile
+  /**
+   * Efeito para detetar redimensionamento da janela.
+   * Alterna a visualização entre IndicadoresMobile e IndicadoresDesktop.
+   */
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -28,20 +46,27 @@ export default function InserirQuestionario() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Carregar dados
+  /**
+   * Efeito de inicialização:
+   * 1. Carrega a lista de unidades.
+   * 2. Carrega a estrutura do questionário (questões e indicadores).
+   */
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName);
 
+    // Busca Unidades
     fetch('http://localhost/API/obterUnidade.php')
       .then(res => res.json())
       .then(data => setUnidades(data))
       .catch(err => console.error("Erro ao carregar unidades:", err));
 
+    // Busca Questões/Indicadores  
     fetch("http://localhost/API/listarQuestoes.php")
       .then(res => res.json())
       .then(data => {
         setQuestoes(data);
+        // Inicializa todas as secções como abertas
         const estadoInicial = {};
         data.forEach(q => {
           estadoInicial[q.id] = true;
@@ -51,6 +76,10 @@ export default function InserirQuestionario() {
       .catch(() => setStatus({ type: 'error', message: 'Erro ao carregar indicadores.' }));
   }, []);
 
+  /**
+   * Alterna a visibilidade de uma secção de perguntas.
+   * @param {number} id - ID da secção
+   */
   const toggleSeccao = (id) => {
     setSeccoesAbertas(prev => ({
       ...prev,
@@ -58,11 +87,19 @@ export default function InserirQuestionario() {
     }));
   };
 
+  /**
+   * Atualiza os campos de input de texto e select.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Atualiza o estado das respostas de um indicador específico.
+   * @param {number} indicadorId 
+   * @param {string} valor 
+   */
   const handleRadioChange = (indicadorId, valor) => {
     setFormData(prev => ({
       ...prev,
@@ -70,6 +107,10 @@ export default function InserirQuestionario() {
     }));
   };
 
+  /**
+   * Submete o formulário completo para a API.
+   * Converte o objeto de respostas num array esperado pelo backend.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 

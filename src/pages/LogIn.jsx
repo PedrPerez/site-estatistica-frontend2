@@ -4,12 +4,32 @@ import '../css/Login.css';
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente LogInAdmin
+ * 
+ * Responsável por renderizar o formulário de autenticação do administrador.
+ * Faz a comunicação com a API PHP (login.php) para validar credenciais.
+ * 
+ * @component
+ */
 export default function LogInAdmin() {
+    // Estados do formulário
     const [utilizador, setUtilizador] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    /**
+     * Manipula o envio do formulário de login.
+     * 
+     * 1. Previne o comportamento padrão do form.
+     * 2. Valida campos vazios no frontend.
+     * 3. Realiza requisição POST para a API PHP.
+     * 4. Armazena dados do usuário no localStorage em caso de sucesso.
+     * 
+     * @param {Object} e Evento de submissão do formulário
+     * @returns {Promise<void>}
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -29,6 +49,7 @@ export default function LogInAdmin() {
 
             if (data.status === 'sucesso') {
                 setError('');
+                // Persistência de sessão básica
                 localStorage.setItem('userName', data.user.nome);
                 localStorage.setItem('userId', data.user.id);
                 navigate('/principal'); 

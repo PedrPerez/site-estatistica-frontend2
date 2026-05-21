@@ -4,17 +4,30 @@ import '../css/ListarQuestionario.css';
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente ListarQuestionarios
+ * 
+ * Responsável por listar, filtrar e exibir o detalhe de questionários respondidos.
+ * 
+ * Funcionalidades:
+ * - Filtros por Unidade e Data.
+ * - Carregamento "Lazy" de detalhes (só busca o detalhe ao expandir o questionário).
+ * - Visualização adaptativa (Mobile/Desktop) para indicadores.
+ * - Controlo de expansão de múltiplos níveis (Questionário -> Secções -> Indicadores).
+ * 
+ * @component
+ */
 export default function ListarQuestionarios() {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState("Utilizador");
+  // ESTADOS
   const [questionarios, setQuestionarios] = useState([]);
-  const [expandedIds, setExpandedIds] = useState({}); 
-  const [detalhes, setDetalhes] = useState({});
-  const [seccoesAbertas, setSeccoesAbertas] = useState({});
+  const [detalhes, setDetalhes] = useState({}); // Cache de detalhes por ID
+  const [expandedIds, setExpandedIds] = useState({}); // Controla quais questionários estão abertos
+  const [seccoesAbertas, setSeccoesAbertas] = useState({}); // Controla secções internas
   const [unidades, setUnidades] = useState([]);
+  const [formData, setFormData] = useState({ unidade: '', data: '' });
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [formData, setFormData] = useState({ unidade: '', data: '' });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -46,6 +59,10 @@ export default function ListarQuestionarios() {
 
   const limparFiltros = () => setFormData({ unidade: '', data: '' });
 
+  /**
+   * Busca detalhes de um questionário específico caso ainda não estejam em cache.
+   * @param {number} id - ID do questionário
+   */
   const carregarDetalhes = async (id) => {
     if (!detalhes[id]) {
       try {
@@ -53,6 +70,7 @@ export default function ListarQuestionarios() {
         const data = await res.json();
         setDetalhes(prev => ({ ...prev, [id]: data }));
         
+        // Inicializa o estado de fecho/abertura das perguntas internas
         const inicializarAbertas = {};
         if(data.respostas_agrupadas) {
             data.respostas_agrupadas.forEach(p => { inicializarAbertas[p.id] = false; });
@@ -64,11 +82,17 @@ export default function ListarQuestionarios() {
     }
   };
 
+  /**
+   * Alterna a expansão do card principal do questionário.
+   */
   const toggleExpandQuestionario = async (id) => {
     await carregarDetalhes(id);
     setExpandedIds(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  /**
+   * Alterna a visibilidade de uma pergunta específica dentro de um questionário.
+   */
   const togglePergunta = (qId, pId) => {
     setSeccoesAbertas(prev => ({
       ...prev,
@@ -104,6 +128,9 @@ export default function ListarQuestionarios() {
     navigate("/login");
   };
 
+  /**
+   * Função utilitária para filtrar questionários conforme inputs do utilizador.
+   */
   const questionariosFiltrados = questionarios.filter(item => {
     const correspondeUnidade = formData.unidade === '' || 
       (item.nome_unidade?.trim().toLowerCase() === formData.unidade.trim().toLowerCase());
