@@ -3,6 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import '../css/GerirQuestao.css';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente GerirQuestoes
+ * 
+ * Interface administrativa para criar novas questões e gerir o estado de questões existentes.
+ * 
+ * Funcionalidades:
+ * - Criação de questões com N indicadores (campos dinâmicos).
+ * - Listagem de todas as questões existentes.
+ * - Toggle de estado (Ativa/Inativa) via API.
+ * - Feedback visual (opacidade reduzida para questões inativas).
+ * 
+ * @component
+ */
 export default function GerirQuestoes() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
@@ -41,6 +54,10 @@ export default function GerirQuestoes() {
     setListaIndicadores(novaLista);
   };
 
+  /**
+   * Envia os dados da nova questão para o servidor.
+   * Utiliza JSON.stringify e content-type: application/json.
+   */
   const salvarQuestao = async () => {
     // 1. Validar antes de enviar
     if (!novoTitulo.trim()) {
@@ -62,31 +79,35 @@ export default function GerirQuestoes() {
     };
 
     try {
-        const res = await fetch('http://localhost/API/salvarQuestao.php', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json' // OBRIGATÓRIO para o PHP ler via php://input
-        },
-        body: JSON.stringify(payload)
-        });
+      const res = await fetch('http://localhost/API/salvarQuestao.php', {
+      method: 'POST',
+      headers: { 
+          'Content-Type': 'application/json' // OBRIGATÓRIO para o PHP ler via php://input
+      },
+      body: JSON.stringify(payload)
+      });
 
-        const result = await res.json();
+      const result = await res.json();
 
-        if (result.status === 'sucesso') {
-        alert("Questão e indicadores guardados com sucesso!");
-        setNovoTitulo("");
-        setListaIndicadores([""]);
-        fetchData(); // Atualiza a lista em baixo
-        } else {
-        console.error("Erro do Servidor:", result.mensagem);
-        alert("Erro ao guardar: " + result.mensagem);
-        }
+      if (result.status === 'sucesso') {
+      alert("Questão e indicadores guardados com sucesso!");
+      setNovoTitulo("");
+      setListaIndicadores([""]);
+      fetchData(); // Atualiza a lista em baixo
+      } else {
+      console.error("Erro do Servidor:", result.mensagem);
+      alert("Erro ao guardar: " + result.mensagem);
+      }
     } catch (err) {
         console.error("Erro na Requisição:", err);
         alert("Não foi possível contactar o servidor.");
     }
-    };
+  };
 
+    /**
+   * Alterna o estado (ativo/inativo) de uma questão existente.
+   * Envia dados via form-urlencoded.
+   */
   const toggleStatus = async (e, id, statusAtual) => {
     e.stopPropagation();
     const novoStatus = String(statusAtual) === "1" ? 0 : 1;

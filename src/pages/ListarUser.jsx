@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente ListarUser
+ * 
+ * Interface de gestão de utilizadores com acordeão para edição granular 
+ * de permissões e estados de conta.
+ * 
+ * Funcionalidades:
+ * - Data Fetching Condicional: Carrega a lista de utilizadores e os menus disponíveis na montagem.
+ * - Lazy Loading de Permissões: As permissões (`userPermissions`) são carregadas apenas 
+ *   quando o acordeão de um utilizador específico é expandido.
+ * - Proteção de Acesso: Bloqueio em tempo real (front-end) para evitar a desativação ou 
+ *   alteração de privilégios de Administradores (categoria 1).
+ * 
+ * @component
+ */
 export default function ListarUser() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
@@ -62,7 +77,8 @@ export default function ListarUser() {
     }
   };
 
-  // 4. Alteração de Permissão com bloqueio para Categoria 1
+  // Utiliza a propagação de eventos para manter a limpeza da UI:
+  // o clique no botão de status não dispara o evento de expansão do card.
   const togglePermission = async (user, idmenu, estadoAtual) => {
     // Bloqueio preventivo no Front-end
     if (String(user.idcategoria) === "1") {

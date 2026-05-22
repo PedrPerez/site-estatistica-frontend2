@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente InserirImpresso
+ * 
+ * Interface para criação de novos registos (impressos) com suporte a 
+ * notificação por e-mail pós-submissão.
+ * 
+ * Funcionalidades:
+ * - Carregamento dinâmico de catálogos (Unidades e Tipos de Mensagem).
+ * - Validação de campos obrigatórios (Frontend).
+ * - Lógica condicional de navegação: se 'enviarEmailCheck' estiver ativo, 
+ *   passa o estado via 'navigate' para o componente de envio de e-mail.
+ * - Reset de estado pós-submissão com sucesso.
+ * 
+ * @component
+ */
 export default function InserirImpresso() {
   const [unidades, setUnidades] = useState([]);
   const [userName, setUserName] = useState("Utilizador");
@@ -46,6 +61,10 @@ export default function InserirImpresso() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Submete o formulário via URLSearchParams.
+   * Adiciona o campo 'utilizador_registo' a partir do localStorage.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); setSuccess('');

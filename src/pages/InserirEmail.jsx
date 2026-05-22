@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/InserirEmail.css';
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png'; 
 
+/**
+ * Componente InserirEmail
+ * 
+ * Interface para registo de e-mails recebidos ou enviados, permitindo 
+ * a classificação por tipo de mensagem.
+ * 
+ * Funcionalidades:
+ * - Validação de campos obrigatórios antes do envio.
+ * - Reset de formulário após submissão bem-sucedida.
+ * - Input de data com limite no dia atual (evita datas futuras).
+ * - Feedback visual de status (sucesso/erro).
+ * 
+ * @component
+ */
 export default function InserirEmail() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");

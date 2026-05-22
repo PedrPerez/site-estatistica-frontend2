@@ -3,7 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente EstatisticaQuestionario
+ * 
+ * Exibe dashboards de satisfação baseados em respostas de questionários,
+ * permitindo filtragem temporal e por unidade hospitalar.
+ * 
+ * Funcionalidades:
+ * - Filtros dinâmicos (Unidade, Data Início, Data Fim).
+ * - Gráficos de barras comparativos (M. Bom, Bom, Aceitável, Mau) por indicador.
+ * - Visualização adaptativa (Mobile vs Desktop).
+ * - Acordeão para organizar secções de indicadores.
+ * 
+ * @component
+ */
 export default function EstatisticaQuestionario() {
+  // ESTADOS
   const navigate = useNavigate();
   const [estatisticas, setEstatisticas] = useState([]);
   const [userName, setUserName] = useState("Utilizador");
@@ -28,12 +43,17 @@ export default function EstatisticaQuestionario() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  /**
+   * Busca os dados estatísticos ao servidor com base nos filtros atuais.
+   * Converte o objeto de filtros numa Query String para a API.
+   */
   const carregarDados = () => {
     const query = new URLSearchParams(filtros).toString();
     fetch(`http://localhost/API/estatisticaQuestionario.php?${query}`)
       .then(res => res.json())
       .then(data => {
         setEstatisticas(data);
+        // Inicializa todas as secções como abertas por padrão
         const inicial = {};
         data.forEach((_, idx) => { inicial[idx] = true; });
         setSeccoesAbertas(inicial);

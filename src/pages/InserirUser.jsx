@@ -4,6 +4,20 @@ import '../css/InserirEmail.css';
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png'; 
 
+/**
+ * Componente InserirUser
+ * 
+ * Interface para a criação de novos utilizadores com definição de privilégios.
+ * 
+ * Funcionalidades:
+ * - Validação de campos obrigatórios antes do envio.
+ * - Envio de dados via `URLSearchParams` para compatibilidade com o formato 
+ *   `application/x-www-form-urlencoded`.
+ * - Reset de formulário para valores de default (`idcategoria: 9`, `activo: 1`) 
+ *   após sucesso.
+ * 
+ * @component
+ */
 export default function InserirUser() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
@@ -24,6 +38,8 @@ export default function InserirUser() {
     if (storedName) setUserName(storedName);
   }, []);
 
+  // O uso de `parseInt` no handleChange assegura que o nível de acesso 
+  // seja enviado como número, prevenindo problemas de tipagem no backend PHP.
   const handleChange = (e) => {
     const { name, value } = e.target;
     // Alteração: Garante que idcategoria seja tratado como número

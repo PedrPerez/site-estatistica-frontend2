@@ -2,6 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente EditarImpresso
+ * 
+ * Interface administrativa para atualizar dados, descritivos e resoluções 
+ * de um impresso previamente submetido.
+ * 
+ * Funcionalidades:
+ * - Carregamento Síncrono: Recupera unidades, tipos e o objeto alvo (filtrado pelo ID).
+ * - Preenchimento dinâmico: Mapeia os dados do objeto recuperado para o estado do formulário.
+ * - Confirmação de Ação: Bloqueio via window.confirm antes do envio.
+ * - Fluxo de Feedback: Exibe status de sucesso e redireciona automaticamente.
+ * 
+ * @component
+ */
 export default function EditarImpresso() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -24,6 +38,7 @@ export default function EditarImpresso() {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
+    // Sincronização necessária antes de editar
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName);
 
@@ -33,6 +48,7 @@ export default function EditarImpresso() {
       fetch(`http://localhost/API/obterImpresso.php`).then(res => res.json())
     ])
       .then(([u, t, impressos]) => {
+        // Localiza o registo específico e preenche o formData
         setUnidades(u);
         setTipos(t);
         const atual = impressos.find(i => String(i.id) === id);

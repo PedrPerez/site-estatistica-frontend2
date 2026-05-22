@@ -2,6 +2,20 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente EnviarEmail
+ * 
+ * Interface para revisão e disparo de comunicações por e-mail, 
+ * preenchida automaticamente com os dados do processo.
+ * 
+ * Funcionalidades:
+ * - Passagem de Parâmetros: Recebe `email`, `nome`, `id` e `resolucao` via state do react-router.
+ * - Template Dinâmico: Gera uma mensagem pré-formatada no estado inicial.
+ * - Proteção de Rotas: Verifica a existência do `email` antes de renderizar.
+ * - Estado de Loading: Desativa o botão de envio durante a requisição (`enviando`).
+ * 
+ * @component
+ */
 export default function EnviarEmail() {
   const location = useLocation();
   const navigate = useNavigate();

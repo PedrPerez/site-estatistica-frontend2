@@ -2,6 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente EditarUser
+ * 
+ * Interface para atualização de dados de utilizadores existentes.
+ * 
+ * Funcionalidades:
+ * - Data Hydration: Carrega dados via `id` da rota e faz o *mapping* para os campos.
+ * - Password Security: Campo de password opcional; se enviado vazio, o backend 
+ *   deve ignorar a atualização da *hash* na base de dados.
+ * - Imutabilidade: O campo `username` é bloqueado para edição, preservando 
+ *   a integridade da identidade do utilizador no sistema.
+ * - Feedback UX: Confirmação antes da persistência (`window.confirm`) e redirecionamento 
+ *   automático após sucesso.
+ * 
+ * @component
+ */
 export default function EditarUser() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -45,6 +61,8 @@ export default function EditarUser() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // O uso de JSON.stringify no body exige que o servidor PHP processe 
+  // a requisição via `file_get_contents('php://input')`.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');

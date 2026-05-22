@@ -165,6 +165,7 @@ export default function HomePage() {
             >
               {canAccess(11) && <Option onClick={() => navigate("/exportar-questionario")}>Exportar Questionario</Option>}
               {canAccess(12) && <Option onClick={() => navigate("/exportar-impresso")}>Exportar Impressos</Option>}
+              {canAccess(13) && <Option onClick={() => navigate("/exportar-email")}>Exportar Emails</Option>}
             </MenuBox>
           )}
           

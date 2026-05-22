@@ -8,6 +8,22 @@ import logo from '../assets/logohospital_cores.png';
 
 const COLORS = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58', '#AB47BC', '#00ACC1', '#FF7043'];
 
+/**
+ * Componente EstatisticaImpresso
+ * 
+ * Painel de análise de dados com filtragem por período e unidade.
+ * 
+ * Funcionalidades:
+ * - Data Fetching Dinâmico: Envia filtros via URLSearchParams para o backend.
+ * - Responsividade adaptativa: Detecta `window.innerWidth` para alternar entre 
+ *   layouts de coluna (mobile) e linha (desktop).
+ * - Visualização de Dados:
+ *    - Tabela de resumo (matriz de unidades vs. categorias).
+ *    - BarChart: Comparativo por unidade (empilhado/agrupado).
+ *    - PieChart: Distribuição percentual global.
+ * 
+ * @component
+ */
 export default function EstatisticaImpresso() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");

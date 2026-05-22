@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente EditarQuestionario
+ * 
+ * Permite a edição de um questionário previamente submetido.
+ * 
+ * Funcionalidades:
+ * - Carregamento Síncrono (Promise.all) de questões, detalhes e unidades.
+ * - Mapeamento de estado de resposta (o formulário preenche os radio buttons automaticamente).
+ * - Persistência de dados via POST com payload formatado.
+ * - Suporte a UI Responsiva (Mobile/Desktop).
+ * 
+ * @component
+ */
 export default function EditarQuestionario() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -19,6 +32,7 @@ export default function EditarQuestionario() {
   const [status, setStatus] = useState({ type: '', message: '' });
 
   useEffect(() => {
+    // Carrega em paralelo: Questões disponíveis, Detalhes da resposta e Lista de Unidades
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);

@@ -8,6 +8,21 @@ import logo from '../assets/logohospital_cores.png';
 
 const COLORS = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58', '#AB47BC', '#00ACC1', '#FF7043'];
 
+/**
+ * Componente EstatisticaEmails
+ * 
+ * Dashboard analítico que cruza a atividade de registo de e-mails com 
+ * categorias específicas por utilizador.
+ * 
+ * Funcionalidades:
+ * - Agregação de Dados: Exibição matricial (Utilizador vs Categoria).
+ * - Gráficos Interativos: 
+ *    - Stacked BarChart: Volume de trabalho segmentado por categoria.
+ *    - PieChart: Fatiamento percentual da carga de trabalho global.
+ * - Responsividade: Layout ajustável para resoluções mobile.
+ * 
+ * @component
+ */
 export default function EstatisticaEmails() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
@@ -26,6 +41,8 @@ export default function EstatisticaEmails() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // O uso de URLSearchParams para construir a query string é a forma 
+  // mais robusta de garantir que filtros vazios não quebrem a API.
   const carregarDados = () => {
     const query = new URLSearchParams(filtros).toString();
     fetch(`http://localhost/API/estatisticaEmail.php?${query}`)

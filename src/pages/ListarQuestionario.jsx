@@ -7,25 +7,34 @@ import logo from '../assets/logohospital_cores.png';
 /**
  * Componente ListarQuestionarios
  * 
- * Responsável por listar, filtrar e exibir o detalhe de questionários respondidos.
+ * Interface de listagem e filtragem de questionários hospitalares.
  * 
- * Funcionalidades:
- * - Filtros por Unidade e Data.
- * - Carregamento "Lazy" de detalhes (só busca o detalhe ao expandir o questionário).
- * - Visualização adaptativa (Mobile/Desktop) para indicadores.
- * - Controlo de expansão de múltiplos níveis (Questionário -> Secções -> Indicadores).
+ * Funcionalidades principais:
+ * - Filtros Dinâmicos: Permite filtrar por Unidade, Data e Estado da Questão (Ativa/Desativada).
+ * - Estrutura Hierárquica: 
+ *    - Nível 1: Lista principal de questionários.
+ *    - Nível 2: Detalhes de perguntas expandíveis via `carregarDetalhes` (Lazy Loading).
+ *    - Nível 3: Indicadores de performance apresentados em tabelas (Desktop) ou cards (Mobile).
+ * - Responsividade: Deteta automaticamente o viewport para alternar entre `IndicadoresMobile` 
+ *   e `IndicadoresDesktop`.
+ * - Manipulação de Estado: Controlo robusto de expansão múltipla (acordeões) para questões 
+ *   e questionários.
  * 
  * @component
  */
 export default function ListarQuestionarios() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("Utilizador");
+  
   // ESTADOS
   const [questionarios, setQuestionarios] = useState([]);
-  const [detalhes, setDetalhes] = useState({}); // Cache de detalhes por ID
-  const [expandedIds, setExpandedIds] = useState({}); // Controla quais questionários estão abertos
-  const [seccoesAbertas, setSeccoesAbertas] = useState({}); // Controla secções internas
+  const [detalhes, setDetalhes] = useState({}); 
+  const [expandedIds, setExpandedIds] = useState({}); 
+  const [seccoesAbertas, setSeccoesAbertas] = useState({}); 
   const [unidades, setUnidades] = useState([]);
-  const [formData, setFormData] = useState({ unidade: '', data: '' });
+  
+  // NOVO: Adicionado estadoQuestao ao formData
+  const [formData, setFormData] = useState({ unidade: '', data: '', estadoQuestao: 'ambos' });
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -57,12 +66,9 @@ export default function ListarQuestionarios() {
       });
   }, []);
 
-  const limparFiltros = () => setFormData({ unidade: '', data: '' });
+  // NOVO: Limpar todos os filtros incluindo o novo
+  const limparFiltros = () => setFormData({ unidade: '', data: '', estadoQuestao: 'ambos' });
 
-  /**
-   * Busca detalhes de um questionário específico caso ainda não estejam em cache.
-   * @param {number} id - ID do questionário
-   */
   const carregarDetalhes = async (id) => {
     if (!detalhes[id]) {
       try {
@@ -70,7 +76,6 @@ export default function ListarQuestionarios() {
         const data = await res.json();
         setDetalhes(prev => ({ ...prev, [id]: data }));
         
-        // Inicializa o estado de fecho/abertura das perguntas internas
         const inicializarAbertas = {};
         if(data.respostas_agrupadas) {
             data.respostas_agrupadas.forEach(p => { inicializarAbertas[p.id] = false; });
@@ -82,17 +87,11 @@ export default function ListarQuestionarios() {
     }
   };
 
-  /**
-   * Alterna a expansão do card principal do questionário.
-   */
   const toggleExpandQuestionario = async (id) => {
     await carregarDetalhes(id);
     setExpandedIds(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  /**
-   * Alterna a visibilidade de uma pergunta específica dentro de um questionário.
-   */
   const togglePergunta = (qId, pId) => {
     setSeccoesAbertas(prev => ({
       ...prev,
@@ -128,9 +127,6 @@ export default function ListarQuestionarios() {
     navigate("/login");
   };
 
-  /**
-   * Função utilitária para filtrar questionários conforme inputs do utilizador.
-   */
   const questionariosFiltrados = questionarios.filter(item => {
     const correspondeUnidade = formData.unidade === '' || 
       (item.nome_unidade?.trim().toLowerCase() === formData.unidade.trim().toLowerCase());
@@ -220,6 +216,17 @@ export default function ListarQuestionarios() {
                 <label>Data:</label>
                 <input type="date" value={formData.data} onChange={(e) => setFormData({...formData, data: e.target.value})} />
               </div>
+              
+              {/* NOVO: Filtro de Estado das Questões */}
+              <div className="input-group">
+                <label>Estado das Questões:</label>
+                <select value={formData.estadoQuestao} onChange={(e) => setFormData({...formData, estadoQuestao: e.target.value})}>
+                  <option value="ambos">Ambos</option>
+                  <option value="ativas">Ativas</option>
+                  <option value="desativadas">Desativadas</option>
+                </select>
+              </div>
+
             </div>
           </div>
 
@@ -238,7 +245,6 @@ export default function ListarQuestionarios() {
             ) : (
               questionariosFiltrados.map((q) => (
                 <div key={q.id_questionario} className="section-box">
-                  {/* ALTERAÇÃO FEITA AQUI NAS CLASSES */}
                   <div className="cabecalho-questionario-branco" onClick={() => toggleExpandQuestionario(q.id_questionario)}>
                     <div className="row-content">
                       <div className="row-info-text">
@@ -261,10 +267,21 @@ export default function ListarQuestionarios() {
                         </button>
                       </div>
 
-                      {detalhes[q.id_questionario]?.respostas_agrupadas?.map((pergunta) => (
+                      {/* NOVO: Filter aplicado antes do map para mostrar apenas as questões correspondentes */}
+                      {detalhes[q.id_questionario]?.respostas_agrupadas
+                        ?.filter(pergunta => {
+                          if (formData.estadoQuestao === 'ativas') return pergunta.activo === 1;
+                          if (formData.estadoQuestao === 'desativadas') return pergunta.activo === 0;
+                          return true; // 'ambos'
+                        })
+                        .map((pergunta) => (
                         <div key={pergunta.id} className="question-box">
                           <div className="question-header gray-bg clickable-header" onClick={() => togglePergunta(q.id_questionario, pergunta.id)}>
-                            <span className="question-title">{pergunta.titulo}</span>
+                            <span className="question-title">
+                                {pergunta.titulo} 
+                                {/* Etiqueta visual opcional para veres logo se está inativa */}
+                                {pergunta.activo === 0 && <span style={{color: 'red', fontSize: '0.8em', marginLeft: '10px'}}>(Desativada)</span>}
+                            </span>
                             <span className="toggle-icon">{seccoesAbertas[q.id_questionario]?.[pergunta.id] ? '▲' : '▼'}</span>
                           </div>
                           {seccoesAbertas[q.id_questionario]?.[pergunta.id] && (

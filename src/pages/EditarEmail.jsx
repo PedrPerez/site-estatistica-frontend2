@@ -2,6 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente EditarEmail
+ * 
+ * Interface para alteração de registos de e-mail existentes.
+ * 
+ * Funcionalidades:
+ * - Recuperação de Contexto: Utiliza `useParams()` para identificar o e-mail alvo.
+ * - Inicialização de Estado: Preenche o formulário com dados obtidos via `Promise.all` 
+ *   e posterior busca no array de resultados.
+ * - Feedback Dinâmico: Exibição de mensagens de sucesso ou erro com redirecionamento 
+ *   automático após 1.5 segundos.
+ * 
+ * @component
+ */
 export default function EditarEmail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,6 +64,8 @@ export default function EditarEmail() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // O uso de JSON.stringify no corpo da requisição é consistente 
+  // com a expectativa de um endpoint RESTful.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');

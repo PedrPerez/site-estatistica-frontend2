@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente ListarImpresso
+ * 
+ * Lista todos os impressos com filtros dinâmicos e expansão de detalhes.
+ * 
+ * Funcionalidades:
+ * - Carregamento múltiplo (Promise.all) de dados (Registos, Unidades, Tipos).
+ * - Filtros combináveis: Unidade, Data e Tipo de Mensagem.
+ * - Visualização expandida (acordeão) para detalhes (Descritivo/Resolução).
+ * - Navegação direta para edição de um registo específico.
+ * 
+ * @component
+ */
 export default function ListarImpresso() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
@@ -19,6 +32,7 @@ export default function ListarImpresso() {
   const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
+    // Carregamento paralelo para minimizar o tempo de carregamento inicial
     const storedName = localStorage.getItem('userName');
     if (storedName) setUserName(storedName)
     Promise.all([
@@ -49,6 +63,9 @@ export default function ListarImpresso() {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  /**
+   * Filtragem em memória dos registos baseada no estado 'formData'.
+   */
   const resultadosFiltrados = registos.filter(item => {
     const correspondeUnidade = formData.unidade === '' || String(item.unidade_id) === formData.unidade;
     const correspondeTipo = formData.tipo === '' || String(item.tipo_id) === formData.tipo;

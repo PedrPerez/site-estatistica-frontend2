@@ -4,6 +4,21 @@ import '../css/ListarEmail.css';
 import '../css/Header.css';
 import logo from '../assets/logohospital_cores.png';
 
+/**
+ * Componente ListarEmail
+ * 
+ * Painel de consulta de e-mails com filtragem em tempo real e 
+ * visualização detalhada em formato de acordeão.
+ * 
+ * Funcionalidades:
+ * - Carregamento Assíncrono Paralelo: Utiliza `Promise.all` para otimizar o tempo de espera.
+ * - Filtragem Client-Side: Realizada através de computed property (`emailsFiltrados`) 
+ *   baseada em estado.
+ * - Gestão de Estado de UI: Controla o estado de expansão de cada item (`expandedId`) 
+ *   individualmente.
+ * 
+ * @component
+ */
 export default function ListarEmail() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Utilizador");
@@ -44,7 +59,8 @@ export default function ListarEmail() {
     navigate("/login");
   };
 
-  // 2. Lógica de Filtragem Dinâmica
+  // A lógica de filtragem é eficiente, mas para volumes de dados > 500 registos,
+  // considerar debouncing na pesquisa geral.
   const emailsFiltrados = emails.filter(item => {
     const correspondeTipo = filters.tipo === '' || String(item.cod_tipo) === filters.tipo;
     const correspondeData = filters.data === '' || item.data.includes(filters.data);

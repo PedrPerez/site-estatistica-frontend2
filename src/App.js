@@ -17,6 +17,7 @@ import EstatisticaImpresso from './pages/EstatisticaImpresso';
 import EstatisticaEmail from './pages/EstatisticaEmail';
 import ExportarDados from './pages/ExportarDados';
 import ExportarImpressos from './pages/ExportarImpressos';
+import ExportarEmails from './pages/ExportarEmail';
 import EditarUser from './pages/EditarUser';
 import ListarUser from './pages/ListarUser';
 import InserirUser from './pages/InserirUser';
@@ -57,6 +58,7 @@ function App() {
           {/* Exportar Dados */}
           <Route path="/exportar-questionario" element={<ExportarDados />} />
           <Route path="/exportar-impresso" element={<ExportarImpressos />} />
+          <Route path="/exportar-email" element={<ExportarEmails />} />
 
           {/* Gerir Utilizadores */}
           <Route path="/gerir-utilizadores" element={<ListarUser />} />
