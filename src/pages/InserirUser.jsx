@@ -162,7 +162,7 @@ export default function InserirUser() {
 
             <div className="button-group">
               <button type="submit" className="btn-submit">Criar Utilizador</button>
-              <button type="button" className="btn-cancel" onClick={() => navigate('/principal-admin')}>Cancelar</button>
+              <button type="button" className="btn-cancel" onClick={() => navigate('/principal')}>Cancelar</button>
             </div>
         </form>
       </main>
