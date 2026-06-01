@@ -64,31 +64,37 @@ export default function EditarUser() {
   // O uso de JSON.stringify no body exige que o servidor PHP processe 
   // a requisição via `file_get_contents('php://input')`.
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+  e.preventDefault();
+  setError('');
+  setSuccess('');
 
-    if (!window.confirm("Deseja guardar as alterações deste utilizador?")) return;
+  if (!window.confirm("Deseja guardar as alterações deste utilizador?")) return;
 
-    try {
-      const response = await fetch('http://localhost/API/editarUser.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      
-      const res = await response.json();
-      
-      if (res.status === 'sucesso') {
-        setSuccess('Utilizador atualizado com sucesso!');
-        setTimeout(() => navigate('/listar-user'), 1500);
-      } else {
-        setError(res.mensagem || 'Erro ao atualizar.');
-      }
-    } catch (err) {
-      setError("Erro ao conectar ao servidor.");
-    }
+  // Juntar os dados do formulário ao ID do Admin guardado no localStorage
+  const dadosParaEnviar = {
+    ...formData,
+    adminId: localStorage.getItem('userId') 
   };
+
+  try {
+    const response = await fetch('http://localhost/API/editarUser.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosParaEnviar) // Enviamos o objeto completo
+    });
+    
+    const res = await response.json();
+    
+    if (res.status === 'sucesso') {
+      setSuccess('Utilizador updated com sucesso!');
+      setTimeout(() => navigate('/gerir-utilizadores'), 1500);
+    } else {
+      setError(res.mensagem || 'Erro ao atualizar.');
+    }
+  } catch (err) {
+    setError("Erro ao conectar ao servidor.");
+  }
+};
 
   return (
     <div className="page-wrapper">

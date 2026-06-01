@@ -80,19 +80,32 @@ export default function ListarUser() {
   // Utiliza a propagação de eventos para manter a limpeza da UI:
   // o clique no botão de status não dispara o evento de expansão do card.
   const togglePermission = async (user, idmenu, estadoAtual) => {
-    // Bloqueio preventivo no Front-end
     if (String(user.idcategoria) === "1") {
       alert("Não é permitido alterar permissões de um Administrador.");
       return;
     }
 
     const novoEstado = estadoAtual ? 0 : 1;
+    
+    // 1. Força a leitura direta do localStorage
+    const operadorIdAtual = localStorage.getItem('userId');
+    
+    // 2. LOG DE DIAGNÓSTICO: Abre a consola (F12) no browser e vê o que aparece aqui ao clicar!
+    console.log("DEBUG FRONTEND - ID do Operador Logado:", operadorIdAtual);
+    console.log("DEBUG FRONTEND - A alterar utilizador ID:", user.iduser);
+
+    // 3. Cria os parâmetros explicitamente para evitar falhas de tipagem
+    const params = new URLSearchParams();
+    params.append('iduser', String(user.iduser));
+    params.append('idmenu', String(idmenu));
+    params.append('activo', String(novoEstado));
+    params.append('id_operador', operadorIdAtual ? String(operadorIdAtual) : "0");
 
     try {
       const response = await fetch('http://localhost/API/alterarPermissao.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ iduser: user.iduser, idmenu, activo: novoEstado })
+        body: params
       });
 
       const result = await response.json();
